@@ -78,6 +78,7 @@ init();
 
 function init() {
   setupVoteUrl();
+
   resultsLoginButton?.addEventListener("click", async () => {
     try {
       setLoginMessage("Google 登入中...");
@@ -88,10 +89,20 @@ function init() {
   });
 
   onAuthStateChanged(auth, async (user) => {
-    if (!user) { showLoginScreen("請使用 Admin Google 帳號登入後再投影。"); return; }
+    if (!user) {
+      showLoginScreen("請使用 Admin Google 帳號登入後再投影。");
+      return;
+    }
+
     const adminResult = await checkAdmin(user.uid);
-    if (!adminResult) { showLoginScreen("此帳號沒有 Admin 權限，無法讀取決賽即時資料。"); return; }
+
+    if (!adminResult) {
+      showLoginScreen("此帳號沒有 Admin 權限，無法讀取決賽即時資料。");
+      return;
+    }
+
     showDisplayScreen();
+
     if (!hasStartedSnapshots) {
       hasStartedSnapshots = true;
       startSnapshots();
@@ -124,6 +135,7 @@ function startSnapshots() {
   onSnapshot(doc(db, "settings", "finalResultControl"), (snapshot) => {
     if (snapshot.exists()) {
       const data = snapshot.data();
+
       resultControl = {
         mode: data.mode || "preVotingStandby",
         countdownEndAt: data.countdownEndAt || null,
@@ -137,6 +149,7 @@ function startSnapshots() {
         contestantId: data.contestantId || ""
       };
     }
+
     renderMode();
     startCountdownTimer();
   });
@@ -144,12 +157,14 @@ function startSnapshots() {
   onSnapshot(collection(db, "contestants"), (snapshot) => {
     contestantsCache = [];
     snapshot.forEach((docSnap) => contestantsCache.push({ id: docSnap.id, ...docSnap.data() }));
+
     contestantsCache.sort((a, b) => {
       const orderA = typeof a.manualOrder === "number" ? a.manualOrder : 999;
       const orderB = typeof b.manualOrder === "number" ? b.manualOrder : 999;
       if (orderA !== orderB) return orderA - orderB;
       return (a.registerTime?.seconds || 0) - (b.registerTime?.seconds || 0);
     });
+
     renderLiveStats();
     renderMode();
   });
@@ -195,9 +210,20 @@ function startSnapshots() {
 
 function renderMode() {
   const mode = resultControl.mode || "preVotingStandby";
+
   hideAllModeScreens();
   updateStatusBadge(mode);
-  awardRevealStage?.classList.remove("first-place-stage", "second-place-stage", "third-place-stage", "red-carpet-stage", "star-scout-stage", "star-scout-standby-stage", "all-winners-stage");
+
+  awardRevealStage?.classList.remove(
+    "first-place-stage",
+    "second-place-stage",
+    "third-place-stage",
+    "red-carpet-stage",
+    "star-scout-stage",
+    "star-scout-standby-stage",
+    "all-winners-stage"
+  );
+
   awardRevealKicker?.classList.remove("hidden");
   awardRevealTitle?.classList.remove("hidden");
 
@@ -236,15 +262,19 @@ function renderMode() {
 }
 
 function hideAllModeScreens() {
-  [preVotingStandbyScreen, liveVotingScreen, beforeRevealStandbyScreen, intermissionScreen, awardRevealScreen].forEach((screen) => screen?.classList.add("hidden"));
+  [preVotingStandbyScreen, liveVotingScreen, beforeRevealStandbyScreen, intermissionScreen, awardRevealScreen]
+    .forEach((screen) => screen?.classList.add("hidden"));
 }
 
 function updateStatusBadge(mode) {
   if (!resultsStatusBadge) return;
+
   const isLive = mode === "liveVoting";
   const isPaused = mode === "votingPaused";
+
   resultsStatusBadge.classList.toggle("paused", isPaused);
   resultsStatusBadge.classList.toggle("standby", !isLive && !isPaused);
+
   resultsStatusBadge.innerHTML = `<span></span>${isLive ? "LIVE" : isPaused ? "PAUSED" : "STANDBY"}`;
 }
 
@@ -260,7 +290,10 @@ function renderAward(mode) {
   };
 
   const config = modeMap[mode] || { title: resultControl.awardName || "獎項公布", prize: "", className: "" };
-  if (config.className) awardRevealStage?.classList.add(config.className);
+
+  if (config.className) {
+    awardRevealStage?.classList.add(config.className);
+  }
 
   setText(resultsMainTitle, mode === "allWinners" ? "得獎名單" : "決賽獎項公布");
   setText(awardRevealKicker, mode === "allWinners" ? "" : "Award Reveal");
@@ -271,11 +304,25 @@ function renderAward(mode) {
     awardRevealTitle?.classList.add("hidden");
   }
 
-  if (mode === "redCarpetWinner") return renderContestantAward(getAwardContestant(mode), config);
-  if (["firstPlace", "secondPlace", "thirdPlace"].includes(mode)) return renderContestantAward(getAwardContestant(mode), config);
-  if (mode === "starScoutStandby") return renderStarScoutStandby();
-  if (mode === "starScoutWinners") return renderStarScoutWinners();
-  if (mode === "allWinners") return renderAllWinners();
+  if (mode === "redCarpetWinner") {
+    return renderContestantAward(getAwardContestant(mode), config);
+  }
+
+  if (["firstPlace", "secondPlace", "thirdPlace"].includes(mode)) {
+    return renderContestantAward(getAwardContestant(mode), config);
+  }
+
+  if (mode === "starScoutStandby") {
+    return renderStarScoutStandby();
+  }
+
+  if (mode === "starScoutWinners") {
+    return renderStarScoutWinners();
+  }
+
+  if (mode === "allWinners") {
+    return renderAllWinners();
+  }
 
   awardRevealContent.innerHTML = `<div class="award-suspense-text">即將揭曉</div>`;
 }
@@ -283,6 +330,7 @@ function renderAward(mode) {
 function getAwardContestant(mode) {
   if (mode === "redCarpetWinner") {
     const ranked = getRankedContestants(getVoteCountMap(redCarpetVotesCache));
+
     return ranked.find((contestant) => contestant.id === resultControl.contestantId)
       || ranked.find((contestant) => contestant.voteCount > 0)
       || null;
@@ -290,6 +338,7 @@ function getAwardContestant(mode) {
 
   if (["firstPlace", "secondPlace", "thirdPlace"].includes(mode)) {
     const rows = getFinalScoreRows();
+
     return rows.find((contestant) => contestant.id === resultControl.contestantId)
       || rows[getPlaceIndex(mode)]
       || null;
@@ -307,6 +356,30 @@ function getContestantPhoto(contestant) {
     || "";
 }
 
+function getContestantSong(contestant) {
+  return contestant?.performanceItem
+    || contestant?.songTitle
+    || contestant?.songName
+    || contestant?.song
+    || "";
+}
+
+function renderFireworkLayer() {
+  return `
+    <div class="celebration-fireworks" aria-hidden="true">
+      <i style="--x:10%;--y:20%;--s:1.15;--d:0s;"></i>
+      <i style="--x:24%;--y:74%;--s:.86;--d:.5s;"></i>
+      <i style="--x:42%;--y:16%;--s:1;--d:1s;"></i>
+      <i style="--x:64%;--y:76%;--s:1.05;--d:.35s;"></i>
+      <i style="--x:78%;--y:22%;--s:1.25;--d:1.45s;"></i>
+      <i style="--x:90%;--y:62%;--s:.92;--d:.8s;"></i>
+    </div>
+    <div class="celebration-confetti" aria-hidden="true">
+      ${Array.from({ length: 26 }).map((_, index) => `<span style="--i:${index};"></span>`).join("")}
+    </div>
+  `;
+}
+
 function renderContestantAward(contestant, config) {
   if (!contestant) {
     awardRevealContent.innerHTML = `<div class="award-suspense-text">資料準備中</div>`;
@@ -314,11 +387,15 @@ function renderContestantAward(contestant, config) {
   }
 
   const photoUrl = getContestantPhoto(contestant);
+  const songText = getContestantSong(contestant);
+
   const metricHtml = config.metricLabel === "票數"
     ? `<strong class="award-metric">${escapeHtml(config.metricLabel)} ${Number(contestant.voteCount || 0)} 票</strong>`
     : `<strong class="award-metric">${escapeHtml(config.metricLabel || "總分")} ${Number(contestant.totalScore || 0).toFixed(1)}</strong>`;
 
   awardRevealContent.innerHTML = `
+    ${renderFireworkLayer()}
+
     <div class="award-countdown-sequence" aria-hidden="true">
       <span>3</span>
       <span>2</span>
@@ -334,6 +411,7 @@ function renderContestantAward(contestant, config) {
         <div class="award-prize-label">${escapeHtml(config.prize || "")}</div>
         <h3>${escapeHtml(contestant.name || "未知選手")}</h3>
         <p>A.K.A. ${escapeHtml(contestant.stageName || "—")}</p>
+        ${songText ? `<p class="award-song">演唱曲目：${escapeHtml(songText)}</p>` : ""}
         ${metricHtml}
       </div>
     </div>`;
@@ -372,11 +450,14 @@ function renderStarScoutStandby() {
 
 function getStarScoutCandidateCount(championContestantId) {
   if (!championContestantId) return 0;
+
   const employeeSet = new Set();
+
   finalAudienceLogsCache.forEach((log) => {
     if (log.contestantId !== championContestantId) return;
     if (log.employeeId) employeeSet.add(String(log.employeeId).trim());
   });
+
   return employeeSet.size;
 }
 
@@ -387,15 +468,32 @@ function renderStarScoutWinners() {
     return renderStarScoutStandby();
   }
 
+  const wheelNames = winners.map((winner) => winner.employeeName || winner.employeeId || "Lucky Star");
+  const wheelSlots = Array.from({ length: 12 }).map((_, index) => wheelNames[index % wheelNames.length]);
+
   awardRevealContent.innerHTML = `
-    <div class="star-scout-drawing-panel">
-      <div class="star-scout-drawing-header">
+    <div class="star-scout-wheel-panel">
+      <div class="star-scout-wheel-header">
         <span>從投給第一名「${escapeHtml(starScoutWinnersCache?.championName || "冠軍") }」的觀眾中抽出</span>
         <strong>最強星探獎｜每位 NT$500</strong>
       </div>
-      <div class="star-scout-lottery-strip" aria-hidden="true">
-        <i>★</i><i>♪</i><i>★</i><i>♪</i><i>★</i><i>♪</i><i>★</i>
+
+      <div class="star-scout-wheel-stage" aria-hidden="true">
+        <div class="star-scout-wheel">
+          <div class="star-scout-wheel-rim"></div>
+          ${wheelSlots.map((name, index) => `
+            <span class="wheel-slot wheel-slot-${index + 1}">
+              ${escapeHtml(name)}
+            </span>
+          `).join("")}
+          <div class="star-scout-wheel-center">
+            <b>3</b>
+            <b>2</b>
+            <b>1</b>
+          </div>
+        </div>
       </div>
+
       <div class="star-scout-grid star-scout-grid-animated">
         ${winners.map((winner, index) => `
           <div class="star-scout-card" style="--delay:${index};">
@@ -410,6 +508,7 @@ function renderStarScoutWinners() {
 function renderAllWinners() {
   const rows = getFinalScoreRows();
   const redCarpetWinner = getRedCarpetWinner();
+
   const winnerCards = [
     { label: "第一名", prize: "NT$6,000", contestant: rows[0], className: "winner-first" },
     { label: "第二名", prize: "NT$5,000", contestant: rows[1], className: "winner-second" },
@@ -418,9 +517,12 @@ function renderAllWinners() {
   ];
 
   awardRevealContent.innerHTML = `
+    ${renderFireworkLayer()}
+
     <div class="all-winners-showcase">
       ${winnerCards.map((item, index) => {
         const photoUrl = getContestantPhoto(item.contestant);
+        const songText = getContestantSong(item.contestant);
         const metric = item.label === "紅毯巨星造型獎"
           ? `${Number(item.contestant?.voteCount || 0)} 票`
           : `${Number(item.contestant?.totalScore || 0).toFixed(1)} 分`;
@@ -434,6 +536,7 @@ function renderAllWinners() {
               <span>${escapeHtml(item.label)}</span>
               <strong>${escapeHtml(item.contestant?.name || "—")}</strong>
               <p>A.K.A. ${escapeHtml(item.contestant?.stageName || "—")}</p>
+              ${songText ? `<p class="all-winner-song">演唱曲目：${escapeHtml(songText)}</p>` : ""}
               <em>${escapeHtml(item.prize)}｜${escapeHtml(metric)}</em>
             </div>
           </div>`;
@@ -448,15 +551,27 @@ function renderLiveStats() {
   const expectedRedCarpetVotes = Math.max(1, Number(resultControl.expectedRedCarpetVoters || resultControl.expectedVoters || 80));
   const expectedFinalAudienceVotes = Math.max(1, Number(resultControl.expectedFinalAudienceVoters || resultControl.expectedVoters || 80));
   const showLiveStats = resultControl.showLiveStats !== false;
+
   liveStatsGrid?.classList.toggle("hidden", !showLiveStats);
   liveProgressPanel?.classList.toggle("hidden", !showLiveStats);
+
   animateNumber(liveRedCarpetTotalVotes, redCarpetVotesCache.length);
   animateNumber(liveFinalAudienceTotalVotes, finalAudienceLogsCache.length);
   animateNumber(liveFinalCompletedEmployees, completedEmployees);
   animateNumber(liveFinalTopVotes, topFinalVotes);
-  if (redCarpetLiveBar) redCarpetLiveBar.style.width = `${Math.min((redCarpetVotesCache.length / expectedRedCarpetVotes) * 100, 100)}%`;
-  if (finalAudienceLiveBar) finalAudienceLiveBar.style.width = `${Math.min((finalAudienceLogsCache.length / expectedFinalAudienceVotes) * 100, 100)}%`;
-  setText(liveUpdatedAtText, `即時更新：${new Date().toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`);
+
+  if (redCarpetLiveBar) {
+    redCarpetLiveBar.style.width = `${Math.min((redCarpetVotesCache.length / expectedRedCarpetVotes) * 100, 100)}%`;
+  }
+
+  if (finalAudienceLiveBar) {
+    finalAudienceLiveBar.style.width = `${Math.min((finalAudienceLogsCache.length / expectedFinalAudienceVotes) * 100, 100)}%`;
+  }
+
+  setText(
+    liveUpdatedAtText,
+    `即時更新：${new Date().toLocaleTimeString("zh-TW", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`
+  );
 }
 
 function startCountdownTimer() {
@@ -468,6 +583,7 @@ function startCountdownTimer() {
 function updateCountdown() {
   const mode = resultControl.mode || "preVotingStandby";
   const countdownStatus = resultControl.countdownStatus || "stopped";
+
   if (mode === "votingPaused" || countdownStatus === "paused") {
     const remainingSeconds = Math.max(0, Number(resultControl.countdownRemainingSeconds || 0));
     setText(countdownKicker, "Paused");
@@ -476,7 +592,9 @@ function updateCountdown() {
     setText(countdownHintText, "投票倒數暫停中，請等待主持人指示");
     return;
   }
+
   const endDate = getCountdownEndDate();
+
   if (!endDate) {
     setText(countdownKicker, "Countdown");
     setText(countdownTitle, "投票倒數");
@@ -484,7 +602,9 @@ function updateCountdown() {
     setText(countdownHintText, "請由後台開始投票倒數");
     return;
   }
+
   const remainingMs = endDate.getTime() - Date.now();
+
   if (remainingMs <= 0) {
     setText(countdownKicker, "Time Up");
     setText(countdownTitle, "投票時間結束");
@@ -492,6 +612,7 @@ function updateCountdown() {
     setText(countdownHintText, "投票時間結束，請等待主持人公布結果");
     return;
   }
+
   const totalSeconds = Math.ceil(remainingMs / 1000);
   setText(countdownKicker, "Countdown");
   setText(countdownTitle, "投票倒數");
@@ -510,62 +631,92 @@ function getCountdownEndDate() {
 function setupVoteUrl() {
   const voteUrl = new URL("final-vote.html", window.location.href).href;
   setText(voteUrlText, voteUrl);
-  if (voteQrImage) voteQrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=16&data=${encodeURIComponent(voteUrl)}`;
+  if (voteQrImage) {
+    voteQrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=16&data=${encodeURIComponent(voteUrl)}`;
+  }
 }
 
 function getVoteCountMap(votes) {
   const map = new Map();
+
   votes.forEach((vote) => {
     if (!vote.contestantId) return;
     map.set(vote.contestantId, (map.get(vote.contestantId) || 0) + 1);
   });
+
   return map;
 }
 
 function getRedCarpetWinner() {
-  return getRankedContestants(getVoteCountMap(redCarpetVotesCache)).find((contestant) => contestant.voteCount > 0) || null;
+  return getRankedContestants(getVoteCountMap(redCarpetVotesCache))
+    .find((contestant) => contestant.voteCount > 0) || null;
 }
 
 function getFinalScoreRows() {
   const scoringContestants = contestantsCache.filter((contestant) => contestant.publishStatus === true);
   const finalVoteCountMap = getVoteCountMap(finalAudienceLogsCache);
   const topVotes = finalVoteCountMap.size ? Math.max(...Array.from(finalVoteCountMap.values())) : 0;
-  return scoringContestants.map((contestant) => {
-    const voteCount = finalVoteCountMap.get(contestant.id) || 0;
-    const audienceScore = topVotes > 0 ? (voteCount / topVotes) * 60 : 0;
-    const judgeCalculated = calculateJudgeScore(judgeScoresCache.get(contestant.id)?.scores || {});
-    const totalScore = judgeCalculated.judgeScore + audienceScore;
-    return { ...contestant, voteCount, audienceScore, judgeScore: judgeCalculated.judgeScore, totalScore };
-  }).sort((a, b) => {
-    const totalDiff = b.totalScore - a.totalScore;
-    if (totalDiff !== 0) return totalDiff;
-    const judgeDiff = b.judgeScore - a.judgeScore;
-    if (judgeDiff !== 0) return judgeDiff;
-    const voteDiff = b.voteCount - a.voteCount;
-    if (voteDiff !== 0) return voteDiff;
-    const orderA = typeof a.manualOrder === "number" ? a.manualOrder : 999;
-    const orderB = typeof b.manualOrder === "number" ? b.manualOrder : 999;
-    return orderA - orderB;
-  });
+
+  return scoringContestants
+    .map((contestant) => {
+      const voteCount = finalVoteCountMap.get(contestant.id) || 0;
+      const audienceScore = topVotes > 0 ? (voteCount / topVotes) * 60 : 0;
+      const judgeCalculated = calculateJudgeScore(judgeScoresCache.get(contestant.id)?.scores || {});
+      const totalScore = judgeCalculated.judgeScore + audienceScore;
+
+      return {
+        ...contestant,
+        voteCount,
+        audienceScore,
+        judgeScore: judgeCalculated.judgeScore,
+        totalScore
+      };
+    })
+    .sort((a, b) => {
+      const totalDiff = b.totalScore - a.totalScore;
+      if (totalDiff !== 0) return totalDiff;
+
+      const judgeDiff = b.judgeScore - a.judgeScore;
+      if (judgeDiff !== 0) return judgeDiff;
+
+      const voteDiff = b.voteCount - a.voteCount;
+      if (voteDiff !== 0) return voteDiff;
+
+      const orderA = typeof a.manualOrder === "number" ? a.manualOrder : 999;
+      const orderB = typeof b.manualOrder === "number" ? b.manualOrder : 999;
+
+      return orderA - orderB;
+    });
 }
 
 function calculateJudgeScore(scores) {
   const validScores = finalJudgesCache.length
     ? finalJudgesCache.map((judge) => Number(scores?.[judge.id])).filter((score) => Number.isFinite(score) && score >= 1 && score <= 10)
     : Object.values(scores || {}).map((value) => Number(value)).filter((score) => Number.isFinite(score) && score >= 1 && score <= 10);
-  if (!validScores.length) return { judgeScore: 0 };
+
+  if (!validScores.length) {
+    return { judgeScore: 0 };
+  }
+
   const average = validScores.reduce((sum, score) => sum + score, 0) / validScores.length;
   return { judgeScore: average * 4 };
 }
 
 function getRankedContestants(voteCountMap) {
-  return [...contestantsCache].map((contestant) => ({ ...contestant, voteCount: voteCountMap.get(contestant.id) || 0 })).sort((a, b) => {
-    const voteDiff = b.voteCount - a.voteCount;
-    if (voteDiff !== 0) return voteDiff;
-    const orderA = typeof a.manualOrder === "number" ? a.manualOrder : 999;
-    const orderB = typeof b.manualOrder === "number" ? b.manualOrder : 999;
-    return orderA - orderB;
-  });
+  return [...contestantsCache]
+    .map((contestant) => ({
+      ...contestant,
+      voteCount: voteCountMap.get(contestant.id) || 0
+    }))
+    .sort((a, b) => {
+      const voteDiff = b.voteCount - a.voteCount;
+      if (voteDiff !== 0) return voteDiff;
+
+      const orderA = typeof a.manualOrder === "number" ? a.manualOrder : 999;
+      const orderB = typeof b.manualOrder === "number" ? b.manualOrder : 999;
+
+      return orderA - orderB;
+    });
 }
 
 function getContestantById(id) {
@@ -581,10 +732,17 @@ function getPlaceIndex(mode) {
 
 function animateNumber(element, nextValue) {
   if (!element) return;
+
   const currentValue = Number(element.dataset.currentValue || element.textContent || 0);
   const targetValue = Number(nextValue || 0);
+
   element.dataset.currentValue = String(targetValue);
-  if (currentValue === targetValue) { element.textContent = String(targetValue); return; }
+
+  if (currentValue === targetValue) {
+    element.textContent = String(targetValue);
+    return;
+  }
+
   element.classList.remove("number-pop");
   void element.offsetWidth;
   element.classList.add("number-pop");
@@ -595,6 +753,7 @@ function formatSeconds(totalSeconds) {
   const safeSeconds = Math.max(0, Number(totalSeconds || 0));
   const minutes = Math.floor(safeSeconds / 60);
   const seconds = safeSeconds % 60;
+
   return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
