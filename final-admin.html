@@ -145,9 +145,9 @@
           <div class="admin-section-header">
             <div>
               <p class="section-kicker">Display Control</p>
-              <h2>大螢幕投票看板控制</h2>
+              <h2>大螢幕看板控制</h2>
               <p class="section-desc">
-                控制 final-results.html 的投票待機畫面、10 分鐘倒數與後續獎項公布模式。
+                控制 final-results.html 從開場、投票倒數、中場休息到成績公布前的各種舞台畫面。
               </p>
             </div>
 
@@ -157,7 +157,7 @@
           </div>
 
           <div class="result-control-card">
-            <div class="result-control-grid">
+            <div class="result-control-settings-grid">
               <label>
                 投票倒數分鐘
                 <input
@@ -170,33 +170,104 @@
                 />
               </label>
 
+              <label>
+                預估紅毯投票票數
+                <input
+                  type="number"
+                  id="resultExpectedRedCarpetVotersInput"
+                  min="1"
+                  max="999"
+                  step="1"
+                  value="80"
+                />
+              </label>
+
+              <label>
+                預估決賽觀眾投票票數
+                <input
+                  type="number"
+                  id="resultExpectedFinalAudienceVotersInput"
+                  min="1"
+                  max="999"
+                  step="1"
+                  value="80"
+                />
+              </label>
+
+              <label class="admin-checkbox-row result-checkbox-row">
+                <input
+                  type="checkbox"
+                  id="resultShowLiveStatsCheckbox"
+                  checked
+                />
+                <span>大螢幕顯示即時票數與完成率</span>
+              </label>
+            </div>
+
+            <label class="result-message-label">
+              大螢幕提示文字
+              <input
+                type="text"
+                id="resultDisplayMessageInput"
+                value="請掃描 QR Code 完成紅毯投票與決賽觀眾投票"
+                placeholder="請輸入大螢幕提示文字"
+              />
+            </label>
+
+            <div class="result-control-group">
+              <h3>活動流程畫面</h3>
+
               <div class="result-control-actions">
+                <button type="button" id="setPreVotingStandbyButton" class="secondary-button">
+                  開啟投票前待機畫面
+                </button>
+
                 <button type="button" id="startLiveVotingDisplayButton">
                   開始投票看板倒數
                 </button>
 
-                <button type="button" id="setDisplayStandbyButton" class="secondary-button">
-                  回到待機畫面
+                <button type="button" id="pauseVotingCountdownButton" class="secondary-button">
+                  暫停投票倒數
+                </button>
+
+                <button type="button" id="resumeVotingCountdownButton" class="secondary-button">
+                  繼續投票倒數
+                </button>
+
+                <button type="button" id="resetVotingCountdownButton" class="secondary-button">
+                  重設投票倒數
+                </button>
+
+                <button type="button" id="setBeforeRevealStandbyButton" class="secondary-button">
+                  成績公布前待機畫面
+                </button>
+
+                <button type="button" id="setIntermissionButton" class="secondary-button">
+                  中場休息待機畫面
                 </button>
               </div>
             </div>
 
-            <div class="result-mode-actions">
-              <button type="button" id="previewRedCarpetWinnerButton" class="secondary-button">
-                預備：紅毯巨星造型獎
-              </button>
+            <div class="result-control-group">
+              <h3>獎項公布預備</h3>
 
-              <button type="button" id="previewThirdPlaceButton" class="secondary-button">
-                預備：第三名
-              </button>
+              <div class="result-mode-actions">
+                <button type="button" id="previewRedCarpetWinnerButton" class="secondary-button">
+                  預備：紅毯巨星造型獎
+                </button>
 
-              <button type="button" id="previewSecondPlaceButton" class="secondary-button">
-                預備：第二名
-              </button>
+                <button type="button" id="previewThirdPlaceButton" class="secondary-button">
+                  預備：第三名
+                </button>
 
-              <button type="button" id="previewFirstPlaceButton" class="secondary-button">
-                預備：第一名
-              </button>
+                <button type="button" id="previewSecondPlaceButton" class="secondary-button">
+                  預備：第二名
+                </button>
+
+                <button type="button" id="previewFirstPlaceButton" class="secondary-button">
+                  預備：第一名
+                </button>
+              </div>
             </div>
 
             <p id="resultDisplayControlMessage" class="message"></p>

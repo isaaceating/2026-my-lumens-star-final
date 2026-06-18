@@ -83,12 +83,25 @@ const redCarpetVoteControlMessage = document.getElementById("redCarpetVoteContro
 const toggleRedCarpetVoteButton = document.getElementById("toggleRedCarpetVoteButton");
 
 const resultCountdownMinutesInput = document.getElementById("resultCountdownMinutesInput");
+const resultExpectedRedCarpetVotersInput = document.getElementById("resultExpectedRedCarpetVotersInput");
+const resultExpectedFinalAudienceVotersInput = document.getElementById("resultExpectedFinalAudienceVotersInput");
+
+const resultShowLiveStatsCheckbox = document.getElementById("resultShowLiveStatsCheckbox");
+const resultDisplayMessageInput = document.getElementById("resultDisplayMessageInput");
+
+const setPreVotingStandbyButton = document.getElementById("setPreVotingStandbyButton");
 const startLiveVotingDisplayButton = document.getElementById("startLiveVotingDisplayButton");
-const setDisplayStandbyButton = document.getElementById("setDisplayStandbyButton");
+const pauseVotingCountdownButton = document.getElementById("pauseVotingCountdownButton");
+const resumeVotingCountdownButton = document.getElementById("resumeVotingCountdownButton");
+const resetVotingCountdownButton = document.getElementById("resetVotingCountdownButton");
+const setBeforeRevealStandbyButton = document.getElementById("setBeforeRevealStandbyButton");
+const setIntermissionButton = document.getElementById("setIntermissionButton");
+
 const previewRedCarpetWinnerButton = document.getElementById("previewRedCarpetWinnerButton");
 const previewThirdPlaceButton = document.getElementById("previewThirdPlaceButton");
 const previewSecondPlaceButton = document.getElementById("previewSecondPlaceButton");
 const previewFirstPlaceButton = document.getElementById("previewFirstPlaceButton");
+
 const resultDisplayControlMessage = document.getElementById("resultDisplayControlMessage");
 
 const finalAudienceVoteControlStatus = document.getElementById("finalAudienceVoteControlStatus");
@@ -213,53 +226,100 @@ function bindStaticEvents() {
     await toggleVoteSetting("finalAudience");
   });
 
-  startLiveVotingDisplayButton?.addEventListener("click", async () => {
+  setPreVotingStandbyButton?.addEventListener("click", async () => {
+  if (!requireAdminPermission()) return;
+
+  await setResultDisplayMode({
+    mode: "preVotingStandby",
+    awardName: "投票即將開始",
+    contestantId: "",
+    countdownStatus: "stopped"
+  });
+});
+
+startLiveVotingDisplayButton?.addEventListener("click", async () => {
   if (!requireAdminPermission()) return;
   await startLiveVotingDisplay();
 });
 
-setDisplayStandbyButton?.addEventListener("click", async () => {
+pauseVotingCountdownButton?.addEventListener("click", async () => {
   if (!requireAdminPermission()) return;
+  await pauseVotingCountdown();
+});
+
+resumeVotingCountdownButton?.addEventListener("click", async () => {
+  if (!requireAdminPermission()) return;
+  await resumeVotingCountdown();
+});
+
+resetVotingCountdownButton?.addEventListener("click", async () => {
+  if (!requireAdminPermission()) return;
+  await startLiveVotingDisplay({ skipConfirm: true });
+});
+
+setBeforeRevealStandbyButton?.addEventListener("click", async () => {
+  if (!requireAdminPermission()) return;
+
   await setResultDisplayMode({
-    mode: "standby",
-    awardName: "決賽成績公布即將開始",
-    contestantId: ""
+    mode: "beforeRevealStandby",
+    awardName: "成績公布前待機畫面",
+    contestantId: "",
+    countdownStatus: "stopped"
+  });
+});
+
+setIntermissionButton?.addEventListener("click", async () => {
+  if (!requireAdminPermission()) return;
+
+  await setResultDisplayMode({
+    mode: "intermission",
+    awardName: "中場休息",
+    contestantId: "",
+    countdownStatus: "stopped"
   });
 });
 
 previewRedCarpetWinnerButton?.addEventListener("click", async () => {
   if (!requireAdminPermission()) return;
+
   await setResultDisplayMode({
     mode: "redCarpetWinner",
     awardName: "紅毯巨星造型獎",
-    contestantId: ""
+    contestantId: "",
+    countdownStatus: "stopped"
   });
 });
 
 previewThirdPlaceButton?.addEventListener("click", async () => {
   if (!requireAdminPermission()) return;
+
   await setResultDisplayMode({
     mode: "thirdPlace",
     awardName: "第三名",
-    contestantId: ""
+    contestantId: "",
+    countdownStatus: "stopped"
   });
 });
 
 previewSecondPlaceButton?.addEventListener("click", async () => {
   if (!requireAdminPermission()) return;
+
   await setResultDisplayMode({
     mode: "secondPlace",
     awardName: "第二名",
-    contestantId: ""
+    contestantId: "",
+    countdownStatus: "stopped"
   });
 });
 
 previewFirstPlaceButton?.addEventListener("click", async () => {
   if (!requireAdminPermission()) return;
+
   await setResultDisplayMode({
     mode: "firstPlace",
     awardName: "第一名",
-    contestantId: ""
+    contestantId: "",
+    countdownStatus: "stopped"
   });
 });
 
@@ -607,45 +667,168 @@ async function loadJudgeData() {
 // -----------------------------
 // Result Display Control
 // -----------------------------
-async function startLiveVotingDisplay() {
+function getResultControlFormValues() {
   const minutes = Number(resultCountdownMinutesInput?.value || 10);
+  const expectedRedCarpetVoters = Number(resultExpectedRedCarpetVotersInput?.value || 80);
+  const expectedFinalAudienceVoters = Number(resultExpectedFinalAudienceVotersInput?.value || 80);
 
-  if (!Number.isFinite(minutes) || minutes <= 0) {
-    setText(resultDisplayControlMessage, "請輸入有效的倒數分鐘。");
-    return;
+  const showLiveStats = resultShowLiveStatsCheckbox
+    ? resultShowLiveStatsCheckbox.checked
+    : true;
+
+  const displayMessage = normalizeText(
+    resultDisplayMessageInput?.value || "請掃描 QR Code 完成紅毯投票與決賽觀眾投票"
+  );
+
+  return {
+    minutes: Number.isFinite(minutes) && minutes > 0 ? minutes : 10,
+
+    expectedRedCarpetVoters:
+      Number.isFinite(expectedRedCarpetVoters) && expectedRedCarpetVoters > 0
+        ? Math.round(expectedRedCarpetVoters)
+        : 80,
+
+    expectedFinalAudienceVoters:
+      Number.isFinite(expectedFinalAudienceVoters) && expectedFinalAudienceVoters > 0
+        ? Math.round(expectedFinalAudienceVoters)
+        : 80,
+
+    showLiveStats,
+    displayMessage
+  };
+}
+
+async function startLiveVotingDisplay(options = {}) {
+  const {
+    minutes,
+    expectedRedCarpetVoters,
+    expectedFinalAudienceVoters,
+    showLiveStats,
+    displayMessage
+  } = getResultControlFormValues();
+
+  if (!options.skipConfirm) {
+    const confirmed = confirm(
+      `確定要開始 ${minutes} 分鐘投票倒數看板嗎？\n\n預估紅毯投票票數：${expectedRedCarpetVoters} 票\n預估決賽觀眾投票票數：${expectedFinalAudienceVoters} 票`
+    );
+
+    if (!confirmed) return;
   }
 
-  const confirmed = confirm(`確定要開始 ${minutes} 分鐘投票倒數看板嗎？`);
-
-  if (!confirmed) return;
-
+  const totalSeconds = Math.round(minutes * 60);
   const countdownEndAt = Timestamp.fromDate(
-    new Date(Date.now() + minutes * 60 * 1000)
+    new Date(Date.now() + totalSeconds * 1000)
   );
 
   await setResultDisplayMode({
     mode: "liveVoting",
     awardName: "決賽投票進行中",
     contestantId: "",
-    countdownEndAt
+    countdownEndAt,
+    countdownRemainingSeconds: totalSeconds,
+    countdownStatus: "running",
+    expectedRedCarpetVoters,
+    expectedFinalAudienceVoters,
+    showLiveStats,
+    displayMessage
   });
+}
+
+async function pauseVotingCountdown() {
+  try {
+    setText(resultDisplayControlMessage, "正在暫停投票倒數...");
+
+    const controlRef = doc(db, "settings", "finalResultControl");
+    const controlSnap = await getDoc(controlRef);
+    const data = controlSnap.exists() ? controlSnap.data() : {};
+
+    const endDate = getTimestampDate(data.countdownEndAt);
+    let remainingSeconds = Number(data.countdownRemainingSeconds || 0);
+
+    if (data.countdownStatus === "running" && endDate) {
+      remainingSeconds = Math.max(0, Math.ceil((endDate.getTime() - Date.now()) / 1000));
+    }
+
+    await setResultDisplayMode({
+      mode: "votingPaused",
+      awardName: "投票倒數暫停",
+      contestantId: "",
+      countdownRemainingSeconds: remainingSeconds,
+      countdownStatus: "paused",
+      expectedRedCarpetVoters: Number(data.expectedRedCarpetVoters || data.expectedVoters || resultExpectedRedCarpetVotersInput?.value || 80),
+      expectedFinalAudienceVoters: Number(data.expectedFinalAudienceVoters || data.expectedVoters || resultExpectedFinalAudienceVotersInput?.value || 80),
+      showLiveStats: data.showLiveStats !== false,
+      displayMessage: data.displayMessage || normalizeText(resultDisplayMessageInput?.value || "投票暫停中，請等待主持人指示")
+    });
+  } catch (error) {
+    console.error("Pause voting countdown failed:", error);
+    setText(resultDisplayControlMessage, `暫停倒數失敗：${error.message}`);
+  }
+}
+
+async function resumeVotingCountdown() {
+  try {
+    setText(resultDisplayControlMessage, "正在繼續投票倒數...");
+
+    const controlRef = doc(db, "settings", "finalResultControl");
+    const controlSnap = await getDoc(controlRef);
+    const data = controlSnap.exists() ? controlSnap.data() : {};
+
+    const remainingSeconds = Math.max(0, Number(data.countdownRemainingSeconds || 0));
+
+    if (!remainingSeconds) {
+      setText(resultDisplayControlMessage, "目前沒有可繼續的倒數秒數，請重新開始投票倒數。");
+      return;
+    }
+
+    const countdownEndAt = Timestamp.fromDate(
+      new Date(Date.now() + remainingSeconds * 1000)
+    );
+
+    await setResultDisplayMode({
+      mode: "liveVoting",
+      awardName: "決賽投票進行中",
+      contestantId: "",
+      countdownEndAt,
+      countdownRemainingSeconds: remainingSeconds,
+      countdownStatus: "running",
+      expectedRedCarpetVoters: Number(data.expectedRedCarpetVoters || data.expectedVoters || resultExpectedRedCarpetVotersInput?.value || 80),
+      expectedFinalAudienceVoters: Number(data.expectedFinalAudienceVoters || data.expectedVoters || resultExpectedFinalAudienceVotersInput?.value || 80),
+      showLiveStats: data.showLiveStats !== false,
+      displayMessage: data.displayMessage || normalizeText(resultDisplayMessageInput?.value || "請掃描 QR Code 完成紅毯投票與決賽觀眾投票")
+    });
+  } catch (error) {
+    console.error("Resume voting countdown failed:", error);
+    setText(resultDisplayControlMessage, `繼續倒數失敗：${error.message}`);
+  }
 }
 
 async function setResultDisplayMode({
   mode,
   awardName = "",
   contestantId = "",
-  countdownEndAt = null
+  countdownEndAt = null,
+  countdownRemainingSeconds = null,
+  countdownStatus = null,
+  expectedRedCarpetVoters = null,
+  expectedFinalAudienceVoters = null,
+  showLiveStats = null,
+  displayMessage = null
 }) {
   try {
     setText(resultDisplayControlMessage, "大螢幕狀態更新中...");
 
+    const fallback = getResultControlFormValues();
     const controlRef = doc(db, "settings", "finalResultControl");
 
     const payload = {
       mode,
       awardName,
       contestantId,
+      expectedRedCarpetVoters: Number(expectedRedCarpetVoters || fallback.expectedRedCarpetVoters),
+      expectedFinalAudienceVoters: Number(expectedFinalAudienceVoters || fallback.expectedFinalAudienceVoters),
+      showLiveStats: typeof showLiveStats === "boolean" ? showLiveStats : fallback.showLiveStats,
+      displayMessage: displayMessage || fallback.displayMessage,
       updatedAt: serverTimestamp(),
       updatedBy: currentUser.email || "",
       updatedByUid: currentUser.uid
@@ -653,6 +836,14 @@ async function setResultDisplayMode({
 
     if (countdownEndAt) {
       payload.countdownEndAt = countdownEndAt;
+    }
+
+    if (countdownRemainingSeconds !== null) {
+      payload.countdownRemainingSeconds = Number(countdownRemainingSeconds || 0);
+    }
+
+    if (countdownStatus) {
+      payload.countdownStatus = countdownStatus;
     }
 
     await setDoc(controlRef, payload, { merge: true });
@@ -664,7 +855,19 @@ async function setResultDisplayMode({
   }
 }
 
+function getTimestampDate(value) {
+  if (!value) return null;
 
+  if (typeof value.toDate === "function") {
+    return value.toDate();
+  }
+
+  if (value.seconds) {
+    return new Date(value.seconds * 1000);
+  }
+
+  return null;
+}
 // -----------------------------
 // Vote Controls
 // -----------------------------
