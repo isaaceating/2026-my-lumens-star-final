@@ -3748,3 +3748,319 @@ button:hover {
     grid-row: auto;
   }
 }
+
+/* Awards v3 effects: fireworks + winner overview refinement */
+
+/* Keep award stage as a safe animation canvas */
+.results-award-stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.results-award-stage > * {
+  position: relative;
+  z-index: 2;
+}
+
+.results-award-stage::before,
+.results-award-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+}
+
+.award-reveal-card,
+.all-winner-showcase-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shared firework dots built with radial gradients */
+.third-place-stage::before {
+  background:
+    radial-gradient(circle, rgba(255, 209, 102, 0.95) 0 3px, transparent 4px) 20% 24% / 160px 160px no-repeat,
+    radial-gradient(circle, rgba(101, 227, 244, 0.9) 0 2px, transparent 4px) 78% 30% / 140px 140px no-repeat,
+    radial-gradient(circle, rgba(255, 255, 255, 0.85) 0 2px, transparent 4px) 60% 78% / 120px 120px no-repeat;
+  animation: fireworksSmallA 3.6s ease-in-out infinite;
+}
+
+.third-place-stage::after {
+  background:
+    radial-gradient(circle, rgba(255, 209, 102, 0.85) 0 2px, transparent 4px) 34% 72% / 130px 130px no-repeat,
+    radial-gradient(circle, rgba(255, 143, 178, 0.8) 0 2px, transparent 4px) 86% 68% / 125px 125px no-repeat;
+  animation: fireworksSmallB 4.4s ease-in-out infinite 1.2s;
+}
+
+.second-place-stage::before {
+  background:
+    radial-gradient(circle, rgba(255, 209, 102, 0.95) 0 4px, transparent 5px) 17% 30% / 220px 220px no-repeat,
+    radial-gradient(circle, rgba(101, 227, 244, 0.95) 0 4px, transparent 5px) 76% 27% / 210px 210px no-repeat,
+    radial-gradient(circle, rgba(255, 255, 255, 0.85) 0 3px, transparent 5px) 50% 82% / 190px 190px no-repeat;
+  animation: fireworksMediumA 3.8s ease-in-out infinite;
+}
+
+.second-place-stage::after {
+  background:
+    radial-gradient(circle, rgba(255, 143, 178, 0.9) 0 4px, transparent 6px) 28% 76% / 200px 200px no-repeat,
+    radial-gradient(circle, rgba(255, 209, 102, 0.9) 0 4px, transparent 6px) 86% 68% / 220px 220px no-repeat;
+  animation: fireworksMediumB 4.8s ease-in-out infinite 1.15s;
+}
+
+.first-place-stage::before,
+.all-winners-stage::before {
+  background:
+    radial-gradient(circle, rgba(255, 209, 102, 1) 0 5px, transparent 6px) 13% 24% / 310px 310px no-repeat,
+    radial-gradient(circle, rgba(101, 227, 244, 0.98) 0 5px, transparent 6px) 82% 24% / 300px 300px no-repeat,
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 4px, transparent 6px) 50% 16% / 260px 260px no-repeat,
+    radial-gradient(circle, rgba(255, 143, 178, 0.94) 0 5px, transparent 7px) 70% 82% / 300px 300px no-repeat;
+  animation: fireworksLargeA 3.2s ease-in-out infinite;
+}
+
+.first-place-stage::after,
+.all-winners-stage::after {
+  background:
+    radial-gradient(circle, rgba(255, 209, 102, 0.95) 0 5px, transparent 7px) 30% 74% / 290px 290px no-repeat,
+    radial-gradient(circle, rgba(101, 227, 244, 0.9) 0 5px, transparent 7px) 88% 62% / 270px 270px no-repeat,
+    radial-gradient(circle, rgba(255, 255, 255, 0.88) 0 4px, transparent 6px) 18% 62% / 240px 240px no-repeat;
+  animation: fireworksLargeB 4.1s ease-in-out infinite 0.85s;
+}
+
+/* Add star-like sparkle around the first-place individual card */
+.first-place-stage .award-reveal-card::before,
+.winner-first::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(120deg, rgba(255, 209, 102, 0.1), rgba(255, 255, 255, 0.95), rgba(255, 209, 102, 0.75), rgba(101, 227, 244, 0.45));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: winnerBorderShine 2.4s linear infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.first-place-stage .award-reveal-card::after,
+.winner-first::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 0%, transparent 38%, rgba(255, 255, 255, 0.2) 48%, transparent 58%, transparent 100%);
+  transform: translateX(-120%);
+  animation: winnerCardSweep 3.4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Make award place text stronger on individual reveal */
+.award-place-label {
+  font-size: clamp(28px, 3.2vw, 54px) !important;
+  line-height: 1.05;
+  letter-spacing: 0.05em;
+  color: #ffd166 !important;
+  font-weight: 1000 !important;
+}
+
+/* Winner overview: all top-three cards same height and same visual weight */
+.all-winners-stage {
+  padding: 30px 42px !important;
+}
+
+.all-winners-stage .results-award-content {
+  width: 100%;
+}
+
+.all-winners-showcase {
+  width: min(1560px, 100%);
+  margin: 0 auto;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 0.92fr);
+  gap: clamp(18px, 1.8vw, 30px);
+  align-items: stretch;
+}
+
+.all-winner-showcase-card {
+  min-height: clamp(560px, 68vh, 720px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 209, 102, 0.14), transparent 38%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 28px 74px rgba(0, 0, 0, 0.34);
+}
+
+.all-winner-showcase-card.winner-first,
+.all-winner-showcase-card.winner-second,
+.all-winner-showcase-card.winner-third {
+  transform: none !important;
+}
+
+.all-winner-showcase-card.winner-first {
+  border-color: rgba(255, 209, 102, 0.78);
+  box-shadow:
+    0 0 0 2px rgba(255, 209, 102, 0.28),
+    0 0 42px rgba(255, 209, 102, 0.28),
+    0 28px 78px rgba(0, 0, 0, 0.38);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255, 209, 102, 0.34), transparent 42%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.09));
+}
+
+.all-winner-showcase-card.winner-red-carpet {
+  margin-left: clamp(18px, 2.5vw, 42px);
+  min-height: clamp(500px, 60vh, 660px);
+  align-self: center;
+  opacity: 0.96;
+}
+
+.all-winner-photo {
+  height: clamp(230px, 30vh, 330px);
+  padding: 14px;
+  border-radius: 30px 30px 22px 22px;
+}
+
+.all-winner-photo img,
+.all-winner-photo .award-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 22px;
+}
+
+.all-winner-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(22px, 2.4vw, 36px);
+  text-align: center;
+}
+
+.all-winner-info span {
+  display: block;
+  margin-bottom: 16px;
+  color: #ffd166;
+  font-size: clamp(28px, 2.6vw, 48px) !important;
+  font-weight: 1000;
+  letter-spacing: 0.06em;
+}
+
+.all-winner-info strong {
+  display: block;
+  color: #fff;
+  font-size: clamp(42px, 4.7vw, 82px) !important;
+  line-height: 1.02;
+  font-weight: 1000;
+  word-break: keep-all;
+}
+
+.all-winner-info p {
+  margin: 18px 0 0;
+  color: #65e3f4;
+  font-size: clamp(22px, 2.1vw, 36px) !important;
+  font-weight: 1000;
+}
+
+.all-winner-info em {
+  display: block;
+  margin-top: auto;
+  padding-top: 24px;
+  color: #ffd166;
+  font-size: clamp(22px, 2vw, 34px) !important;
+  font-style: normal;
+  font-weight: 1000;
+}
+
+.winner-red-carpet .all-winner-info span {
+  font-size: clamp(22px, 1.75vw, 32px) !important;
+}
+
+.winner-red-carpet .all-winner-info strong {
+  font-size: clamp(30px, 3vw, 52px) !important;
+}
+
+.winner-red-carpet .all-winner-info p,
+.winner-red-carpet .all-winner-info em {
+  font-size: clamp(18px, 1.55vw, 28px) !important;
+}
+
+/* Firework animations */
+@keyframes fireworksSmallA {
+  0%, 22%, 100% { opacity: 0; transform: scale(0.55); filter: blur(1px); }
+  34% { opacity: 0.95; transform: scale(1); filter: blur(0); }
+  50% { opacity: 0; transform: scale(1.28); filter: blur(1px); }
+}
+
+@keyframes fireworksSmallB {
+  0%, 28%, 100% { opacity: 0; transform: scale(0.58); filter: blur(1px); }
+  42% { opacity: 0.8; transform: scale(1); filter: blur(0); }
+  58% { opacity: 0; transform: scale(1.24); filter: blur(1px); }
+}
+
+@keyframes fireworksMediumA {
+  0%, 18%, 100% { opacity: 0; transform: scale(0.52); filter: blur(1px); }
+  32% { opacity: 1; transform: scale(1); filter: blur(0); }
+  52% { opacity: 0; transform: scale(1.35); filter: blur(1px); }
+}
+
+@keyframes fireworksMediumB {
+  0%, 24%, 100% { opacity: 0; transform: scale(0.52); filter: blur(1px); }
+  40% { opacity: 0.95; transform: scale(1); filter: blur(0); }
+  60% { opacity: 0; transform: scale(1.38); filter: blur(1px); }
+}
+
+@keyframes fireworksLargeA {
+  0%, 14%, 100% { opacity: 0; transform: scale(0.48); filter: blur(1px); }
+  28% { opacity: 1; transform: scale(1); filter: blur(0); }
+  55% { opacity: 0; transform: scale(1.48); filter: blur(1.2px); }
+}
+
+@keyframes fireworksLargeB {
+  0%, 20%, 100% { opacity: 0; transform: scale(0.48); filter: blur(1px); }
+  36% { opacity: 0.98; transform: scale(1); filter: blur(0); }
+  62% { opacity: 0; transform: scale(1.5); filter: blur(1.2px); }
+}
+
+@keyframes winnerBorderShine {
+  0% { filter: hue-rotate(0deg) brightness(1); }
+  50% { filter: hue-rotate(18deg) brightness(1.35); }
+  100% { filter: hue-rotate(0deg) brightness(1); }
+}
+
+@keyframes winnerCardSweep {
+  0%, 35% { transform: translateX(-120%); opacity: 0; }
+  52% { opacity: 1; }
+  74%, 100% { transform: translateX(120%); opacity: 0; }
+}
+
+@media (max-width: 1280px) {
+  .all-winners-showcase {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .all-winner-showcase-card.winner-red-carpet {
+    margin-left: 0;
+    min-height: clamp(480px, 58vh, 620px);
+  }
+}
+
+@media (max-width: 760px) {
+  .all-winners-showcase {
+    grid-template-columns: 1fr;
+  }
+
+  .all-winner-showcase-card,
+  .all-winner-showcase-card.winner-red-carpet {
+    min-height: auto;
+  }
+}
