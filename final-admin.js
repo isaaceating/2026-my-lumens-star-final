@@ -86,6 +86,7 @@ const previewRedCarpetWinnerButton = $("previewRedCarpetWinnerButton");
 const previewThirdPlaceButton = $("previewThirdPlaceButton");
 const previewSecondPlaceButton = $("previewSecondPlaceButton");
 const previewFirstPlaceButton = $("previewFirstPlaceButton");
+const prepareStarScoutButton = $("prepareStarScoutButton");
 const drawStarScoutButton = $("drawStarScoutButton");
 const showAllWinnersButton = $("showAllWinnersButton");
 const resultDisplayControlMessage = $("resultDisplayControlMessage");
@@ -194,6 +195,7 @@ function bindStaticEvents() {
   previewThirdPlaceButton?.addEventListener("click", async () => { if (requireAdminPermission()) await revealFinalPlace("thirdPlace"); });
   previewSecondPlaceButton?.addEventListener("click", async () => { if (requireAdminPermission()) await revealFinalPlace("secondPlace"); });
   previewFirstPlaceButton?.addEventListener("click", async () => { if (requireAdminPermission()) await revealFinalPlace("firstPlace"); });
+  prepareStarScoutButton?.addEventListener("click", async () => { if (requireAdminPermission()) await prepareStarScoutStandby(); });
   drawStarScoutButton?.addEventListener("click", async () => { if (requireAdminPermission()) await drawStarScoutWinners(); });
   showAllWinnersButton?.addEventListener("click", async () => {
     if (!requireAdminPermission()) return;
@@ -480,16 +482,63 @@ async function revealFinalPlace(mode) {
   await setResultDisplayMode({ mode, awardName: placeConfig.awardName, contestantId: winner.id, countdownStatus: "stopped" });
 }
 
-async function drawStarScoutWinners() {
+async function prepareStarScoutStandby() {
   await loadAllFinalAdminData();
   const champion = getFinalScoreRows()[0];
-  if (!champion) { alert("目前沒有第一名資料，無法抽出最強星探獎。"); return; }
+  if (!champion) {
+    alert("目前沒有第一名資料，無法開啟星探抽獎待機畫面。");
+    return;
+  }
 
+  const candidates = getStarScoutCandidates(champion.id);
+  const drawCount = Math.min(7, candidates.length);
+
+  const confirmed = confirm(
+    `確定要開啟星探抽獎待機畫面嗎？\n\n第一名：${champion.name || "未知選手"} / A.K.A. ${champion.stageName || "—"}\n符合資格人數：${candidates.length}\n將抽出：${drawCount} 名`
+  );
+
+  if (!confirmed) return;
+
+  try {
+    setText(resultDisplayControlMessage, "星探抽獎待機資料寫入中...");
+
+    await setDoc(doc(db, "settings", "starScoutWinners"), {
+      championContestantId: champion.id,
+      championName: champion.name || "",
+      championStageName: champion.stageName || "",
+      eligibleCount: candidates.length,
+      drawCount,
+      winners: [],
+      winnerCount: 0,
+      prize: "NT$500",
+      updatedAt: serverTimestamp(),
+      updatedBy: currentUser.email || "",
+      updatedByUid: currentUser.uid
+    }, { merge: true });
+
+    await setResultDisplayMode({
+      mode: "starScoutStandby",
+      awardName: "最強星探獎",
+      contestantId: champion.id,
+      countdownStatus: "stopped"
+    });
+
+    setText(resultDisplayControlMessage, "星探抽獎待機畫面已顯示在大螢幕。");
+  } catch (error) {
+    console.error("Prepare star scout standby failed:", error);
+    setText(resultDisplayControlMessage, `星探抽獎待機畫面失敗：${error.message}`);
+  }
+}
+
+function getStarScoutCandidates(championContestantId) {
   const candidateMap = new Map();
+
   finalAudienceLogsCache.forEach((log) => {
-    if (log.contestantId !== champion.id) return;
+    if (log.contestantId !== championContestantId) return;
+
     const employeeId = normalizeEmployeeId(log.employeeId || "");
     if (!employeeId || candidateMap.has(employeeId)) return;
+
     candidateMap.set(employeeId, {
       employeeId,
       employeeName: log.employeeName || "",
@@ -498,14 +547,28 @@ async function drawStarScoutWinners() {
     });
   });
 
-  const candidates = Array.from(candidateMap.values());
+  return Array.from(candidateMap.values());
+}
+
+async function drawStarScoutWinners() {
+  await loadAllFinalAdminData();
+  const champion = getFinalScoreRows()[0];
+  if (!champion) { alert("目前沒有第一名資料，無法抽出最強星探獎。"); return; }
+
+  const candidates = getStarScoutCandidates(champion.id);
   if (!candidates.length) {
     alert(`目前沒有任何決賽觀眾投給第一名「${champion.name || "未知選手"}」，無法抽獎。`);
     return;
   }
 
   const winnerCount = Math.min(7, candidates.length);
-  const confirmed = confirm(`最強星探獎將從「決賽觀眾投票有投給第一名」的人中抽出。\n\n第一名：${champion.name || "未知選手"} / A.K.A. ${champion.stageName || "—"}\n符合資格人數：${candidates.length}\n將抽出：${winnerCount} 名\n\n確定要抽獎嗎？`);
+  const confirmed = confirm(`最強星探獎將從「決賽觀眾投票有投給第一名」的人中抽出。
+
+第一名：${champion.name || "未知選手"} / A.K.A. ${champion.stageName || "—"}
+符合資格人數：${candidates.length}
+將抽出：${winnerCount} 名
+
+確定要抽獎嗎？`);
   if (!confirmed) return;
 
   const winners = shuffleArray(candidates).slice(0, winnerCount);
@@ -515,6 +578,8 @@ async function drawStarScoutWinners() {
       championContestantId: champion.id,
       championName: champion.name || "",
       championStageName: champion.stageName || "",
+      eligibleCount: candidates.length,
+      drawCount: winnerCount,
       winners,
       winnerCount: winners.length,
       prize: "NT$500",

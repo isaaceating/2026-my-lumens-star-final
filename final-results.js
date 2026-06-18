@@ -197,7 +197,9 @@ function renderMode() {
   const mode = resultControl.mode || "preVotingStandby";
   hideAllModeScreens();
   updateStatusBadge(mode);
-  awardRevealStage?.classList.remove("first-place-stage", "second-place-stage", "third-place-stage", "red-carpet-stage", "star-scout-stage", "all-winners-stage");
+  awardRevealStage?.classList.remove("first-place-stage", "second-place-stage", "third-place-stage", "red-carpet-stage", "star-scout-stage", "star-scout-standby-stage", "all-winners-stage");
+  awardRevealKicker?.classList.remove("hidden");
+  awardRevealTitle?.classList.remove("hidden");
 
   if (mode === "preVotingStandby") {
     setText(resultsMainTitle, "決賽投票即將開始");
@@ -248,24 +250,61 @@ function updateStatusBadge(mode) {
 
 function renderAward(mode) {
   const modeMap = {
-    redCarpetWinner: { title: "紅毯巨星造型獎", prize: "NT$1,500", className: "red-carpet-stage" },
-    thirdPlace: { title: "第三名", prize: "NT$3,600", className: "third-place-stage" },
-    secondPlace: { title: "第二名", prize: "NT$5,000", className: "second-place-stage" },
-    firstPlace: { title: "第一名", prize: "NT$6,000", className: "first-place-stage" },
+    redCarpetWinner: { title: "紅毯巨星造型獎", prize: "NT$1,500", metricLabel: "票數", className: "red-carpet-stage" },
+    thirdPlace: { title: "第三名", prize: "NT$3,600", metricLabel: "總分", className: "third-place-stage" },
+    secondPlace: { title: "第二名", prize: "NT$5,000", metricLabel: "總分", className: "second-place-stage" },
+    firstPlace: { title: "第一名", prize: "NT$6,000", metricLabel: "總分", className: "first-place-stage" },
+    starScoutStandby: { title: "最強星探獎", prize: "NT$500 × 7", className: "star-scout-standby-stage" },
     starScoutWinners: { title: "最強星探獎", prize: "NT$500 × 7", className: "star-scout-stage" },
-    allWinners: { title: "得獎名單總覽", prize: "", className: "all-winners-stage" }
+    allWinners: { title: "", prize: "", className: "all-winners-stage" }
   };
+
   const config = modeMap[mode] || { title: resultControl.awardName || "獎項公布", prize: "", className: "" };
   if (config.className) awardRevealStage?.classList.add(config.className);
-  setText(awardRevealKicker, "Award Reveal");
-  setText(awardRevealTitle, resultControl.awardName || config.title);
 
-  if (mode === "redCarpetWinner") return renderContestantAward(getContestantById(resultControl.contestantId) || getRedCarpetWinner(), config);
-  if (["firstPlace", "secondPlace", "thirdPlace"].includes(mode)) return renderContestantAward(getContestantById(resultControl.contestantId) || getFinalScoreRows()[getPlaceIndex(mode)], config);
+  setText(resultsMainTitle, mode === "allWinners" ? "得獎名單" : "決賽獎項公布");
+  setText(awardRevealKicker, mode === "allWinners" ? "" : "Award Reveal");
+  setText(awardRevealTitle, mode === "allWinners" ? "" : (resultControl.awardName || config.title));
+
+  if (mode === "allWinners") {
+    awardRevealKicker?.classList.add("hidden");
+    awardRevealTitle?.classList.add("hidden");
+  }
+
+  if (mode === "redCarpetWinner") return renderContestantAward(getAwardContestant(mode), config);
+  if (["firstPlace", "secondPlace", "thirdPlace"].includes(mode)) return renderContestantAward(getAwardContestant(mode), config);
+  if (mode === "starScoutStandby") return renderStarScoutStandby();
   if (mode === "starScoutWinners") return renderStarScoutWinners();
   if (mode === "allWinners") return renderAllWinners();
 
   awardRevealContent.innerHTML = `<div class="award-suspense-text">即將揭曉</div>`;
+}
+
+function getAwardContestant(mode) {
+  if (mode === "redCarpetWinner") {
+    const ranked = getRankedContestants(getVoteCountMap(redCarpetVotesCache));
+    return ranked.find((contestant) => contestant.id === resultControl.contestantId)
+      || ranked.find((contestant) => contestant.voteCount > 0)
+      || null;
+  }
+
+  if (["firstPlace", "secondPlace", "thirdPlace"].includes(mode)) {
+    const rows = getFinalScoreRows();
+    return rows.find((contestant) => contestant.id === resultControl.contestantId)
+      || rows[getPlaceIndex(mode)]
+      || null;
+  }
+
+  return getContestantById(resultControl.contestantId);
+}
+
+function getContestantPhoto(contestant) {
+  return contestant?.photoUrl
+    || contestant?.photoURL
+    || contestant?.imageUrl
+    || contestant?.imageURL
+    || contestant?.photo
+    || "";
 }
 
 function renderContestantAward(contestant, config) {
@@ -273,30 +312,97 @@ function renderContestantAward(contestant, config) {
     awardRevealContent.innerHTML = `<div class="award-suspense-text">資料準備中</div>`;
     return;
   }
+
+  const photoUrl = getContestantPhoto(contestant);
+  const metricHtml = config.metricLabel === "票數"
+    ? `<strong class="award-metric">${escapeHtml(config.metricLabel)} ${Number(contestant.voteCount || 0)} 票</strong>`
+    : `<strong class="award-metric">${escapeHtml(config.metricLabel || "總分")} ${Number(contestant.totalScore || 0).toFixed(1)}</strong>`;
+
   awardRevealContent.innerHTML = `
-    <div class="award-reveal-card animate-reveal">
-      <div class="award-photo-wrap">${contestant.photoUrl ? `<img src="${escapeHtml(contestant.photoUrl)}" alt="${escapeHtml(contestant.name || "得獎者")}" />` : `<div class="award-photo-placeholder">★</div>`}</div>
+    <div class="award-countdown-sequence" aria-hidden="true">
+      <span>3</span>
+      <span>2</span>
+      <span>1</span>
+    </div>
+
+    <div class="award-reveal-card award-reveal-after-countdown">
+      <div class="award-photo-wrap">
+        ${photoUrl ? `<img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(contestant.name || "得獎者")}" />` : `<div class="award-photo-placeholder">★</div>`}
+      </div>
       <div class="award-info-wrap">
+        <div class="award-place-label">${escapeHtml(config.title || resultControl.awardName || "得獎者")}</div>
         <div class="award-prize-label">${escapeHtml(config.prize || "")}</div>
         <h3>${escapeHtml(contestant.name || "未知選手")}</h3>
         <p>A.K.A. ${escapeHtml(contestant.stageName || "—")}</p>
-        ${typeof contestant.totalScore === "number" ? `<strong class="award-score">總分 ${contestant.totalScore.toFixed(1)}</strong>` : ""}
-        ${typeof contestant.voteCount === "number" ? `<span class="award-vote-count">票數 ${contestant.voteCount}</span>` : ""}
+        ${metricHtml}
       </div>
     </div>`;
 }
 
+function renderStarScoutStandby() {
+  const champion = getFinalScoreRows()[0]
+    || getContestantById(starScoutWinnersCache?.championContestantId)
+    || getContestantById(resultControl.contestantId);
+
+  const eligibleCount = Number(starScoutWinnersCache?.eligibleCount ?? getStarScoutCandidateCount(champion?.id));
+  const drawCount = Math.min(7, eligibleCount);
+
+  awardRevealContent.innerHTML = `
+    <div class="star-scout-standby-panel animate-reveal">
+      <div class="star-scout-standby-title">最強星探獎</div>
+      <div class="star-scout-standby-grid">
+        <div class="star-scout-standby-item">
+          <span>第一名</span>
+          <strong>${escapeHtml(champion?.name || starScoutWinnersCache?.championName || "—")}</strong>
+          <p>A.K.A. ${escapeHtml(champion?.stageName || starScoutWinnersCache?.championStageName || "—")}</p>
+        </div>
+        <div class="star-scout-standby-item">
+          <span>符合資格人數</span>
+          <strong>${eligibleCount}</strong>
+          <p>有投給第一名的觀眾</p>
+        </div>
+        <div class="star-scout-standby-item">
+          <span>將抽出</span>
+          <strong>${drawCount}</strong>
+          <p>每位 NT$500</p>
+        </div>
+      </div>
+    </div>`;
+}
+
+function getStarScoutCandidateCount(championContestantId) {
+  if (!championContestantId) return 0;
+  const employeeSet = new Set();
+  finalAudienceLogsCache.forEach((log) => {
+    if (log.contestantId !== championContestantId) return;
+    if (log.employeeId) employeeSet.add(String(log.employeeId).trim());
+  });
+  return employeeSet.size;
+}
+
 function renderStarScoutWinners() {
   const winners = Array.isArray(starScoutWinnersCache?.winners) ? starScoutWinnersCache.winners : [];
+
   if (!winners.length) {
-    awardRevealContent.innerHTML = `<div class="award-suspense-text">尚未抽出最強星探獎</div>`;
-    return;
+    return renderStarScoutStandby();
   }
+
   awardRevealContent.innerHTML = `
-    <div class="star-scout-panel animate-reveal">
-      <p class="star-scout-source">從投給冠軍「${escapeHtml(starScoutWinnersCache?.championName || "第一名") }」的觀眾中抽出</p>
-      <div class="star-scout-grid">
-        ${winners.map((winner, index) => `<div class="star-scout-card"><span>Winner ${index + 1}</span><strong>${escapeHtml(winner.employeeName || winner.employeeId || "—")}</strong><p>${escapeHtml(winner.employeeDepartment || "—")}｜${escapeHtml(winner.employeeCompany || "—")}</p></div>`).join("")}
+    <div class="star-scout-drawing-panel">
+      <div class="star-scout-drawing-header">
+        <span>從投給第一名「${escapeHtml(starScoutWinnersCache?.championName || "冠軍") }」的觀眾中抽出</span>
+        <strong>最強星探獎｜每位 NT$500</strong>
+      </div>
+      <div class="star-scout-lottery-strip" aria-hidden="true">
+        <i>★</i><i>♪</i><i>★</i><i>♪</i><i>★</i><i>♪</i><i>★</i>
+      </div>
+      <div class="star-scout-grid star-scout-grid-animated">
+        ${winners.map((winner, index) => `
+          <div class="star-scout-card" style="--delay:${index};">
+            <span>Winner ${index + 1}</span>
+            <strong>${escapeHtml(winner.employeeName || winner.employeeId || "—")}</strong>
+            <p>${escapeHtml(winner.employeeDepartment || "—")}｜${escapeHtml(winner.employeeCompany || "—")}</p>
+          </div>`).join("")}
       </div>
     </div>`;
 }
@@ -305,14 +411,33 @@ function renderAllWinners() {
   const rows = getFinalScoreRows();
   const redCarpetWinner = getRedCarpetWinner();
   const winnerCards = [
-    { label: "第一名", prize: "NT$6,000", contestant: rows[0] },
-    { label: "第二名", prize: "NT$5,000", contestant: rows[1] },
-    { label: "第三名", prize: "NT$3,600", contestant: rows[2] },
-    { label: "紅毯巨星造型獎", prize: "NT$1,500", contestant: redCarpetWinner }
+    { label: "第一名", prize: "NT$6,000", contestant: rows[0], className: "winner-first" },
+    { label: "第二名", prize: "NT$5,000", contestant: rows[1], className: "winner-second" },
+    { label: "第三名", prize: "NT$3,600", contestant: rows[2], className: "winner-third" },
+    { label: "紅毯巨星造型獎", prize: "NT$1,500", contestant: redCarpetWinner, className: "winner-red-carpet" }
   ];
+
   awardRevealContent.innerHTML = `
-    <div class="all-winners-grid animate-reveal">
-      ${winnerCards.map((item) => `<div class="all-winner-card"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(item.contestant?.name || "—")}</strong><p>A.K.A. ${escapeHtml(item.contestant?.stageName || "—")}</p><em>${escapeHtml(item.prize)}</em></div>`).join("")}
+    <div class="all-winners-showcase">
+      ${winnerCards.map((item, index) => {
+        const photoUrl = getContestantPhoto(item.contestant);
+        const metric = item.label === "紅毯巨星造型獎"
+          ? `${Number(item.contestant?.voteCount || 0)} 票`
+          : `${Number(item.contestant?.totalScore || 0).toFixed(1)} 分`;
+
+        return `
+          <div class="all-winner-showcase-card ${item.className}" style="--delay:${index};">
+            <div class="all-winner-photo">
+              ${photoUrl ? `<img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(item.contestant?.name || item.label)}" />` : `<div class="award-photo-placeholder">★</div>`}
+            </div>
+            <div class="all-winner-info">
+              <span>${escapeHtml(item.label)}</span>
+              <strong>${escapeHtml(item.contestant?.name || "—")}</strong>
+              <p>A.K.A. ${escapeHtml(item.contestant?.stageName || "—")}</p>
+              <em>${escapeHtml(item.prize)}｜${escapeHtml(metric)}</em>
+            </div>
+          </div>`;
+      }).join("")}
     </div>`;
 }
 
