@@ -3839,6 +3839,7 @@ button:hover {
   padding: 2px;
   background: linear-gradient(120deg, rgba(255, 209, 102, 0.1), rgba(255, 255, 255, 0.95), rgba(255, 209, 102, 0.75), rgba(101, 227, 244, 0.45));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: winnerBorderShine 2.4s linear infinite;
@@ -4130,16 +4131,77 @@ button:hover {
 
 .celebration-confetti span {
   position: absolute;
-  left: calc((var(--i) * 37) % 100 * 1%);
+  left: 50%;
   top: -8%;
   width: 10px;
   height: 18px;
   border-radius: 4px;
-  background: hsl(calc(var(--i) * 31), 92%, 68%);
+  background: hsl(calc(var(--i) * 31deg), 92%, 68%);
   opacity: 0;
   transform: rotate(calc(var(--i) * 18deg));
   animation: confettiFall 5.8s linear infinite;
   animation-delay: calc(var(--i) * -0.17s);
+  --drift: 0px;
+}
+
+.celebration-confetti span:nth-child(12n + 1) {
+  left: 6%;
+  --drift: -26px;
+}
+
+.celebration-confetti span:nth-child(12n + 2) {
+  left: 14%;
+  --drift: 34px;
+}
+
+.celebration-confetti span:nth-child(12n + 3) {
+  left: 23%;
+  --drift: -42px;
+}
+
+.celebration-confetti span:nth-child(12n + 4) {
+  left: 31%;
+  --drift: 30px;
+}
+
+.celebration-confetti span:nth-child(12n + 5) {
+  left: 40%;
+  --drift: -18px;
+}
+
+.celebration-confetti span:nth-child(12n + 6) {
+  left: 49%;
+  --drift: 48px;
+}
+
+.celebration-confetti span:nth-child(12n + 7) {
+  left: 58%;
+  --drift: -34px;
+}
+
+.celebration-confetti span:nth-child(12n + 8) {
+  left: 67%;
+  --drift: 28px;
+}
+
+.celebration-confetti span:nth-child(12n + 9) {
+  left: 76%;
+  --drift: -46px;
+}
+
+.celebration-confetti span:nth-child(12n + 10) {
+  left: 84%;
+  --drift: 38px;
+}
+
+.celebration-confetti span:nth-child(12n + 11) {
+  left: 91%;
+  --drift: -28px;
+}
+
+.celebration-confetti span:nth-child(12n + 12) {
+  left: 97%;
+  --drift: 22px;
 }
 
 /* Intensity by place */
@@ -4226,6 +4288,7 @@ button:hover {
   padding: 3px;
   background: conic-gradient(from 0deg, #ffd166, #fff4bf, #65e3f4, #ff8fb2, #ffd166);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: spinBorder 3s linear infinite;
@@ -4465,6 +4528,7 @@ button:hover {
   padding: 3px;
   background: conic-gradient(from 0deg, #ffd166, #fff4bf, #65e3f4, #ff8fb2, #ffd166);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: spinBorder 3s linear infinite;
@@ -4596,7 +4660,7 @@ button:hover {
 
   100% {
     opacity: 0;
-    transform: translate3d(calc(((var(--i) % 7) - 3) * 42px), 112vh, 0) rotate(720deg);
+    transform: translate3d(var(--drift, 0px), 112vh, 0) rotate(720deg);
   }
 }
 
