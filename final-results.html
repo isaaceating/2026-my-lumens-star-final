@@ -35,75 +35,38 @@
         </div>
       </section>
 
-      <!-- Live Voting -->
-      <section id="liveVotingScreen" class="results-mode-screen results-live-screen">
+      <section id="liveVotingScreen" class="results-mode-screen results-live-screen hidden">
         <div class="results-live-top">
           <div id="liveStatsGrid" class="results-stats-grid">
-            <div class="results-stat-card">
-              <span>紅毯總票數</span>
-              <strong id="liveRedCarpetTotalVotes">0</strong>
-            </div>
-
-            <div class="results-stat-card">
-              <span>決賽觀眾總票數</span>
-              <strong id="liveFinalAudienceTotalVotes">0</strong>
-            </div>
-
-            <div class="results-stat-card">
-              <span>完成決賽投票員工</span>
-              <strong id="liveFinalCompletedEmployees">0</strong>
-            </div>
-
-            <div class="results-stat-card">
-              <span>決賽目前最高票</span>
-              <strong id="liveFinalTopVotes">0</strong>
-            </div>
+            <div class="results-stat-card"><span>紅毯總票數</span><strong id="liveRedCarpetTotalVotes">0</strong></div>
+            <div class="results-stat-card"><span>決賽觀眾總票數</span><strong id="liveFinalAudienceTotalVotes">0</strong></div>
+            <div class="results-stat-card"><span>完成決賽投票員工</span><strong id="liveFinalCompletedEmployees">0</strong></div>
+            <div class="results-stat-card"><span>決賽目前最高票</span><strong id="liveFinalTopVotes">0</strong></div>
           </div>
-
           <div id="liveProgressPanel" class="results-progress-panel">
             <div class="results-progress-title">
               <span>即時累積投票狀態</span>
               <strong id="liveUpdatedAtText">資料同步中...</strong>
             </div>
-
             <div class="results-live-bars">
-              <div class="results-live-bar-row">
-                <span>紅毯巨星投票</span>
-                <div class="results-live-bar">
-                  <i id="redCarpetLiveBar" style="width: 0%;"></i>
-                </div>
-              </div>
-
-              <div class="results-live-bar-row">
-                <span>決賽觀眾投票</span>
-                <div class="results-live-bar">
-                  <i id="finalAudienceLiveBar" style="width: 0%;"></i>
-                </div>
-              </div>
+              <div class="results-live-bar-row"><span>紅毯巨星投票</span><div class="results-live-bar"><i id="redCarpetLiveBar" style="width:0%;"></i></div></div>
+              <div class="results-live-bar-row"><span>決賽觀眾投票</span><div class="results-live-bar"><i id="finalAudienceLiveBar" style="width:0%;"></i></div></div>
             </div>
           </div>
         </div>
-
         <div class="results-live-bottom">
           <div class="results-qr-card">
             <p class="section-kicker">Vote Now</p>
             <h2>掃描 QR Code 投票</h2>
-
-            <div class="results-qr-box">
-              <img id="voteQrImage" src="" alt="決賽投票 QR Code" />
-            </div>
-
+            <div class="results-qr-box"><img id="voteQrImage" src="" alt="決賽投票 QR Code" /></div>
             <p class="results-url-label">投票網址</p>
             <p id="voteUrlText" class="results-vote-url">final-vote.html</p>
           </div>
-
           <div class="results-countdown-card">
             <p id="countdownKicker" class="section-kicker">Countdown</p>
             <h2 id="countdownTitle">投票倒數</h2>
             <div id="countdownText" class="results-countdown">10:00</div>
-            <p id="countdownHintText" class="results-countdown-hint">
-              請把握時間完成紅毯投票與決賽觀眾投票
-            </p>
+            <p id="countdownHintText" class="results-countdown-hint">請把握時間完成紅毯投票與決賽觀眾投票</p>
           </div>
         </div>
       </section>
@@ -125,7 +88,7 @@
       </section>
 
       <section id="awardRevealScreen" class="results-mode-screen hidden">
-        <div class="results-award-stage">
+        <div id="awardRevealStage" class="results-award-stage">
           <p id="awardRevealKicker" class="section-kicker">Award Reveal</p>
           <h2 id="awardRevealTitle">獎項公布</h2>
           <div id="awardRevealContent" class="results-award-content">即將揭曉</div>
