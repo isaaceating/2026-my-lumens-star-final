@@ -387,15 +387,13 @@ function renderContestantAward(contestant, config) {
   }
 
   const photoUrl = getContestantPhoto(contestant);
-  const songText = getContestantSong(contestant);
+  const songTitle = getContestantSong(contestant);
 
   const metricHtml = config.metricLabel === "票數"
     ? `<strong class="award-metric">${escapeHtml(config.metricLabel)} ${Number(contestant.voteCount || 0)} 票</strong>`
     : `<strong class="award-metric">${escapeHtml(config.metricLabel || "總分")} ${Number(contestant.totalScore || 0).toFixed(1)}</strong>`;
 
   awardRevealContent.innerHTML = `
-    ${renderFireworkLayer()}
-
     <div class="award-countdown-sequence" aria-hidden="true">
       <span>3</span>
       <span>2</span>
@@ -406,12 +404,18 @@ function renderContestantAward(contestant, config) {
       <div class="award-photo-wrap">
         ${photoUrl ? `<img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(contestant.name || "得獎者")}" />` : `<div class="award-photo-placeholder">★</div>`}
       </div>
+
       <div class="award-info-wrap">
         <div class="award-place-label">${escapeHtml(config.title || resultControl.awardName || "得獎者")}</div>
         <div class="award-prize-label">${escapeHtml(config.prize || "")}</div>
         <h3>${escapeHtml(contestant.name || "未知選手")}</h3>
         <p>A.K.A. ${escapeHtml(contestant.stageName || "—")}</p>
-        ${songText ? `<p class="award-song">演唱曲目：${escapeHtml(songText)}</p>` : ""}
+
+        <div class="award-song-title">
+          <span>演唱曲目</span>
+          <strong>${escapeHtml(songTitle || "—")}</strong>
+        </div>
+
         ${metricHtml}
       </div>
     </div>`;
@@ -462,45 +466,58 @@ function getStarScoutCandidateCount(championContestantId) {
 }
 
 function renderStarScoutWinners() {
-  const winners = Array.isArray(starScoutWinnersCache?.winners) ? starScoutWinnersCache.winners : [];
+  const winners = Array.isArray(starScoutWinnersCache?.winners)
+    ? starScoutWinnersCache.winners
+    : [];
 
   if (!winners.length) {
     return renderStarScoutStandby();
   }
 
-  const wheelNames = winners.map((winner) => winner.employeeName || winner.employeeId || "Lucky Star");
-  const wheelSlots = Array.from({ length: 12 }).map((_, index) => wheelNames[index % wheelNames.length]);
+  const championName =
+    starScoutWinnersCache?.championName
+    || getFinalScoreRows()[0]?.name
+    || "第一名";
+
+  const drawCount = Number(starScoutWinnersCache?.drawCount || winners.length || 7);
 
   awardRevealContent.innerHTML = `
-    <div class="star-scout-wheel-panel">
-      <div class="star-scout-wheel-header">
-        <span>從投給第一名「${escapeHtml(starScoutWinnersCache?.championName || "冠軍") }」的觀眾中抽出</span>
-        <strong>最強星探獎｜每位 NT$500</strong>
-      </div>
-
+    <div class="star-scout-wheel-reveal">
       <div class="star-scout-wheel-stage" aria-hidden="true">
-        <div class="star-scout-wheel">
-          <div class="star-scout-wheel-rim"></div>
-          ${wheelSlots.map((name, index) => `
-            <span class="wheel-slot wheel-slot-${index + 1}">
-              ${escapeHtml(name)}
-            </span>
-          `).join("")}
-          <div class="star-scout-wheel-center">
+        <div class="star-scout-wheel-orbit orbit-one">
+          <i>★</i><i>♪</i><i>★</i><i>♪</i><i>★</i><i>♪</i><i>★</i><i>♪</i>
+        </div>
+
+        <div class="star-scout-wheel-orbit orbit-two">
+          <i>01</i><i>08</i><i>15</i><i>23</i><i>31</i><i>42</i><i>55</i><i>68</i>
+        </div>
+
+        <div class="star-scout-wheel-core">
+          <span>抽獎倒數</span>
+          <strong class="star-scout-wheel-countdown">
             <b>3</b>
             <b>2</b>
             <b>1</b>
-          </div>
+          </strong>
         </div>
       </div>
 
-      <div class="star-scout-grid star-scout-grid-animated">
-        ${winners.map((winner, index) => `
-          <div class="star-scout-card" style="--delay:${index};">
-            <span>Winner ${index + 1}</span>
-            <strong>${escapeHtml(winner.employeeName || winner.employeeId || "—")}</strong>
-            <p>${escapeHtml(winner.employeeDepartment || "—")}｜${escapeHtml(winner.employeeCompany || "—")}</p>
-          </div>`).join("")}
+      <div class="star-scout-result-stage">
+        <div class="star-scout-drawing-panel">
+          <div class="star-scout-drawing-header">
+            <strong>抽出${drawCount}位投給第一名「${escapeHtml(championName)}」｜每位 NT$500</strong>
+          </div>
+
+          <div class="star-scout-grid star-scout-grid-animated">
+            ${winners.map((winner, index) => `
+              <div class="star-scout-card" style="--delay:${index};">
+                <span>Winner ${index + 1}</span>
+                <strong>${escapeHtml(winner.employeeName || winner.employeeId || "—")}</strong>
+                <p>${escapeHtml(winner.employeeDepartment || "—")}｜${escapeHtml(winner.employeeCompany || "—")}</p>
+              </div>
+            `).join("")}
+          </div>
+        </div>
       </div>
     </div>`;
 }
@@ -517,12 +534,11 @@ function renderAllWinners() {
   ];
 
   awardRevealContent.innerHTML = `
-    ${renderFireworkLayer()}
-
     <div class="all-winners-showcase">
       ${winnerCards.map((item, index) => {
         const photoUrl = getContestantPhoto(item.contestant);
-        const songText = getContestantSong(item.contestant);
+        const songTitle = getContestantSong(item.contestant);
+
         const metric = item.label === "紅毯巨星造型獎"
           ? `${Number(item.contestant?.voteCount || 0)} 票`
           : `${Number(item.contestant?.totalScore || 0).toFixed(1)} 分`;
@@ -532,11 +548,17 @@ function renderAllWinners() {
             <div class="all-winner-photo">
               ${photoUrl ? `<img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(item.contestant?.name || item.label)}" />` : `<div class="award-photo-placeholder">★</div>`}
             </div>
+
             <div class="all-winner-info">
               <span>${escapeHtml(item.label)}</span>
               <strong>${escapeHtml(item.contestant?.name || "—")}</strong>
               <p>A.K.A. ${escapeHtml(item.contestant?.stageName || "—")}</p>
-              ${songText ? `<p class="all-winner-song">演唱曲目：${escapeHtml(songText)}</p>` : ""}
+
+              <div class="all-winner-song">
+                <small>演唱曲目</small>
+                <b>${escapeHtml(songTitle || "—")}</b>
+              </div>
+
               <em>${escapeHtml(item.prize)}｜${escapeHtml(metric)}</em>
             </div>
           </div>`;
