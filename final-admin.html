@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>決賽控制台｜2026 捷揚音樂祭</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">2026 My Lumens Star</a>
+
+    <div class="nav-links">
+      <a href="index.html">首頁</a>
+      <a href="admin.html">活動後台</a>
+      <a href="final-vote.html">決賽投票頁</a>
+      <a class="nav-cta" href="final-admin.html">決賽控制台</a>
+    </div>
+  </nav>
+
+  <main class="admin-page final-admin-page">
+    <section class="section admin-section admin-hero-section">
+      <div class="section-title-row">
+        <div>
+          <p class="section-kicker">Final Admin Console</p>
+          <h1>決賽控制台</h1>
+          <p class="section-desc">
+            決賽當天專用後台｜投票開關、票數排行、評審分數、總分排名與異常重置
+          </p>
+        </div>
+
+        <div class="admin-actions">
+          <a class="admin-link-button" href="final-vote.html">前往決賽投票頁</a>
+          <a class="admin-link-button" href="admin.html">回活動後台</a>
+          <button type="button" id="finalAdminLoginButton" class="secondary-button">Google 登入</button>
+          <button type="button" id="finalAdminLogoutButton" class="secondary-button hidden">登出</button>
+        </div>
+      </div>
+
+      <p id="finalAdminUserStatus" class="user-status">尚未登入</p>
+      <p id="finalAdminAccessStatus" class="message"></p>
+
+      <div id="finalAdminContent" class="hidden">
+        <div class="admin-anchor-nav">
+          <a href="#finalOverview">總覽</a>
+          <a href="#resultDisplayControl">大螢幕控制</a>
+          <a href="#voteControls">投票開關</a>
+          <a href="#redCarpetRanking">紅毯排行</a>
+          <a href="#finalAudienceRanking">觀眾排行</a>
+          <a href="#judgeSettings">評審名單</a>
+          <a href="#judgeScoreInput">評審分數</a>
+          <a href="#finalScoreRanking">總分排名</a>
+          <a href="#voteDetails">投票明細</a>
+          <a href="#voteReset">重置投票</a>
+        </div>
+
+        <!-- Overview -->
+        <section id="finalOverview" class="admin-panel-section">
+          <div class="admin-section-header">
+            <div>
+              <p class="section-kicker">Overview</p>
+              <h2>決賽投票總覽</h2>
+              <p class="section-desc">
+                查看紅毯投票、決賽觀眾投票與成績計算狀態。
+              </p>
+            </div>
+
+            <button type="button" id="refreshFinalAdminDataButton" class="secondary-button">
+              重新整理全部資料
+            </button>
+          </div>
+
+          <div class="admin-overview-grid final-overview-grid">
+            <div class="admin-overview-card">
+              <span>紅毯總票數</span>
+              <strong id="overviewRedCarpetTotalVotes">0</strong>
+            </div>
+
+            <div class="admin-overview-card">
+              <span>決賽觀眾總票數</span>
+              <strong id="overviewFinalAudienceTotalVotes">0</strong>
+            </div>
+
+            <div class="admin-overview-card">
+              <span>完成決賽投票員工</span>
+              <strong id="overviewFinalCompletedEmployees">0</strong>
+            </div>
+
+            <div class="admin-overview-card">
+              <span>決賽目前最高票</span>
+              <strong id="overviewFinalTopVotes">0</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Vote Controls -->
+        <section id="voteControls" class="admin-panel-section">
+          <div class="admin-section-header">
+            <div>
+              <p class="section-kicker">Controls</p>
+              <h2>投票開關</h2>
+              <p class="section-desc">
+                決賽現場可依主持流程分別開啟或關閉紅毯投票與決賽觀眾投票。
+              </p>
+            </div>
+          </div>
+
+          <div class="final-control-grid">
+            <div class="expect-vote-control-card final-control-card">
+              <div>
+                <h3>紅毯巨星造型獎</h3>
+                <p class="section-desc">
+                  控制 final-vote.html 的紅毯巨星造型獎投票區。
+                </p>
+                <p id="redCarpetVoteControlStatus" class="user-status">狀態讀取中...</p>
+                <p id="redCarpetVoteControlMessage" class="message"></p>
+              </div>
+
+              <button type="button" id="toggleRedCarpetVoteButton" class="secondary-button">
+                讀取中...
+              </button>
+            </div>
+
+            <div class="expect-vote-control-card final-control-card">
+              <div>
+                <h3>決賽觀眾投票</h3>
+                <p class="section-desc">
+                  控制 final-vote.html 的決賽觀眾投票區。每位員工需選滿 3 位參賽者。
+                </p>
+                <p id="finalAudienceVoteControlStatus" class="user-status">狀態讀取中...</p>
+                <p id="finalAudienceVoteControlMessage" class="message"></p>
+              </div>
+
+              <button type="button" id="toggleFinalAudienceVoteButton" class="secondary-button">
+                讀取中...
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Result Display Control -->
+        <section id="resultDisplayControl" class="admin-panel-section">
+          <div class="admin-section-header">
+            <div>
+              <p class="section-kicker">Display Control</p>
+              <h2>大螢幕投票看板控制</h2>
+              <p class="section-desc">
+                控制 final-results.html 的投票待機畫面、10 分鐘倒數與後續獎項公布模式。
+              </p>
+            </div>
+
+            <a class="admin-link-button" href="final-results.html" target="_blank" rel="noopener">
+              開啟大螢幕頁
+            </a>
+          </div>
+
+          <div class="result-control-card">
+            <div class="result-control-grid">
+              <label>
+                投票倒數分鐘
+                <input
+                  type="number"
+                  id="resultCountdownMinutesInput"
+                  min="1"
+                  max="60"
+                  step="1"
+                  value="10"
+                />
+              </label>
+
+              <div class="result-control-actions">
+                <button type="button" id="startLiveVotingDisplayButton">
+                  開始投票看板倒數
+                </button>
+
+                <button type="button" id="setDisplayStandbyButton" class="secondary-button">
+                  回到待機畫面
+                </button>
+              </div>
+            </div>
+
+            <div class="result-mode-actions">
+              <button type="button" id="previewRedCarpetWinnerButton" class="secondary-button">
+                預備：紅毯巨星造型獎
+              </button>
+
+              <button type="button" id="previewThirdPlaceButton" class="secondary-button">
+                預備：第三名
+              </button>
+
+              <button type="button" id="previewSecondPlaceButton" class="secondary-button">
+                預備：第二名
+              </button>
+
+              <button type="button" id="previewFirstPlaceButton" class="secondary-button">
+                預備：第一名
+              </button>
+            </div>
+
+            <p id="resultDisplayControlMessage" class="message"></p>
+          </div>
+        </section>
+
+        <!-- Red Carpet Ranking -->
+        <section id="redCarpetRanking" class="admin-panel-section">
+          <div class="admin-toolbar">
+            <div>
+              <p class="section-kicker">Red Carpet Ranking</p>
+              <strong>紅毯巨星造型獎票數排行</strong>
+              <p class="section-desc">
+                依紅毯投票票數由高到低排序。
+              </p>
+            </div>
+
+            <button type="button" id="refreshRedCarpetRankingButton" class="secondary-button">
+              重新整理紅毯票數
+            </button>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>選手</th>
+                  <th>A.K.A.</th>
+                  <th>票數</th>
+                  <th>占比</th>
+                </tr>
+              </thead>
+              <tbody id="redCarpetRankingTable">
+                <tr>
+                  <td colspan="5">紅毯票數讀取中...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Final Audience Ranking -->
+        <section id="finalAudienceRanking" class="admin-panel-section">
+          <div class="admin-toolbar">
+            <div>
+              <p class="section-kicker">Final Audience Ranking</p>
+              <strong>決賽觀眾投票排行</strong>
+              <p class="section-desc">
+                觀眾分數公式：該選手票數 ÷ 最高票數 × 60。
+              </p>
+            </div>
+
+            <button type="button" id="refreshFinalAudienceRankingButton" class="secondary-button">
+              重新整理決賽票數
+            </button>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>選手</th>
+                  <th>A.K.A.</th>
+                  <th>票數</th>
+                  <th>占比</th>
+                  <th>觀眾分數 / 60</th>
+                </tr>
+              </thead>
+              <tbody id="finalAudienceRankingTable">
+                <tr>
+                  <td colspan="6">決賽票數讀取中...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Judge Settings -->
+        <section id="judgeSettings" class="admin-panel-section">
+          <div class="admin-toolbar">
+            <div>
+              <p class="section-kicker">Judges</p>
+              <strong>評審名單設定</strong>
+              <p class="section-desc">
+                可新增、修改或刪除評審姓名。評審人數不固定，儲存後下方分數表會自動更新欄位。
+              </p>
+            </div>
+
+            <button type="button" id="addJudgeButton" class="secondary-button">
+              新增評審
+            </button>
+          </div>
+
+          <div class="admin-form-card final-judge-card">
+            <div id="judgeListEditor" class="judge-list-editor">
+              <p class="message">評審名單讀取中...</p>
+            </div>
+
+            <div class="admin-form-actions">
+              <button type="button" id="saveJudgesButton">
+                儲存評審名單
+              </button>
+            </div>
+
+            <p id="judgeSettingsMessage" class="message"></p>
+          </div>
+        </section>
+
+        <!-- Judge Score Input -->
+        <section id="judgeScoreInput" class="admin-panel-section">
+          <div class="admin-toolbar">
+            <div>
+              <p class="section-kicker">Judge Scores</p>
+              <strong>評審分數輸入</strong>
+              <p class="section-desc">
+                每位評審對每位選手給一個 1–10 分。聲音表現、舞台魅力、整體呈現作為評分參考，不拆項輸入。
+              </p>
+            </div>
+
+            <div class="admin-actions">
+              <button type="button" id="refreshJudgeScoresButton" class="secondary-button">
+                重新整理分數
+              </button>
+              <button type="button" id="saveAllJudgeScoresButton">
+                儲存全部分數
+              </button>
+            </div>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table judge-score-table">
+              <thead id="judgeScoreTableHead">
+                <tr>
+                  <th>選手</th>
+                  <th>A.K.A.</th>
+                  <th>評審分數</th>
+                  <th>平均</th>
+                  <th>評審分數 / 40</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="judgeScoreTableBody">
+                <tr>
+                  <td colspan="6">評審分數讀取中...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p id="judgeScoreMessage" class="message"></p>
+        </section>
+
+        <!-- Final Score Ranking -->
+        <section id="finalScoreRanking" class="admin-panel-section">
+          <div class="admin-toolbar">
+            <div>
+              <p class="section-kicker">Final Scoreboard</p>
+              <strong>決賽總分排名</strong>
+              <p class="section-desc">
+                總分 = 評審平均分 × 4 + 該選手觀眾票數 ÷ 最高票數 × 60。
+              </p>
+            </div>
+
+            <button type="button" id="refreshFinalScoreboardButton" class="secondary-button">
+              重新整理總分
+            </button>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table final-score-table">
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>選手</th>
+                  <th>A.K.A.</th>
+                  <th>評審平均 / 10</th>
+                  <th>評審分數 / 40</th>
+                  <th>觀眾票數</th>
+                  <th>觀眾分數 / 60</th>
+                  <th>總分 / 100</th>
+                </tr>
+              </thead>
+              <tbody id="finalScoreRankingTable">
+                <tr>
+                  <td colspan="8">總分資料讀取中...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Vote Details -->
+        <section id="voteDetails" class="admin-panel-section">
+          <div class="admin-toolbar">
+            <div>
+              <p class="section-kicker">Vote Details</p>
+              <strong>員工投票明細</strong>
+              <p class="section-desc">
+                用於現場查核投票狀態與異常處理。
+              </p>
+            </div>
+          </div>
+
+          <div class="final-detail-grid">
+            <div>
+              <div class="admin-subsection-title">
+                <h3>紅毯投票明細</h3>
+              </div>
+
+              <div class="admin-table-wrap">
+                <table class="admin-table final-detail-table">
+                  <thead>
+                    <tr>
+                      <th>工號</th>
+                      <th>姓名</th>
+                      <th>投票選手</th>
+                    </tr>
+                  </thead>
+                  <tbody id="redCarpetDetailTable">
+                    <tr>
+                      <td colspan="3">紅毯明細讀取中...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div>
+              <div class="admin-subsection-title">
+                <h3>決賽觀眾投票明細</h3>
+              </div>
+
+              <div class="admin-table-wrap">
+                <table class="admin-table final-detail-table">
+                  <thead>
+                    <tr>
+                      <th>工號</th>
+                      <th>姓名</th>
+                      <th>已用票數</th>
+                      <th>投票選手</th>
+                    </tr>
+                  </thead>
+                  <tbody id="finalAudienceDetailTable">
+                    <tr>
+                      <td colspan="4">決賽明細讀取中...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Vote Reset -->
+        <section id="voteReset" class="admin-panel-section">
+          <div class="admin-toolbar">
+            <div>
+              <p class="section-kicker">Reset</p>
+              <strong>重置單一工號投票</strong>
+              <p class="section-desc">
+                輸入工號後，可查詢並重置該員工的紅毯投票或決賽觀眾投票。
+              </p>
+            </div>
+          </div>
+
+          <div class="employee-vote-reset-card final-reset-card">
+            <div class="employee-vote-reset-form">
+              <label>
+                員工工號
+                <input
+                  type="text"
+                  id="resetEmployeeIdInput"
+                  placeholder="請輸入工號"
+                  autocomplete="off"
+                />
+              </label>
+
+              <div class="employee-vote-reset-actions">
+                <button type="button" id="lookupFinalVoteButton" class="secondary-button">
+                  查詢投票紀錄
+                </button>
+
+                <button type="button" id="resetRedCarpetVoteButton" class="danger-button" disabled>
+                  重置紅毯投票
+                </button>
+
+                <button type="button" id="resetFinalAudienceVoteButton" class="danger-button" disabled>
+                  重置決賽投票
+                </button>
+              </div>
+            </div>
+
+            <p id="resetVoteMessage" class="message"></p>
+
+            <div id="resetVoteResult" class="employee-vote-reset-result hidden">
+              <p class="section-desc">請先輸入工號並查詢投票紀錄。</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="final-admin.js"></script>
+</body>
+</html>

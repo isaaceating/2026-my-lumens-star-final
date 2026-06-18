@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>2026 My Lumens Star｜捷揚好聲音</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="site-nav">
+    <a class="nav-logo" href="#top">2026 My Lumens Star</a>
+
+    <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="開啟選單">
+      ☰
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#expectVote">最期待歌手票選</a>
+      <a href="#timeline">重要時程</a>
+      <a href="#prizes">獎項介紹</a>
+      <a href="#scoring">評分規則</a>
+      <a href="#finalInfo">決賽資訊</a>
+    </div>
+  </nav>
+
+  <header id="top" class="hero">
+    <div class="hero-overlay">
+      <p class="eyebrow">2026 Lumens Welfare Committee Presents</p>
+
+      <h1 class="hero-title">2026 My Lumens Star</h1>
+      <div class="hero-subtitle">
+        <span class="hero-subtitle-text">捷揚好聲音</span>
+      </div>
+
+      <p class="hero-desc hero-main-question">
+        未演先轟動，誰會成為下一個 Lumens Star？
+      </p>
+
+      <div class="hero-actions">
+        <a class="primary-link-button" href="#expectVote">最期待歌手票選</a>
+        <a class="secondary-link-button" href="#scoring">查看評分規則</a>
+      </div>
+
+      <div class="hero-info">
+        <span><strong>決賽時間：</strong>2026/7/29 11:30</span>
+        <span><strong>決賽地點：</strong>5F Demo Room</span>
+        <span><strong>評審名單：</strong>即將公布</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="expectVote" class="section expect-vote-section">
+      <div class="section-title-row">
+        <div>
+          <p class="section-kicker">Warm-up Voting</p>
+          <h2>未演先轟動｜最期待歌手票選</h2>
+          <p class="section-desc">
+            票選期間內，選手將以匿名方式登場。<br/>
+            每人有 3 票，投給你最期待的歌手，就有機會獲得最佳星探獎金!!!
+          </p>
+        </div>
+
+        <div class="vote-heat-card">
+          <span class="vote-heat-label">累積熱度</span>
+          <strong id="totalExpectVotes">讀取中...</strong>
+          <span class="vote-heat-unit">總票數</span>
+        </div>
+      </div>
+
+      <div class="status-strip">
+        <div>
+          <strong>票選期間</strong>
+          <span>2026/7/6 - 2026/7/10</span>
+        </div>
+        <div>
+          <strong>投票資格</strong>
+          <span>全體員工</span>
+        </div>
+        <div>
+          <strong>投票限制</strong>
+          <span>每人 3 票，不可重複</span>
+        </div>
+      </div>
+
+      <div id="contestantsGrid" class="contestants-grid">
+        <p class="message">神秘歌手載入中...</p>
+      </div>
+    </section>
+
+    <section id="timeline" class="section timeline-section">
+      <div class="section-header-center">
+        <p class="section-kicker">Schedule</p>
+        <h2>重要時程</h2>
+        <p class="section-desc">
+          活動相關時程將依實際安排持續更新。
+        </p>
+      </div>
+
+      <div class="timeline-list">
+        <article class="timeline-item active">
+          <div class="timeline-date">
+            <span>7/6</span>
+            <small>至 7/10</small>
+          </div>
+          <div class="timeline-content">
+            <h3>未演先轟動｜最期待歌手票選</h3>
+            <p> 投給你/妳最期待的歌手，就有機會獲得最佳星探獎金!</p>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-date">
+            <span>7/29</span>
+            <small>11:30</small>
+          </div>
+          <div class="timeline-content">
+            <h3>捷揚好聲音決賽</h3>
+            <p>地點：5F Demo Room。決賽當日時程將於後續公布。</p>
+          </div>
+        </article>
+
+        <article class="timeline-item">
+          <div class="timeline-date">
+            <span>Coming</span>
+            <small>Soon</small>
+          </div>
+          <div class="timeline-content">
+            <h3>評審名單</h3>
+            <p>評審名單即將公布，敬請期待。</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="prizes" class="section prize-section">
+      <div class="section-header-center">
+        <p class="section-kicker">Awards</p>
+        <h2>獎項介紹</h2>
+        <p class="section-desc">
+          不只比歌聲，也比舞台魅力、造型與人氣應援。
+        </p>
+      </div>
+
+      <div class="podium-grid">
+        <article class="podium-card podium-second">
+          <span class="podium-rank">第二名</span>
+          <strong>NT$5,000</strong>
+        </article>
+
+        <article class="podium-card podium-first">
+          <span class="podium-crown">★</span>
+          <span class="podium-rank">第一名</span>
+          <strong>NT$6,000</strong>
+        </article>
+
+        <article class="podium-card podium-third">
+          <span class="podium-rank">第三名</span>
+          <strong>NT$3,600</strong>
+        </article>
+      </div>
+
+      <div class="special-prize-grid">
+        <article class="special-prize-card">
+          <span class="special-prize-tag">造型獎</span>
+          <h3>紅毯巨星造型獎</h3>
+          <strong>NT$1,500</strong>
+          <p>由決賽當日觀眾票選，選出最佳造型歌手。</p>
+        </article>
+
+        <article class="special-prize-card">
+          <span class="special-prize-tag">賽前票選</span>
+          <h3>未演先轟動觀眾投票獎</h3>
+          <strong>NT$1,000</strong>
+          <p>由全體員工於賽前票選，選出最受期待的歌手。</p>
+        </article>
+
+        <article class="special-prize-card">
+          <span class="special-prize-tag">參賽者</span>
+          <h3>參加獎</h3>
+          <strong>NT$1,000</strong>
+          <p>比賽當日有上台演唱之選手皆可獲得。</p>
+        </article>
+
+        <article class="special-prize-card audience-prize-card">
+          <span class="special-prize-tag">觀眾獎</span>
+          <h3>最強星探</h3>
+          <strong>NT$500 × 2 名</strong>
+          <p>從賽前最期待歌手票選中，投給最終總冠軍的員工中抽出 2 名。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="scoring" class="section scoring-section">
+      <div class="section-header-center">
+        <p class="section-kicker">Scoring</p>
+        <h2>評分規則</h2>
+        <p class="section-desc">
+          決賽總成績滿分 100 分，由評審評分與觀眾投票共同組成。
+        </p>
+      </div>
+
+      <div class="score-overview">
+        <article class="score-main-card">
+          <span>評審評分</span>
+          <strong>40 分</strong>
+          <p>由評審依聲音表現、舞台魅力與整體呈現評分。</p>
+        </article>
+
+        <div class="score-plus">+</div>
+
+        <article class="score-main-card">
+          <span>觀眾投票</span>
+          <strong>60 分</strong>
+          <p>依各選手觀眾票數與最高票選手票數比例換算。</p>
+        </article>
+
+        <div class="score-equal">=</div>
+
+        <article class="score-main-card final-score-card">
+          <span>總成績</span>
+          <strong>100 分</strong>
+          <p>依總成績決定前三名。</p>
+        </article>
+      </div>
+
+      <div class="rule-grid">
+        <article class="rule-card">
+          <h3>A. 評審評分</h3>
+          <div class="weight-row">
+            <span>聲音表現</span>
+            <strong>50%</strong>
+          </div>
+          <div class="weight-row">
+            <span>舞台魅力</span>
+            <strong>30%</strong>
+          </div>
+          <div class="weight-row">
+            <span>整體呈現</span>
+            <strong>20%</strong>
+          </div>
+          <p class="rule-note">
+            預計 4 位評審，每位評審最高 10 分，評審總分最高 40 分。
+          </p>
+        </article>
+
+        <article class="rule-card">
+          <h3>B. 觀眾投票</h3>
+          <p class="formula-text">
+            該選手票數 ÷ 最高票選手票數 × 60
+          </p>
+          <p class="rule-note">
+            最高票選手可獲得觀眾投票滿分 60 分，其餘選手依得票比例換算。
+          </p>
+        </article>
+
+        <article class="rule-card tie-rule-card">
+          <h3>同分比較規則</h3>
+          <ol>
+            <li>評審總分</li>
+            <li>觀眾投票總分</li>
+            <li>溫先生的分數</li>
+            <li>Joris 的分數</li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section id="finalInfo" class="section final-info-section">
+      <div class="final-info-card">
+        <div>
+          <p class="section-kicker">Final Day</p>
+          <h2>決賽資訊</h2>
+          <p>
+            決賽當日將開放觀眾投票，觀眾可透過現場 QR Code 或公司內部公告連結進入投票頁面。
+          </p>
+        </div>
+
+        <div class="final-info-grid">
+          <div>
+            <strong>決賽時間</strong>
+            <span>2026/7/29 11:30</span>
+          </div>
+          <div>
+            <strong>決賽地點</strong>
+            <span>5F Demo Room</span>
+          </div>
+          <div>
+            <strong>觀眾投票</strong>
+            <span>每人 3 票，不可重複</span>
+          </div>
+          <div>
+            <strong>造型獎票選</strong>
+            <span>每人 1 票</span>
+          </div>
+        </div>
+
+        <div class="coming-soon-box">
+          決賽當日時程表、評審名單與觀眾投票連結將於後續公布。
+        </div>
+      </div>
+    </section>
+
+    <section id="activityRecord" class="section activity-record-section hidden">
+      <div class="section-header-center">
+        <p class="section-kicker">Archive</p>
+        <h2>活動紀錄</h2>
+        <p class="section-desc">
+          活動結束後，將在此保留本屆捷揚好聲音的精彩紀錄。
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 捷揚光電職工福利委員會</p>
+  </footer>
+
+  <div id="announcementModal" class="announcement-modal hidden" role="dialog" aria-modal="true">
+    <div class="announcement-card">
+      <button id="closeAnnouncementButton" class="modal-close-button" type="button" aria-label="關閉公告">
+        ×
+      </button>
+
+      <p class="section-kicker">Latest News</p>
+      <h2 id="announcementTitle">最期待歌手票選即將開放</h2>
+      <p id="announcementContent">
+        7/6–7/10 開放全體員工票選。<br/>選出你/妳最期待登場的歌手，就有機會獲得最佳星探獎金!
+      </p>
+
+      <div class="announcement-actions">
+        <a id="announcementActionButton" class="primary-link-button" href="#expectVote">查看票選資訊</a>
+        <button id="hideAnnouncementTodayButton" class="secondary-button" type="button">今天不再顯示</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

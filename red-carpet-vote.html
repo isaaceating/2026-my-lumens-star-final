@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>紅毯巨星造型獎投票｜2026 捷揚音樂祭</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">2026 My Lumens Star</a>
+
+    <button
+      type="button"
+      id="mobileMenuButton"
+      class="mobile-menu-button"
+      aria-label="開啟選單"
+    >
+      ☰
+    </button>
+
+    <div id="navLinks" class="nav-links">
+      <a href="index.html">首頁</a>
+      <a href="register.html">報名頁</a>
+      <a href="expect-vote.html">最期待票選</a>
+      <a class="nav-cta" href="red-carpet-vote.html">紅毯造型獎</a>
+    </div>
+  </nav>
+
+  <main class="vote-page red-carpet-vote-page">
+    <section class="section vote-hero-section">
+      <p class="section-kicker">Red Carpet Voting</p>
+      <h1>紅毯巨星造型獎投票</h1>
+      <p class="section-desc">
+        決賽當天，選出你心中最有舞台造型、紅毯氣勢與整體風格的參賽者。
+      </p>
+
+      <div class="vote-rule-strip">
+        <div>
+          <strong>投票資格</strong>
+          <span>全體有效員工皆可投票</span>
+        </div>
+
+        <div>
+          <strong>投票限制</strong>
+          <span>每位員工限投 1 票</span>
+        </div>
+
+        <div>
+          <strong>獎項</strong>
+          <span>紅毯巨星造型獎 NT$1,500</span>
+        </div>
+      </div>
+
+      <div class="vote-layout">
+        <aside class="vote-side-card">
+          <h2>投票資訊</h2>
+          <p>
+            請輸入工號驗證員工身份，驗證成功後選擇一位你支持的參賽者。
+          </p>
+
+          <label class="vote-employee-label">
+            員工工號
+            <input
+              type="text"
+              id="employeeIdInput"
+              placeholder="請輸入工號"
+              autocomplete="off"
+            />
+          </label>
+
+          <div id="employeeInfoBox" class="employee-info-box hidden">
+            <div>
+              <span>姓名</span>
+              <strong id="employeeNameText">—</strong>
+            </div>
+
+            <div>
+              <span>部門</span>
+              <strong id="employeeDepartmentText">—</strong>
+            </div>
+
+            <div>
+              <span>公司</span>
+              <strong id="employeeCompanyText">—</strong>
+            </div>
+          </div>
+
+          <div class="vote-summary-box">
+            <span>目前狀態</span>
+            <strong id="redCarpetVoteStatusText">讀取中</strong>
+          </div>
+
+          <div class="vote-summary-box">
+            <span>已選擇</span>
+            <strong id="selectedContestantText">尚未選擇</strong>
+          </div>
+
+          <button type="button" id="submitVoteButton" disabled>
+            送出紅毯投票
+          </button>
+
+          <p id="voteMessage" class="message"></p>
+        </aside>
+
+        <section>
+          <div class="vote-list-title">
+            <p class="section-kicker">Contestants</p>
+            <h2>選擇你的紅毯巨星</h2>
+            <p class="section-desc">
+              每位員工限投一位。送出後不可自行修改，如需異常處理請聯絡福委會。
+            </p>
+          </div>
+
+          <div id="contestantsGrid" class="expect-vote-grid red-carpet-grid">
+            <p class="message">參賽者資料載入中...</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="red-carpet-vote.js"></script>
+</body>
+</html>

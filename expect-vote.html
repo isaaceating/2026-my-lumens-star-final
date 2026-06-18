@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>最期待歌手票選｜2026 My Lumens Star</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">2026 My Lumens Star</a>
+
+    <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-label="開啟選單">
+      ☰
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html#expectVote">返回活動主頁</a>
+      <a href="index.html#timeline">重要時程</a>
+      <a href="index.html#prizes">獎項介紹</a>
+      <a href="index.html#scoring">評分規則</a>
+    </div>
+  </nav>
+
+  <main class="vote-page">
+    <section class="section vote-hero-section">
+      <div class="section-header-center">
+        <p class="section-kicker">Warm-up Voting</p>
+        <h1>未演先轟動｜最期待歌手票選</h1>
+      </div>
+
+      <div class="vote-rule-strip">
+        <div>
+          <strong>票選期間</strong>
+          <span>2026/7/6 - 2026/7/10</span>
+        </div>
+        <div>
+          <strong>投票資格</strong>
+          <span>捷揚所有員工</span>
+        </div>
+        <div>
+          <strong>投票限制</strong>
+          <span>每人 3 票，不可重複</span>
+        </div>
+      </div>
+
+      <div class="vote-layout">
+        <aside class="vote-side-card">
+          <h2>投票資料</h2>
+          <p>
+            請輸入工號後，選擇最多 3 位神秘歌手送出票選。送出後不可重複投給同一位歌手。
+          </p>
+
+          <label class="vote-employee-label">
+            工號
+            <input
+              type="text"
+              id="employeeIdInput"
+              placeholder="請輸入工號"
+              autocomplete="off"
+            />
+          </label>
+
+          <div id="employeeInfoBox" class="employee-info-box hidden">
+            <div>
+              <span>姓名</span>
+              <strong id="employeeNameText">—</strong>
+            </div>
+            <div>
+              <span>部門</span>
+              <strong id="employeeDepartmentText">—</strong>
+            </div>
+            <div>
+              <span>公司</span>
+              <strong id="employeeCompanyText">—</strong>
+            </div>
+          </div>
+
+          <div id="employeeInfoBox" class="employee-info-box hidden">
+            <div>
+                <span>姓名</span>
+                <strong id="employeeNameText">—</strong>
+            </div>
+            <div>
+                <span>部門</span>
+                <strong id="employeeDepartmentText">—</strong>
+            </div>
+            <div>
+                <span>公司</span>
+                <strong id="employeeCompanyText">—</strong>
+            </div>
+          </div>
+
+          <div class="vote-summary-box">
+            <span>本次已選擇</span>
+            <strong id="selectedCountText">0 / 3</strong>
+          </div>
+
+          <div class="vote-summary-box">
+            <span>此工號已使用票數</span>
+            <strong id="usedVotesText">輸入工號後查詢</strong>
+          </div>
+
+          <button id="submitVoteButton" type="button">
+            送出最期待票選
+          </button>
+
+          <p id="voteMessage" class="message"></p>
+        </aside>
+
+        <section class="vote-contestants-area">
+          <div class="section-title-row vote-list-title">
+            <div>
+              <h2>選擇你 / 妳最期待的歌手</h2>
+              <p class="section-desc">
+                選手目前匿名公開，僅顯示 A.K.A.。正式資訊將依活動時程陸續揭曉。
+              </p>
+            </div>
+          </div>
+
+          <div id="expectVoteGrid" class="expect-vote-grid">
+            <p class="message">神秘歌手載入中...</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 捷揚光電職工福利委員會</p>
+  </footer>
+
+  <script type="module" src="expect-vote.js"></script>
+</body>
+</html>

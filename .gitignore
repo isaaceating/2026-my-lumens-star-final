@@ -1,0 +1,6 @@
+node_modules/
+serviceAccountKey.json
+employees_import.csv
+per個人基本資料簡表LTI.xls
+per個人基本資料簡表LTP.xls
+*.log

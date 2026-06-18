@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>管理員｜2026 捷揚音樂祭</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">2026 My Lumens Star</a>
+    <div class="nav-links">
+      <a href="index.html">首頁</a>
+      <a href="register.html">報名頁</a>
+      <a href="expect-vote.html">最期待票選</a>
+      <a href="final-vote.html">決賽投票頁</a>
+      <a href="final-admin.html">決賽控制台</a>
+      <a class="nav-cta" href="admin.html">Admin</a>
+    </div>
+  </nav>
+
+  <main class="admin-page">
+    <section class="section admin-section admin-hero-section">
+      <div class="section-title-row">
+        <div>
+          <p class="section-kicker">Admin Console</p>
+          <h1>活動管理後台</h1>
+          <p class="section-desc">
+            2026 Lumens 福委會音樂祭｜報名審核、選手管理、票選統計與活動設定
+          </p>
+        </div>
+
+        <div class="admin-actions">
+          <a class="admin-link-button" href="index.html">回到前台</a>
+          <button type="button" id="adminLoginButton" class="secondary-button">Google 登入</button>
+          <button type="button" id="adminLogoutButton" class="secondary-button hidden">登出</button>
+        </div>
+      </div>
+
+      <p id="adminUserStatus" class="user-status">尚未登入</p>
+      <p id="adminAccessStatus" class="message"></p>
+
+      <div id="adminContent" class="hidden">
+        <div class="admin-anchor-nav">
+          <a href="#adminOverview">總覽</a>
+          <a href="#registrationControl">報名控制</a>
+          <a href="#announcementManagement">公告管理</a>
+          <a href="#contestantManagement">選手管理</a>
+          <a href="#expectVoteStats">最期待票選</a>
+          <a href="#resetEmployeeVote">重置投票</a>
+        </div>
+
+        <!-- Overview -->
+        <section id="adminOverview" class="admin-panel-section">
+          <div class="admin-section-header">
+            <div>
+              <p class="section-kicker">Overview</p>
+              <h2>後台總覽</h2>
+              <p class="section-desc">
+                快速查看目前活動資料狀態。若資料沒有即時更新，可使用各區塊的重新整理按鈕。
+              </p>
+            </div>
+
+            <button type="button" id="refreshAdminDataButton" class="secondary-button">
+              重新整理全部資料
+            </button>
+          </div>
+
+          <div class="admin-overview-grid">
+            <div class="admin-overview-card">
+              <span>報名狀態</span>
+              <strong id="overviewRegistrationStatus">讀取中</strong>
+            </div>
+
+            <div class="admin-overview-card">
+              <span>報名總數</span>
+              <strong id="overviewContestantCount">0</strong>
+            </div>
+
+            <div class="admin-overview-card">
+              <span>公開選手</span>
+              <strong id="overviewPublishedCount">0</strong>
+            </div>
+
+            <div class="admin-overview-card">
+              <span>最期待總票數</span>
+              <strong id="overviewTotalExpectVotes">0</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Registration Control -->
+        <section id="registrationControl" class="admin-panel-section">
+          <div class="admin-toolbar">
+            <div>
+              <p class="section-kicker">Registration</p>
+              <strong>報名狀態控制</strong>
+              <p class="section-desc">
+                系統預設會在 2026/6/1 00:00 自動關閉；期限後仍可由 Admin 手動開啟或關閉。
+              </p>
+              <p id="registrationStatusText" class="user-status">報名狀態讀取中...</p>
+              <p id="registrationSettingsMessage" class="message"></p>
+            </div>
+
+            <button type="button" id="toggleRegistrationButton" class="secondary-button">
+              讀取中...
+            </button>
+          </div>
+        </section>
+
+        <!-- Announcement Management -->
+<section id="announcementManagement" class="admin-panel-section">
+  <div class="admin-toolbar">
+    <div>
+      <p class="section-kicker">Announcement</p>
+      <strong>前台公告管理</strong>
+      <p class="section-desc">
+        控制首頁進站公告彈窗。儲存後，前台會讀取 settings/announcement 顯示最新公告。
+      </p>
+      <p id="announcementSettingsMessage" class="message"></p>
+    </div>
+
+    <button type="button" id="refreshAnnouncementButton" class="secondary-button">
+      重新讀取公告
+    </button>
+  </div>
+
+  <form id="announcementForm" class="admin-form-card announcement-admin-card">
+    <label class="admin-checkbox-row">
+      <input type="checkbox" id="announcementEnabled" />
+      <span>啟用前台公告</span>
+    </label>
+
+    <div class="admin-form-grid">
+      <label>
+        公告標題
+        <input
+          type="text"
+          id="announcementTitleInput"
+          placeholder="例如：最期待歌手票選開跑"
+        />
+      </label>
+
+      <label>
+        按鈕文字
+        <input
+          type="text"
+          id="announcementButtonTextInput"
+          placeholder="例如：前往投票"
+        />
+      </label>
+    </div>
+
+    <label>
+      公告內容
+      <textarea
+        id="announcementContentInput"
+        rows="5"
+        placeholder="請輸入公告內容，可使用換行。"
+      ></textarea>
+    </label>
+
+    <label>
+      按鈕連結
+      <input
+        type="text"
+        id="announcementButtonUrlInput"
+        placeholder="例如：expect-vote.html 或 #expectVote"
+      />
+    </label>
+
+    <div class="admin-form-actions">
+      <button type="submit">儲存公告設定</button>
+      <button type="button" id="previewAnnouncementButton" class="secondary-button">
+        預覽公告
+      </button>
+    </div>
+  </form>
+</section>
+
+        <!-- Contestant Management -->
+        <section id="contestantManagement" class="admin-panel-section">
+          <div class="admin-toolbar">
+            <div>
+              <p class="section-kicker">Contestants</p>
+              <strong>報名者 / 選手管理</strong>
+              <p class="section-desc">
+                公開狀態與排序調整後會立即影響前台顯示。
+              </p>
+            </div>
+
+            <button type="button" id="refreshContestantsButton" class="secondary-button">
+              重新整理選手資料
+            </button>
+          </div>
+
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>照片</th>
+                  <th>狀態</th>
+                  <th>排序</th>
+                  <th>姓名 / 藝名</th>
+                  <th>部門 / 工號</th>
+                  <th>演唱歌曲</th>
+                  <th>最期待票數</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="adminContestantsTable">
+                <tr>
+                  <td colspan="8">尚無資料</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Expect Vote Stats -->
+        <section id="expectVoteStats" class="admin-panel-section">
+          <div class="admin-toolbar vote-admin-toolbar">
+            <div>
+              <p class="section-kicker">Expectation Voting</p>
+              <strong>最期待歌手票選統計</strong>
+              <p class="section-desc">
+                後台可查看目前總票數、每位神秘歌手票數排行，以及員工投票使用狀況。
+              </p>
+            </div>
+
+            <button type="button" id="refreshExpectVoteStatsButton" class="secondary-button">
+              重新整理票選統計
+            </button>
+          </div>
+
+          <div class="expect-vote-control-card">
+            <div>
+              <h3>最期待票選狀態控制</h3>
+              <p class="section-desc">
+                控制前台最期待歌手票選是否可以送出投票。系統會在 2026/7/13 00:00 自動視為關閉。
+              </p>
+              <p id="expectVoteStatusText" class="user-status">票選狀態讀取中...</p>
+              <p id="expectVoteSettingsMessage" class="message"></p>
+            </div>
+
+            <button type="button" id="toggleExpectVoteButton" class="secondary-button">
+              讀取中...
+            </button>
+          </div>
+
+          <div class="vote-admin-summary-grid">
+            <div class="vote-admin-summary-card">
+              <span>目前總票數</span>
+              <strong id="adminTotalExpectVotes">0</strong>
+            </div>
+
+            <div class="vote-admin-summary-card">
+              <span>已投票員工數</span>
+              <strong id="adminVotedEmployees">0</strong>
+            </div>
+
+            <div class="vote-admin-summary-card">
+              <span>平均使用票數</span>
+              <strong id="adminAverageVotes">0</strong>
+            </div>
+          </div>
+
+          <div class="admin-subsection-title">
+            <h3>神秘歌手票數排行</h3>
+            <p class="section-desc">
+              此表依最期待票數由高到低排序。前台仍只顯示總票數，不公開個別排名。
+            </p>
+          </div>
+
+          <div class="admin-table-wrap vote-ranking-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>排名</th>
+                  <th>選手</th>
+                  <th>A.K.A.</th>
+                  <th>公開狀態</th>
+                  <th>票數</th>
+                  <th>票數占比</th>
+                </tr>
+              </thead>
+              <tbody id="adminExpectVoteRankingTable">
+                <tr>
+                  <td colspan="6">票選資料讀取中...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <section id="resetEmployeeVote" class="employee-vote-reset-panel">
+            <div class="admin-subsection-title">
+              <h3>重置員工投票</h3>
+              <p class="section-desc">
+                輸入工號查詢該員工目前已投的最期待票選紀錄；重置後會刪除該工號的投票明細與摘要，並同步扣回對應神秘歌手票數。
+              </p>
+            </div>
+
+            <div class="employee-vote-reset-card">
+              <div class="employee-vote-reset-form">
+                <label>
+                  員工工號
+                  <input
+                    type="text"
+                    id="resetEmployeeVoteInput"
+                    placeholder="請輸入工號"
+                    autocomplete="off"
+                  />
+                </label>
+
+                <div class="employee-vote-reset-actions">
+                  <button type="button" id="lookupEmployeeVoteButton" class="secondary-button">
+                    查詢投票紀錄
+                  </button>
+
+                  <button type="button" id="resetEmployeeVoteButton" class="danger-button" disabled>
+                    重置此工號投票
+                  </button>
+                </div>
+              </div>
+
+              <p id="resetEmployeeVoteMessage" class="message"></p>
+
+              <div id="resetEmployeeVoteResult" class="employee-vote-reset-result hidden">
+                <p class="section-desc">請先輸入工號並查詢投票紀錄。</p>
+              </div>
+            </div>
+          </section>
+
+          <div class="admin-subsection-title">
+            <h3>員工投票使用狀況</h3>
+            <p class="section-desc">
+              僅 Admin 可查看，用於確認票數、查核異常與後續最強星探抽獎。
+            </p>
+          </div>
+
+          <div class="admin-table-wrap vote-summary-wrap">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>工號</th>
+                  <th>姓名</th>
+                  <th>部門</th>
+                  <th>公司</th>
+                  <th>已用票數</th>
+                </tr>
+              </thead>
+              <tbody id="adminExpectVoteSummaryTable">
+                <tr>
+                  <td colspan="5">員工投票資料讀取中...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="editModal" class="edit-modal hidden">
+    <div class="edit-modal-card">
+      <div class="edit-modal-header">
+        <div>
+          <h2>編輯選手資料</h2>
+          <p class="section-desc">修改後會立即同步到前台選手卡片。</p>
+        </div>
+        <button type="button" id="closeEditModalButton" class="secondary-button">關閉</button>
+      </div>
+
+      <form id="editContestantForm" class="edit-form">
+        <input type="hidden" id="editContestantId" />
+
+        <label>
+          姓名
+          <input type="text" id="editName" required />
+        </label>
+
+        <label>
+          藝名
+          <input type="text" id="editStageName" />
+        </label>
+
+        <label>
+          部門
+          <input type="text" id="editDepartment" required />
+        </label>
+
+        <label>
+          工號
+          <input type="text" id="editEmployeeId" required />
+        </label>
+
+        <label>
+          演唱歌曲
+          <input type="text" id="editPerformanceItem" required />
+        </label>
+
+        <label>
+          排序
+          <input type="number" id="editManualOrder" required />
+        </label>
+
+        <div class="edit-form-actions">
+          <button type="submit">儲存修改</button>
+          <button type="button" id="cancelEditButton" class="secondary-button">取消</button>
+        </div>
+
+        <p id="editMessage" class="message"></p>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
