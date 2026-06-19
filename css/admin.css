@@ -1,1 +1,77 @@
 /* Admin CSS module */
+
+.admin-page {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.admin-section {
+  max-width: 1240px;
+}
+
+.admin-hero-section h1 {
+  margin: 0 0 14px;
+  color: #ffd166;
+  font-size: clamp(34px, 5vw, 54px);
+  line-height: 1.15;
+}
+
+.admin-actions,
+.login-actions,
+.edit-form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-toolbar {
+  margin: 22px 0;
+  padding: 20px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.admin-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.admin-table th {
+  color: #ffd166;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.admin-table td {
+  color: #f7f3ff;
+}
+
+.admin-table img,
+.admin-photo {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 16px;
+}
