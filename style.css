@@ -4,6 +4,7 @@
 */
 
 @import "./css/tokens.css";
+@import "./css/legacy.css";
 @import "./css/base.css";
 @import "./css/layout.css";
 @import "./css/components.css";
@@ -13,4 +14,3 @@
 @import "./css/admin.css";
 @import "./css/final-vote.css";
 @import "./css/results.css";
-@import "./css/legacy.css";
