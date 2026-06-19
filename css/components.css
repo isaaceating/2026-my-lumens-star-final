@@ -1,0 +1,228 @@
+/* =========================================================
+   Components
+   Shared buttons, cards, forms, tables, modals, utility states
+========================================================= */
+
+.hero-actions,
+.announcement-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+.primary-link-button,
+.secondary-link-button,
+.vote-link-button,
+.admin-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.primary-link-button,
+.vote-link-button {
+  background: linear-gradient(135deg, #e0ad3f, #a86f08);
+  color: #161616;
+  box-shadow: 0 14px 34px rgba(247, 127, 0, 0.28);
+}
+
+.primary-link-button:hover,
+.vote-link-button:hover {
+  background: linear-gradient(135deg, #edbd55, #b97d12);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 42px rgba(247, 127, 0, 0.38);
+}
+
+.secondary-link-button,
+.admin-link-button,
+.secondary-button {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.secondary-link-button:hover,
+.admin-link-button:hover,
+.secondary-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.contestant-card,
+.info-card,
+.rule-card,
+.special-prize-card,
+.score-main-card,
+.final-info-card,
+.timeline-item,
+.form-card,
+.rules-section {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 28px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+}
+
+/* Announcement Modal */
+.announcement-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(10px);
+}
+
+.announcement-card {
+  position: relative;
+  width: min(620px, 100%);
+  padding: 34px;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 209, 102, 0.22), transparent 36%),
+    #15162b;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.42);
+  text-align: center;
+}
+
+.announcement-card h2 {
+  color: #ffd166;
+  font-size: 32px;
+  margin: 0 0 16px;
+}
+
+.announcement-card p {
+  color: #e9e4ff;
+  line-height: 1.8;
+}
+
+.modal-close-button {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Shared Form / Admin Compatibility */
+.form-card {
+  display: grid;
+  gap: 18px;
+  padding: 28px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  color: #f7f3ff;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  color: #d8d2ef;
+}
+
+.checkbox-label input {
+  width: auto;
+  margin-top: 3px;
+}
+
+button {
+  border: none;
+  border-radius: 999px;
+  padding: 14px 22px;
+  background: linear-gradient(135deg, #ffd166, #f77f00);
+  color: #161616;
+  font-weight: 900;
+  cursor: pointer;
+  font-size: 16px;
+  font-family: inherit;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.message {
+  min-height: 24px;
+  color: #9be7ff;
+  line-height: 1.7;
+}
+
+.user-status {
+  color: #ffd166;
+}
+
+.danger-button {
+  background: rgba(255, 94, 98, 0.16);
+  color: #ffb4b6;
+  border: 1px solid rgba(255, 94, 98, 0.34);
+}
+
+.danger-button:hover {
+  background: rgba(255, 94, 98, 0.24);
+  color: #fff;
+}
+
+@media (max-width: 760px) {
+  .hero-actions,
+  .announcement-actions {
+    flex-direction: column;
+  }
+
+  .primary-link-button,
+  .secondary-link-button,
+  .vote-link-button {
+    width: 100%;
+  }
+
+  .announcement-card {
+    padding: 28px 22px;
+  }
+}
