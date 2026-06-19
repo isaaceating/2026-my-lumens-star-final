@@ -4,4 +4,5 @@
 */
 
 @import "./css/base.css";
+@import "./css/layout.css";
 @import "./css/legacy.css";
