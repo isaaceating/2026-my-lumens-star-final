@@ -2,7 +2,7 @@
 
 .results-page,
 .final-results-page {
-  min-height: calc(100vh - 72px);
+  min-height: calc(100vh - var(--nav-height));
 }
 
 .results-hero,
@@ -15,7 +15,7 @@
 .results-hero h1,
 .final-results-hero h1 {
   margin: 0 0 16px;
-  color: #ffd166;
+  color: var(--color-gold);
   font-size: clamp(36px, 6vw, 64px);
   line-height: 1.12;
 }
@@ -23,7 +23,7 @@
 .results-hero p,
 .final-results-hero p {
   margin: 0;
-  color: #d8d2ef;
+  color: var(--color-muted);
   line-height: 1.8;
 }
 
@@ -37,15 +37,15 @@
 .result-summary-card {
   padding: 22px;
   border-radius: 26px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
   text-align: center;
 }
 
 .result-summary-card span {
   display: block;
-  color: #cfc9e8;
+  color: var(--color-muted-2);
   font-size: 14px;
   font-weight: 800;
   margin-bottom: 8px;
@@ -53,7 +53,7 @@
 
 .result-summary-card strong {
   display: block;
-  color: #ffd166;
+  color: var(--color-gold);
   font-size: clamp(28px, 4vw, 44px);
   line-height: 1.1;
 }
@@ -69,17 +69,17 @@
   gap: 20px;
   align-items: center;
   padding: 22px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+  border-radius: var(--radius-xl);
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
 }
 
 .result-rank-card.rank-1 {
   border-color: rgba(255, 209, 102, 0.48);
   background:
     radial-gradient(circle at 12% 20%, rgba(255, 209, 102, 0.22), transparent 30%),
-    rgba(255, 255, 255, 0.08);
+    var(--color-panel);
 }
 
 .result-rank-number {
@@ -90,7 +90,7 @@
   border-radius: 50%;
   background: rgba(255, 209, 102, 0.16);
   border: 1px solid rgba(255, 209, 102, 0.32);
-  color: #ffd166;
+  color: var(--color-gold);
   font-size: 30px;
   font-weight: 950;
 }
@@ -104,7 +104,7 @@
 
 .result-rank-main p {
   margin: 0;
-  color: #d8d2ef;
+  color: var(--color-muted);
   line-height: 1.7;
 }
 
@@ -115,7 +115,7 @@
 
 .result-score-box span {
   display: block;
-  color: #9be7ff;
+  color: var(--color-cyan-soft);
   font-size: 13px;
   font-weight: 900;
 }
@@ -123,7 +123,7 @@
 .result-score-box strong {
   display: block;
   margin-top: 6px;
-  color: #ffd166;
+  color: var(--color-gold);
   font-size: clamp(30px, 4vw, 48px);
   line-height: 1;
 }
@@ -131,8 +131,8 @@
 .results-table-wrap {
   overflow-x: auto;
   margin-top: 24px;
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
 }
 
 .results-table {
@@ -145,18 +145,18 @@
 .results-table th,
 .results-table td {
   padding: 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--color-border-soft);
   text-align: left;
 }
 
 .results-table th {
-  color: #ffd166;
+  color: var(--color-gold);
   background: rgba(255, 255, 255, 0.06);
   font-size: 14px;
 }
 
 .results-table td {
-  color: #f7f3ff;
+  color: var(--color-text);
 }
 
 .results-live-status {
@@ -165,10 +165,10 @@
   gap: 8px;
   margin-top: 18px;
   padding: 10px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: rgba(143, 240, 179, 0.14);
   border: 1px solid rgba(143, 240, 179, 0.26);
-  color: #8ff0b3;
+  color: var(--color-green);
   font-weight: 900;
 }
 
@@ -177,16 +177,16 @@
   width: 9px;
   height: 9px;
   border-radius: 50%;
-  background: #8ff0b3;
+  background: var(--color-green);
   box-shadow: 0 0 14px rgba(143, 240, 179, 0.7);
 }
 
 .results-empty-state {
   padding: 32px;
-  border-radius: 28px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #d8d2ef;
+  border-radius: var(--radius-xl);
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
   text-align: center;
   line-height: 1.8;
 }
