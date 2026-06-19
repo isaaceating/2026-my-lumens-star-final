@@ -75,3 +75,76 @@
   object-fit: cover;
   border-radius: 16px;
 }
+
+.admin-login-card,
+.admin-edit-card,
+.admin-panel-card {
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+}
+
+.admin-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.admin-edit-grid .full-width {
+  grid-column: 1 / -1;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.status-published,
+.status-open {
+  background: rgba(143, 240, 179, 0.16);
+  color: #8ff0b3;
+  border: 1px solid rgba(143, 240, 179, 0.28);
+}
+
+.status-draft,
+.status-closed {
+  background: rgba(255, 209, 102, 0.16);
+  color: #ffd166;
+  border: 1px solid rgba(255, 209, 102, 0.28);
+}
+
+.admin-small-text {
+  color: #cfc9e8;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .admin-toolbar {
+    align-items: stretch;
+  }
+
+  .admin-actions,
+  .login-actions,
+  .edit-form-actions {
+    flex-direction: column;
+  }
+
+  .admin-actions button,
+  .login-actions button,
+  .edit-form-actions button {
+    width: 100%;
+  }
+
+  .admin-edit-grid {
+    grid-template-columns: 1fr;
+  }
+}
