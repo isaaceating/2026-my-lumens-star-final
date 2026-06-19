@@ -1,0 +1,38 @@
+/* Design tokens
+   Centralized colors, spacing, radius, and shadow values.
+   New CSS modules can gradually move from hard-coded values to these variables.
+*/
+
+:root {
+  --color-bg: #0f1020;
+  --color-bg-deep: #080915;
+  --color-panel: rgba(255, 255, 255, 0.08);
+  --color-panel-strong: rgba(255, 255, 255, 0.12);
+  --color-border: rgba(255, 255, 255, 0.14);
+  --color-border-soft: rgba(255, 255, 255, 0.1);
+
+  --color-text: #f7f3ff;
+  --color-muted: #d8d2ef;
+  --color-muted-2: #cfc9e8;
+
+  --color-gold: #ffd166;
+  --color-gold-dark: #f77f00;
+  --color-cyan: #65e3f4;
+  --color-cyan-soft: #9be7ff;
+  --color-green: #8ff0b3;
+  --color-danger: #ff5e62;
+
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 18px 50px rgba(0, 0, 0, 0.25);
+  --shadow-card-strong: 0 18px 50px rgba(0, 0, 0, 0.28);
+  --shadow-gold: 0 14px 34px rgba(247, 127, 0, 0.28);
+
+  --nav-height: 72px;
+  --container-width: 1160px;
+  --container-wide: 1280px;
+}
