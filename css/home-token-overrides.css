@@ -1,0 +1,65 @@
+/* Home token overrides
+   Low-risk layer for gradually moving home page styles to design tokens.
+*/
+
+.eyebrow,
+.section-kicker,
+.hero-title,
+.hero-info strong,
+.vote-heat-card strong,
+.status-strip strong,
+.timeline-date span,
+.podium-card strong,
+.special-prize-card strong,
+.score-main-card strong,
+.final-info-grid strong {
+  color: var(--color-gold);
+}
+
+.hero-main-question {
+  color: var(--color-cyan);
+}
+
+.hero-info span,
+.status-strip span,
+.final-info-grid span {
+  color: var(--color-text);
+}
+
+.vote-heat-label,
+.vote-heat-unit,
+.timeline-content p,
+.special-prize-card p,
+.score-main-card p,
+.final-info-card p {
+  color: var(--color-muted);
+}
+
+.vote-heat-card,
+.status-strip div,
+.final-info-grid div,
+.coming-soon-box {
+  background: var(--color-panel);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+
+.vote-heat-card,
+.final-info-grid div,
+.coming-soon-box {
+  border-radius: var(--radius-lg);
+}
+
+.status-strip div {
+  border-radius: 20px;
+}
+
+.contestants-grid .contestant-card,
+.timeline-item,
+.special-prize-card,
+.score-main-card,
+.final-info-card {
+  background: var(--color-panel);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-card);
+}
