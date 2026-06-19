@@ -1,10 +1,7 @@
 /* 
   2026 My Lumens Star
   CSS entry file
-
-  Phase 1:
-  - Keep original styles in css/legacy.css
-  - Future phases will split legacy.css into base / layout / components / pages
 */
 
+@import "./css/base.css";
 @import "./css/legacy.css";
