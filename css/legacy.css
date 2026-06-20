@@ -267,33 +267,6 @@
 }
 
 /* Responsive */
-@media (max-width: 980px) {
-  .contestants-grid,
-  .special-prize-grid,
-  .rule-grid,
-  .final-info-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .status-strip,
-  .score-overview {
-    grid-template-columns: 1fr;
-  }
-
-  .score-plus,
-  .score-equal {
-    text-align: center;
-  }
-
-  .podium-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .podium-first,
-  .podium-card {
-    min-height: auto;
-  }
-}
 
 @media (max-width: 760px) {
   .site-nav {
