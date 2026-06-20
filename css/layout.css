@@ -129,10 +129,6 @@ footer {
     display: flex;
   }
 
-  .site-nav:not(:has(.mobile-menu-button)) .nav-links {
-    display: flex;
-  }
-
   .nav-links a {
     width: 100%;
     text-align: center;
