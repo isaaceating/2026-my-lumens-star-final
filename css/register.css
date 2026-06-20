@@ -1,0 +1,202 @@
+/* =========================================================
+   Register Page
+   Registration hero, layout, form area, and live preview card
+========================================================= */
+
+.sub-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 86px 20px 72px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 209, 102, 0.22), transparent 30%),
+    radial-gradient(circle at 82% 24%, rgba(101, 227, 244, 0.18), transparent 34%),
+    linear-gradient(135deg, var(--color-bg-deep), #1b1740 48%, #071c2f);
+}
+
+.sub-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 82%);
+  pointer-events: none;
+}
+
+.sub-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sub-hero h1 {
+  margin: 0 0 16px;
+  font-size: clamp(38px, 6vw, 62px);
+  line-height: 1.12;
+  color: var(--color-gold);
+}
+
+.sub-hero p {
+  max-width: 760px;
+  margin: 0 auto;
+  color: var(--color-muted);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.register-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(340px, 1.1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.register-guide,
+.register-form-area {
+  min-width: 0;
+}
+
+.register-guide ul {
+  margin: 18px 0 0;
+  padding-left: 22px;
+  color: var(--color-muted);
+  line-height: 1.9;
+}
+
+.register-form-area .section-desc {
+  margin-bottom: 20px;
+}
+
+.card-preview-panel {
+  margin-top: 28px;
+  padding: 22px;
+  border-radius: var(--radius-xl);
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+
+.card-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.card-preview-header h3 {
+  margin: 0;
+  color: var(--color-gold);
+  font-size: 22px;
+}
+
+.compact-contestant-card,
+.preview-contestant-card {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.contestant-photo-wrap,
+.preview-photo-wrap {
+  position: relative;
+  min-height: 280px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 255, 255, 0.18), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+}
+
+.contestant-photo {
+  display: none;
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.contestant-photo.is-visible {
+  display: block;
+}
+
+.preview-photo-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--color-muted);
+  font-weight: 900;
+  letter-spacing: 1px;
+  line-height: 1.7;
+}
+
+.contestant-body-centered {
+  text-align: center;
+}
+
+.contestant-department {
+  color: var(--color-cyan-soft);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.compact-song-block {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-panel);
+  border: 1px solid var(--color-border-soft);
+}
+
+.song-label {
+  margin-bottom: 6px;
+  color: var(--color-gold);
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.contestant-performance {
+  margin: 0;
+  color: var(--color-text);
+  line-height: 1.6;
+  font-weight: 800;
+}
+
+#registrationForm button[type="submit"] {
+  width: 100%;
+  margin-top: 4px;
+}
+
+#registrationForm button[type="submit"]:disabled,
+#registrationForm input:disabled {
+  opacity: 0.62;
+  cursor: not-allowed;
+}
+
+@media (max-width: 980px) {
+  .register-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .sub-hero {
+    padding: 68px 18px 54px;
+  }
+
+  .sub-hero p {
+    font-size: 16px;
+  }
+
+  .card-preview-panel {
+    padding: 18px;
+  }
+
+  .compact-contestant-card,
+  .preview-contestant-card {
+    max-width: 100%;
+  }
+}
