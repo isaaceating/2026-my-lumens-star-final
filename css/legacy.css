@@ -266,58 +266,6 @@
   font-weight: 950;
 }
 
-.rule-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 0.8fr;
-  gap: 18px;
-}
-
-.rule-card {
-  padding: 24px;
-}
-
-.rule-card h3 {
-  color: #ffd166;
-  margin-bottom: 18px;
-}
-
-.weight-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.weight-row strong {
-  color: #9be7ff;
-}
-
-.rule-note {
-  margin: 18px 0 0;
-  color: #d8d2ef;
-  line-height: 1.7;
-}
-
-.formula-text {
-  margin: 12px 0 18px;
-  padding: 18px;
-  border-radius: 18px;
-  background: rgba(255, 209, 102, 0.12);
-  border: 1px solid rgba(255, 209, 102, 0.28);
-  color: #ffd166;
-  font-size: 22px;
-  font-weight: 950;
-  line-height: 1.5;
-}
-
-.tie-rule-card ol {
-  margin: 0;
-  padding-left: 22px;
-  color: #f7f3ff;
-  line-height: 2;
-}
-
 .final-info-card {
   padding: 34px;
   background:
