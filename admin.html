@@ -498,6 +498,40 @@
       </div>
     </div>
 
+    <script>
+      (() => {
+        const messageReplacements = new Map([
+          [
+            "偵測到匿名報名身份，正在切換為管理員登入模式...",
+            "偵測到報名頁留下的匿名身份，已切換為管理員登入模式。"
+          ],
+          [
+            "請使用 Google Admin 帳號登入。",
+            "這不是自動登入。請點選「Google 登入」，並使用具備 Admin 權限的帳號登入。"
+          ]
+        ]);
+
+        const applyAdminAuthMessage = () => {
+          ["adminUserStatus", "adminAccessStatus"].forEach((id) => {
+            const element = document.getElementById(id);
+            if (!element) return;
+
+            const replacement = messageReplacements.get(element.textContent);
+            if (replacement) {
+              element.textContent = replacement;
+            }
+          });
+        };
+
+        new MutationObserver(applyAdminAuthMessage).observe(document.body, {
+          childList: true,
+          subtree: true,
+          characterData: true
+        });
+
+        applyAdminAuthMessage();
+      })();
+    </script>
     <script type="module" src="admin.js"></script>
   </body>
 </html>
