@@ -10,6 +10,7 @@
 @import "./css/components.css";
 @import "./css/home.css";
 @import "./css/home-token-overrides.css";
+@import "./css/register.css";
 @import "./css/vote.css";
 @import "./css/admin.css";
 @import "./css/final-vote.css";
