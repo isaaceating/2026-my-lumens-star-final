@@ -266,57 +266,6 @@
   font-weight: 950;
 }
 
-.final-info-card {
-  padding: 34px;
-  background:
-    radial-gradient(
-      circle at 18% 20%,
-      rgba(255, 209, 102, 0.16),
-      transparent 28%
-    ),
-    rgba(255, 255, 255, 0.08);
-}
-
-.final-info-card p {
-  color: #d8d2ef;
-  line-height: 1.8;
-}
-
-.final-info-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-top: 24px;
-}
-
-.final-info-grid div {
-  padding: 18px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.final-info-grid strong {
-  display: block;
-  color: #ffd166;
-  margin-bottom: 8px;
-}
-
-.final-info-grid span {
-  color: #fff;
-  line-height: 1.6;
-}
-
-.coming-soon-box {
-  margin-top: 22px;
-  padding: 18px;
-  border-radius: 20px;
-  background: rgba(155, 231, 255, 0.12);
-  border: 1px solid rgba(155, 231, 255, 0.22);
-  color: #e9fbff;
-  font-weight: 800;
-}
-
 footer {
   text-align: center;
   padding: 34px 20px;
