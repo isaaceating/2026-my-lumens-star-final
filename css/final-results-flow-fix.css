@@ -160,6 +160,16 @@
   pointer-events: none;
 }
 
+#liveVotingScreen .results-qr-card h2,
+#liveVotingScreen #countdownTitle {
+  color: var(--color-gold) !important;
+}
+
+#liveVotingScreen .results-qr-card,
+#liveVotingScreen .results-countdown-card {
+  align-content: start !important;
+}
+
 @media (max-width: 900px) {
   .flow-vote-steps {
     grid-template-columns: 1fr;
