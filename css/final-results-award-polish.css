@@ -27,12 +27,12 @@
   display: none !important;
 }
 
-/* Move individual award title and card upward for stage-view safety. */
+/* Move individual award title/card into a stage-safe middle-upper composition. */
 .results-award-stage.red-carpet-stage,
 .results-award-stage.third-place-stage,
 .results-award-stage.second-place-stage,
 .results-award-stage.first-place-stage {
-  padding-top: clamp(8px, 1vh, 16px) !important;
+  padding-top: clamp(22px, 3vh, 42px) !important;
   padding-bottom: clamp(84px, 9vh, 130px) !important;
 }
 
@@ -41,14 +41,14 @@
 .results-award-stage.second-place-stage .results-award-content,
 .results-award-stage.first-place-stage .results-award-content {
   align-content: start;
-  padding-top: 0 !important;
+  padding-top: clamp(12px, 2vh, 26px) !important;
 }
 
 .results-award-stage.red-carpet-stage #awardRevealTitle,
 .results-award-stage.third-place-stage #awardRevealTitle,
 .results-award-stage.second-place-stage #awardRevealTitle,
 .results-award-stage.first-place-stage #awardRevealTitle {
-  margin: 0 0 clamp(12px, 1.5vh, 20px) !important;
+  margin: clamp(12px, 2vh, 26px) 0 clamp(14px, 1.8vh, 24px) !important;
   font-size: clamp(58px, 6.4vw, 112px) !important;
   line-height: 0.95 !important;
 }
