@@ -1,6 +1,6 @@
 /* =========================================================
    Final Vote CSS
-   Final voting, red carpet voting, judge score, and final admin helper styles
+   Final voting, red carpet voting, and judge score styles
 ========================================================= */
 
 .final-vote-page,
@@ -163,8 +163,7 @@
 }
 
 /* =========================================================
-   Final Vote Legacy Layout
-   Moved from final-vote-legacy-move.css
+   Final Vote On-site Layout
 ========================================================= */
 
 .red-carpet-grid {
