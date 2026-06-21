@@ -1,6 +1,5 @@
 /* Final results display foundation */
-@import "./final-results-display-move.css";
-@import "./final-results-screen-fix.css";
+@import "./final-results-foundation.css";
 
 /* Award reveal screens */
 @import "./final-results-awards-fix.css";
