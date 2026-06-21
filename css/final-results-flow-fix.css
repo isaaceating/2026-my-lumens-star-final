@@ -163,11 +163,23 @@
 #liveVotingScreen .results-qr-card h2,
 #liveVotingScreen #countdownTitle {
   color: var(--color-gold) !important;
+  width: 100%;
+  margin: 0 0 clamp(20px, 2.6vh, 36px) !important;
+  text-align: center;
 }
 
 #liveVotingScreen .results-qr-card,
 #liveVotingScreen .results-countdown-card {
-  align-content: start !important;
+  display: grid !important;
+  place-items: center !important;
+  align-content: center !important;
+  justify-content: center !important;
+  text-align: center;
+}
+
+#liveVotingScreen .results-countdown-hint {
+  margin-top: clamp(12px, 1.6vh, 22px) !important;
+  text-align: center;
 }
 
 @media (max-width: 900px) {
