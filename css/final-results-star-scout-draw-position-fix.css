@@ -3,18 +3,11 @@
    Move revealed winner cards closer to the award title
 ========================================================= */
 
-.results-award-stage.star-scout-stage .star-scout-result-stage {
-  transform: translateY(4px) scale(0.96) !important;
-  animation-name: starScoutResultEnterHigher !important;
+/* The result-stage itself is animation-controlled, so move the inner panel directly. */
+.results-award-stage.star-scout-stage .star-scout-drawing-panel {
+  transform: translateY(-56px) !important;
 }
 
 .results-award-stage.star-scout-stage .star-scout-drawing-header {
-  margin-bottom: clamp(10px, 1.2vh, 16px) !important;
-}
-
-@keyframes starScoutResultEnterHigher {
-  to {
-    opacity: 1;
-    transform: translateY(-42px) scale(1);
-  }
+  margin-bottom: clamp(8px, 1vh, 14px) !important;
 }
