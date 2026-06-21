@@ -30,8 +30,9 @@ const flowCopy = {
       <span class="flow-standby-note">投票開放後，請依現場指示完成兩種投票。</span>`
   },
   beforeRevealStandby: {
-    topbarTitle: "成績公布即將開始",
-    text: "請稍候，頒獎結果即將揭曉。"
+    topbarTitle: "成績公布準備中",
+    title: "分數計算中",
+    text: "請稍候，得獎名單即將揭曉。"
   },
   intermission: {
     topbarTitle: "中場休息",
@@ -124,6 +125,7 @@ function applyFixedFlowCopy() {
 
   if (currentMode === "beforeRevealStandby") {
     setTextIfChanged($("resultsMainTitle"), flowCopy.beforeRevealStandby.topbarTitle);
+    setTextIfChanged(document.querySelector(".reveal-standby-stage h2"), flowCopy.beforeRevealStandby.title);
     setTextIfChanged($("beforeRevealMessageText"), flowCopy.beforeRevealStandby.text);
   }
 
