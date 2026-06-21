@@ -3,7 +3,7 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth
 import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBlj362N4O6ERqgFziQ4Gg9W7SEYquKb0g".replace("Y", "y"),
+  apiKey: "AIzaSyBlj362N4O6ERqgFziQ4Gg9W7SEyquKb0g",
   authDomain: "my-lumens-star-2026.firebaseapp.com",
   projectId: "my-lumens-star-2026",
   storageBucket: "my-lumens-star-2026.firebasestorage.app",
