@@ -1,0 +1,73 @@
+/* =========================================================
+   Expect Vote Mobile Fix
+   Prevent horizontal overflow and force single-column mobile layout
+========================================================= */
+
+@media (max-width: 760px) {
+  .vote-page {
+    overflow-x: hidden;
+  }
+
+  .vote-page .vote-hero-section {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 18px;
+    padding-right: 18px;
+    overflow-x: hidden;
+  }
+
+  .vote-page .vote-rule-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .vote-page .vote-layout {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .vote-page .vote-side-card {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0 0 28px;
+  }
+
+  .vote-page .vote-contestants-area {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .vote-page .vote-list-title {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .vote-page .vote-list-title h2 {
+    font-size: clamp(28px, 9vw, 38px);
+    line-height: 1.25;
+  }
+
+  .vote-page .expect-vote-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    gap: 18px;
+  }
+
+  .vote-page .expect-vote-card,
+  .vote-page .expect-vote-select-button {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+}
