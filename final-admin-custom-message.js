@@ -20,12 +20,6 @@ function normalizeText(value) {
   return String(value || "").trim();
 }
 
-function bindCustomMessageButton(button) {
-  if (!button || button.dataset.customMessageBound === "true") return;
-  button.dataset.customMessageBound = "true";
-  button.addEventListener("click", setCustomMessageDisplay);
-}
-
 function ensureCustomMessageControls() {
   const input = $("resultDisplayMessageInput");
   if (input) {
@@ -39,11 +33,7 @@ function ensureCustomMessageControls() {
     }
   }
 
-  const existingButton = $("setCustomMessageButton");
-  if (existingButton) {
-    bindCustomMessageButton(existingButton);
-    return;
-  }
+  if ($("setCustomMessageButton")) return;
 
   const flowGroup = document.querySelector("#resultDisplayControl .result-control-group .result-control-actions");
   if (!flowGroup) return;
@@ -53,25 +43,29 @@ function ensureCustomMessageControls() {
   button.id = "setCustomMessageButton";
   button.className = "secondary-button";
   button.textContent = "顯示臨時公告";
-  bindCustomMessageButton(button);
 
   flowGroup.appendChild(button);
 }
 
 async function setCustomMessageDisplay() {
+  const status = $("resultDisplayControlMessage");
+
+  if (status) status.textContent = "臨時公告按鈕已觸發，正在檢查登入狀態...";
+
   const user = auth.currentUser;
   if (!user) {
+    if (status) status.textContent = "請先使用 Google Admin 帳號登入後再顯示臨時公告。";
     alert("請先使用 Google Admin 帳號登入。");
     return;
   }
 
   const message = normalizeText($("resultDisplayMessageInput")?.value || "");
   if (!message) {
+    if (status) status.textContent = "請先輸入臨時公告文字。";
     alert("請先輸入臨時公告文字。");
     return;
   }
 
-  const status = $("resultDisplayControlMessage");
   try {
     if (status) status.textContent = "臨時公告寫入中...";
     await setDoc(doc(db, "settings", "finalResultControl"), {
@@ -90,6 +84,13 @@ async function setCustomMessageDisplay() {
     if (status) status.textContent = `臨時公告顯示失敗：${error.message}`;
   }
 }
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("#setCustomMessageButton");
+  if (!button) return;
+  event.preventDefault();
+  setCustomMessageDisplay();
+});
 
 ensureCustomMessageControls();
 const observer = new MutationObserver(ensureCustomMessageControls);
