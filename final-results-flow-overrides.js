@@ -56,7 +56,12 @@ function setHtmlIfChanged(element, html) {
 }
 
 function ensureCustomMessageScreen() {
-  if ($("customMessageScreen")) return $("customMessageScreen");
+  const existingScreen = $("customMessageScreen");
+  if (existingScreen) {
+    const title = existingScreen.querySelector(".custom-message-stage h2");
+    if (title && !title.id) title.id = "customMessageTitle";
+    return existingScreen;
+  }
 
   const displayScreen = $("resultsDisplayScreen");
   if (!displayScreen) return null;
