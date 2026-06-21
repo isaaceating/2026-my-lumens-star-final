@@ -20,16 +20,37 @@ function normalizeText(value) {
   return String(value || "").trim();
 }
 
+function ensureCustomMessageTitleInput(messageInput) {
+  if (!messageInput || $("resultDisplayMessageTitleInput")) return;
+
+  const messageLabel = messageInput.closest("label");
+  if (!messageLabel) return;
+
+  const titleLabel = document.createElement("label");
+  titleLabel.className = "result-message-label";
+  titleLabel.textContent = "臨時公告主標題\n";
+
+  const titleInput = document.createElement("input");
+  titleInput.type = "text";
+  titleInput.id = "resultDisplayMessageTitleInput";
+  titleInput.value = "臨時公告";
+  titleInput.placeholder = "請輸入臨時公告主標題";
+
+  titleLabel.appendChild(titleInput);
+  messageLabel.parentNode.insertBefore(titleLabel, messageLabel);
+}
+
 function ensureCustomMessageControls() {
   const input = $("resultDisplayMessageInput");
   if (input) {
-    input.placeholder = "請輸入臨時公告文字";
+    ensureCustomMessageTitleInput(input);
+    input.placeholder = "請輸入臨時公告內容";
     input.value = input.value || "請稍候，現場流程調整中。";
     const label = input.closest("label");
     if (label && !label.dataset.customMessageRelabeled) {
       label.dataset.customMessageRelabeled = "true";
-      const textNode = Array.from(label.childNodes).find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.includes("大螢幕提示文字"));
-      if (textNode) textNode.textContent = "臨時公告文字\n";
+      const textNode = Array.from(label.childNodes).find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.includes("臨時公告文字"));
+      if (textNode) textNode.textContent = "臨時公告內容\n";
     }
   }
 
@@ -59,10 +80,11 @@ async function setCustomMessageDisplay() {
     return;
   }
 
+  const customMessageTitle = normalizeText($("resultDisplayMessageTitleInput")?.value || "臨時公告") || "臨時公告";
   const message = normalizeText($("resultDisplayMessageInput")?.value || "");
   if (!message) {
-    if (status) status.textContent = "請先輸入臨時公告文字。";
-    alert("請先輸入臨時公告文字。");
+    if (status) status.textContent = "請先輸入臨時公告內容。";
+    alert("請先輸入臨時公告內容。");
     return;
   }
 
@@ -70,7 +92,8 @@ async function setCustomMessageDisplay() {
     if (status) status.textContent = "臨時公告寫入中...";
     await setDoc(doc(db, "settings", "finalResultControl"), {
       mode: "customMessage",
-      awardName: "臨時公告",
+      awardName: customMessageTitle,
+      customMessageTitle,
       contestantId: "",
       countdownStatus: "stopped",
       displayMessage: message,
