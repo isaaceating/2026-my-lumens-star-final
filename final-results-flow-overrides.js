@@ -20,11 +20,11 @@ let applyQueued = false;
 
 const flowCopy = {
   preVotingStandby: {
-    topbarTitle: "決賽投票即將開始",
+    topbarTitle: "投票準備中",
     html: `
       <span class="flow-standby-lead">請準備手機，等待主持人開放投票。</span>
       <span class="flow-vote-steps" aria-label="投票步驟">
-        <span><b>01</b> 紅毯巨星造型獎投票</span>
+        <span><b>01</b> 紅毯巨星造型獎</span>
         <span><b>02</b> 決賽觀眾投票</span>
       </span>
       <span class="flow-standby-note">投票開放後，請依現場指示完成兩種投票。</span>`
