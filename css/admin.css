@@ -618,9 +618,7 @@
 }
 
 /* =========================================================
-   Final Admin Helper Styles
-   Moved from final-admin-move.css
-   Keep here for now because style.css loads final-vote.css globally
+   Final Admin Controls
 ========================================================= */
 
 .final-admin-page .admin-hero-section h1 {
