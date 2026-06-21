@@ -80,6 +80,33 @@
   font-weight: 900;
 }
 
+.reveal-standby-stage .section-kicker,
+.intermission-stage .section-kicker {
+  display: none !important;
+}
+
+.reveal-standby-stage,
+.intermission-stage {
+  align-content: center;
+  gap: clamp(20px, 2.6vh, 34px) !important;
+}
+
+.reveal-standby-stage h2,
+.intermission-stage h2 {
+  margin: 0 !important;
+}
+
+.reveal-standby-stage p:not(.section-kicker),
+.intermission-stage p:not(.section-kicker) {
+  margin: 0 !important;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: clamp(28px, 2.6vw, 46px) !important;
+  line-height: 1.24;
+  font-weight: 1000;
+  text-align: center;
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+}
+
 .custom-message-screen {
   width: 100%;
   height: 100%;
