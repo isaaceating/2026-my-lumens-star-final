@@ -12,6 +12,7 @@
 @import "./css/home-token-overrides.css";
 @import "./css/register.css";
 @import "./css/vote.css";
+@import "./css/vote-mobile-fix.css";
 @import "./css/admin.css";
 @import "./css/final-vote.css";
 @import "./css/results.css";
