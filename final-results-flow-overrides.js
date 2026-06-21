@@ -16,6 +16,7 @@ const $ = (id) => document.getElementById(id);
 
 let currentMode = "";
 let currentDisplayMessage = "";
+let currentCustomMessageTitle = "";
 let applyQueued = false;
 
 const flowCopy = {
@@ -65,7 +66,7 @@ function ensureCustomMessageScreen() {
   screen.className = "results-mode-screen custom-message-screen hidden";
   screen.innerHTML = `
     <div class="results-standby-stage custom-message-stage">
-      <h2>臨時公告</h2>
+      <h2 id="customMessageTitle">臨時公告</h2>
       <p id="customMessageText">請稍候，現場流程調整中。</p>
     </div>`;
 
@@ -88,8 +89,10 @@ function renderCustomMessage() {
   const screen = ensureCustomMessageScreen();
   if (!screen) return;
 
+  const title = currentCustomMessageTitle || "臨時公告";
   hideStandardScreens();
-  setTextIfChanged($("resultsMainTitle"), "臨時公告");
+  setTextIfChanged($("resultsMainTitle"), title);
+  setTextIfChanged($("customMessageTitle"), title);
 
   const badge = $("resultsStatusBadge");
   if (badge) {
@@ -153,6 +156,7 @@ onSnapshot(doc(db, "settings", "finalResultControl"), (snapshot) => {
   const data = snapshot.exists() ? snapshot.data() : {};
   currentMode = data.mode || "preVotingStandby";
   currentDisplayMessage = data.displayMessage || "";
+  currentCustomMessageTitle = data.customMessageTitle || data.awardName || "";
   queueApplyFixedFlowCopy();
   setTimeout(queueApplyFixedFlowCopy, 80);
 });
