@@ -16,6 +16,7 @@ const $ = (id) => document.getElementById(id);
 
 let currentMode = "";
 let currentDisplayMessage = "";
+let applyQueued = false;
 
 const flowCopy = {
   preVotingStandby: {
@@ -43,6 +44,14 @@ const flowCopy = {
     countdownHint: "投票倒數暫停中，請等待主持人指示"
   }
 };
+
+function setTextIfChanged(element, text) {
+  if (element && element.textContent !== text) element.textContent = text;
+}
+
+function setHtmlIfChanged(element, html) {
+  if (element && element.innerHTML.trim() !== html.trim()) element.innerHTML = html;
+}
 
 function ensureCustomMessageScreen() {
   if ($("customMessageScreen")) return $("customMessageScreen");
@@ -79,22 +88,22 @@ function renderCustomMessage() {
   if (!screen) return;
 
   hideStandardScreens();
-  $("resultsMainTitle") && ($("resultsMainTitle").textContent = "臨時公告");
+  setTextIfChanged($("resultsMainTitle"), "臨時公告");
 
   const badge = $("resultsStatusBadge");
   if (badge) {
     badge.classList.add("standby");
     badge.classList.remove("paused");
-    badge.innerHTML = "<span></span>STANDBY";
+    if (badge.innerHTML !== "<span></span>STANDBY") badge.innerHTML = "<span></span>STANDBY";
   }
 
   const text = currentDisplayMessage || "請稍候，現場流程調整中。";
-  const customMessageText = $("customMessageText");
-  if (customMessageText) customMessageText.textContent = text;
+  setTextIfChanged($("customMessageText"), text);
   screen.classList.remove("hidden");
 }
 
 function applyFixedFlowCopy() {
+  applyQueued = false;
   ensureCustomMessageScreen();
 
   if (currentMode === "customMessage") {
@@ -105,51 +114,49 @@ function applyFixedFlowCopy() {
   $("customMessageScreen")?.classList.add("hidden");
 
   if (currentMode === "preVotingStandby") {
-    const title = $("resultsMainTitle");
-    if (title) title.textContent = flowCopy.preVotingStandby.topbarTitle;
+    setTextIfChanged($("resultsMainTitle"), flowCopy.preVotingStandby.topbarTitle);
 
     const kicker = document.querySelector(".pre-voting-stage .section-kicker");
     if (kicker) kicker.classList.add("hidden");
 
-    const message = $("preVotingMessageText");
-    if (message) message.innerHTML = flowCopy.preVotingStandby.html;
+    setHtmlIfChanged($("preVotingMessageText"), flowCopy.preVotingStandby.html);
   }
 
   if (currentMode === "beforeRevealStandby") {
-    const title = $("resultsMainTitle");
-    if (title) title.textContent = flowCopy.beforeRevealStandby.topbarTitle;
-    const message = $("beforeRevealMessageText");
-    if (message) message.textContent = flowCopy.beforeRevealStandby.text;
+    setTextIfChanged($("resultsMainTitle"), flowCopy.beforeRevealStandby.topbarTitle);
+    setTextIfChanged($("beforeRevealMessageText"), flowCopy.beforeRevealStandby.text);
   }
 
   if (currentMode === "intermission") {
-    const title = $("resultsMainTitle");
-    if (title) title.textContent = flowCopy.intermission.topbarTitle;
-    const message = $("intermissionMessageText");
-    if (message) message.textContent = flowCopy.intermission.text;
+    setTextIfChanged($("resultsMainTitle"), flowCopy.intermission.topbarTitle);
+    setTextIfChanged($("intermissionMessageText"), flowCopy.intermission.text);
   }
 
   if (currentMode === "liveVoting") {
-    const hint = $("countdownHintText");
-    if (hint) hint.textContent = flowCopy.liveVoting.countdownHint;
+    setTextIfChanged($("countdownHintText"), flowCopy.liveVoting.countdownHint);
   }
 
   if (currentMode === "votingPaused") {
-    const hint = $("countdownHintText");
-    if (hint) hint.textContent = flowCopy.votingPaused.countdownHint;
+    setTextIfChanged($("countdownHintText"), flowCopy.votingPaused.countdownHint);
   }
+}
+
+function queueApplyFixedFlowCopy() {
+  if (applyQueued) return;
+  applyQueued = true;
+  requestAnimationFrame(applyFixedFlowCopy);
 }
 
 onSnapshot(doc(db, "settings", "finalResultControl"), (snapshot) => {
   const data = snapshot.exists() ? snapshot.data() : {};
   currentMode = data.mode || "preVotingStandby";
   currentDisplayMessage = data.displayMessage || "";
-  setTimeout(applyFixedFlowCopy, 0);
-  setTimeout(applyFixedFlowCopy, 80);
+  queueApplyFixedFlowCopy();
+  setTimeout(queueApplyFixedFlowCopy, 80);
 });
 
-const observer = new MutationObserver(() => applyFixedFlowCopy());
+const observer = new MutationObserver(queueApplyFixedFlowCopy);
 observer.observe(document.body, { childList: true, subtree: true, characterData: true });
 
 ensureCustomMessageScreen();
-applyFixedFlowCopy();
+queueApplyFixedFlowCopy();
