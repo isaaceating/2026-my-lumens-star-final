@@ -7,7 +7,7 @@
 @import "./final-results-star-scout-draw-fix.css";
 @import "./final-results-star-scout-draw-position-fix.css";
 @import "./final-results-winners.css";
-@import "./final-results-flow-fix.css";
+@import "./final-results-flow.css";
 
 /* Results CSS module */
 
@@ -89,7 +89,11 @@
 .result-rank-card.rank-1 {
   border-color: rgba(255, 209, 102, 0.48);
   background:
-    radial-gradient(circle at 12% 20%, rgba(255, 209, 102, 0.22), transparent 30%),
+    radial-gradient(
+      circle at 12% 20%,
+      rgba(255, 209, 102, 0.22),
+      transparent 30%
+    ),
     var(--color-panel);
 }
 
