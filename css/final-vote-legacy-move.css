@@ -1,0 +1,122 @@
+/* =========================================================
+   Final Vote Legacy Moved Styles
+   Styles moved from legacy.css for red carpet and final vote pages
+========================================================= */
+
+.red-carpet-grid {
+  align-items: stretch;
+}
+
+.red-carpet-card {
+  overflow: hidden;
+}
+
+.red-carpet-select-button {
+  height: 100%;
+}
+
+.red-carpet-photo {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  background: var(--color-panel);
+}
+
+.red-carpet-photo-placeholder {
+  height: 260px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 209, 102, 0.24), transparent 36%),
+    linear-gradient(135deg, rgba(255, 209, 102, 0.18), rgba(101, 227, 244, 0.1)),
+    var(--color-panel);
+}
+
+.red-carpet-photo-placeholder span {
+  display: grid;
+  place-items: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: rgba(9, 10, 24, 0.72);
+  color: var(--color-gold);
+  font-size: 42px;
+  font-weight: 950;
+  border: 1px solid rgba(255, 209, 102, 0.32);
+  box-shadow:
+    0 0 24px rgba(255, 209, 102, 0.22),
+    var(--shadow-card);
+}
+
+.red-carpet-contestant-name {
+  margin: 12px 0 4px;
+  color: var(--color-text);
+  font-size: 26px;
+  line-height: 1.25;
+}
+
+.red-carpet-card.selected {
+  border-color: rgba(255, 209, 102, 0.72);
+  box-shadow:
+    var(--shadow-card-strong),
+    0 0 0 2px rgba(255, 209, 102, 0.28),
+    0 0 34px rgba(255, 209, 102, 0.2);
+}
+
+.red-carpet-card.selected .contestant-status {
+  color: var(--color-gold);
+}
+
+.red-carpet-card.selected .vote-card-check {
+  background: linear-gradient(135deg, #e0ad3f, #a86f08);
+  color: #161616;
+}
+
+.final-vote-main {
+  display: grid;
+  gap: 34px;
+}
+
+.final-vote-block {
+  padding: 24px;
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 209, 102, 0.12), transparent 34%),
+    rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+
+.final-selected-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.final-selected-row:last-child {
+  border-bottom: 0;
+}
+
+.final-selected-row strong {
+  color: var(--color-text);
+}
+
+.final-selected-row span {
+  color: var(--color-muted-2);
+}
+
+@media (max-width: 760px) {
+  .red-carpet-photo,
+  .red-carpet-photo-placeholder {
+    height: 220px;
+  }
+
+  .final-selected-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
