@@ -91,7 +91,7 @@ function renderCustomMessage() {
 
   const title = currentCustomMessageTitle || "臨時公告";
   hideStandardScreens();
-  setTextIfChanged($("resultsMainTitle"), title);
+  setTextIfChanged($("resultsMainTitle"), "臨時公告");
   setTextIfChanged($("customMessageTitle"), title);
 
   const badge = $("resultsStatusBadge");
