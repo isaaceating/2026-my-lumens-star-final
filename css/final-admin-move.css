@@ -50,9 +50,76 @@
     var(--color-panel);
 }
 
+.final-judge-card {
+  border-color: rgba(255, 209, 102, 0.28);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255, 209, 102, 0.14), transparent 34%),
+    var(--color-panel);
+}
+
+.judge-list-editor {
+  display: grid;
+  gap: 14px;
+}
+
+.judge-editor-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(9, 10, 24, 0.38);
+  border: 1px solid var(--color-border-soft);
+}
+
+.judge-remove-button {
+  white-space: nowrap;
+}
+
+.judge-score-table {
+  min-width: 1180px;
+}
+
+.judge-score-input {
+  min-width: 86px;
+  max-width: 96px;
+  padding: 10px 11px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 900;
+}
+
+.final-score-table {
+  min-width: 1120px;
+}
+
+.final-score-table tbody tr:first-child {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 209, 102, 0.14),
+    rgba(255, 255, 255, 0.06)
+  );
+}
+
+.final-score-table tbody tr:first-child .vote-rank-badge {
+  background: rgba(255, 209, 102, 0.24);
+  color: var(--color-gold);
+}
+
 @media (max-width: 980px) {
   .final-control-grid,
   .final-detail-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .judge-editor-row {
+    grid-template-columns: 1fr;
+  }
+
+  .judge-remove-button {
+    width: 100%;
   }
 }
