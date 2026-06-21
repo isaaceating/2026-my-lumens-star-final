@@ -1,0 +1,123 @@
+/* =========================================================
+   Final Results Star Scout Standby Fix
+   Clean waiting screen before drawing star scout winners
+========================================================= */
+
+.results-award-stage.star-scout-standby-stage {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: clamp(28px, 4vw, 56px) clamp(32px, 4vw, 70px) clamp(84px, 9vh, 130px);
+  overflow: hidden;
+}
+
+.results-award-stage.star-scout-standby-stage .results-award-content {
+  width: 100%;
+  height: 100%;
+  max-width: min(1420px, 94vw);
+  display: grid;
+  place-items: center;
+}
+
+.star-scout-standby-panel {
+  width: 100%;
+  display: grid;
+  gap: clamp(24px, 3vh, 38px);
+  text-align: center;
+}
+
+.star-scout-standby-title {
+  margin: 0;
+  color: var(--color-gold);
+  font-size: clamp(68px, 8vw, 138px);
+  line-height: 0.95;
+  font-weight: 1000;
+  letter-spacing: -0.04em;
+  text-shadow:
+    0 0 34px rgba(255, 209, 102, 0.32),
+    0 14px 40px rgba(0, 0, 0, 0.42);
+}
+
+.star-scout-standby-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.25fr 0.88fr 0.88fr;
+  gap: clamp(18px, 2vw, 28px);
+  align-items: stretch;
+}
+
+.star-scout-standby-item {
+  min-width: 0;
+  min-height: clamp(210px, 26vh, 320px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 2.6vw, 42px);
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 22% 8%, rgba(255, 209, 102, 0.16), transparent 38%),
+    rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 28px 78px rgba(0, 0, 0, 0.28);
+}
+
+.star-scout-standby-item span {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--color-gold);
+  font-size: clamp(18px, 1.5vw, 28px);
+  font-weight: 1000;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.star-scout-standby-item strong {
+  display: block;
+  color: #fff;
+  font-size: clamp(54px, 5.8vw, 100px);
+  line-height: 1;
+  font-weight: 1000;
+  letter-spacing: -0.04em;
+  word-break: keep-all;
+}
+
+.star-scout-standby-item:first-child strong {
+  font-size: clamp(54px, 5.4vw, 94px);
+}
+
+.star-scout-standby-item p {
+  margin: 16px 0 0;
+  color: var(--color-cyan);
+  font-size: clamp(20px, 1.9vw, 34px);
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+.results-award-stage.star-scout-standby-stage::after {
+  content: "2026 捷揚好聲音\A舉辦單位：捷揚光電職工福利委員會2026";
+  position: absolute;
+  left: 50%;
+  bottom: clamp(16px, 2.4vh, 30px);
+  z-index: 6;
+  transform: translateX(-50%);
+  white-space: pre;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.46);
+  font-size: clamp(13px, 1vw, 18px);
+  line-height: 1.55;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+@media (max-width: 1100px) {
+  .star-scout-standby-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .star-scout-standby-item {
+    min-height: auto;
+  }
+}
