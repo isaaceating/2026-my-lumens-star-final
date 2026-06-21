@@ -95,8 +95,8 @@
               </label>
             </div>
 
-            <label class="result-message-label">大螢幕提示文字
-              <input type="text" id="resultDisplayMessageInput" value="請掃描 QR Code 完成紅毯投票與決賽觀眾投票" placeholder="請輸入大螢幕提示文字" />
+            <label class="result-message-label">臨時公告文字
+              <input type="text" id="resultDisplayMessageInput" value="請稍候，現場流程調整中。" placeholder="請輸入臨時公告文字" />
             </label>
 
             <div class="result-control-group">
@@ -109,6 +109,7 @@
                 <button type="button" id="resetVotingCountdownButton" class="secondary-button">重設投票倒數</button>
                 <button type="button" id="setBeforeRevealStandbyButton" class="secondary-button">成績公布前待機畫面</button>
                 <button type="button" id="setIntermissionButton" class="secondary-button">中場休息待機畫面</button>
+                <button type="button" id="setCustomMessageButton" class="secondary-button">顯示臨時公告</button>
               </div>
             </div>
 
@@ -305,5 +306,6 @@
     </section>
   </main>
   <script type="module" src="final-admin.js"></script>
+  <script type="module" src="final-admin-custom-message.js"></script>
 </body>
 </html>
