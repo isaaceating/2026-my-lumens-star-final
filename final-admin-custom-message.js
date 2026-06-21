@@ -20,6 +20,12 @@ function normalizeText(value) {
   return String(value || "").trim();
 }
 
+function bindCustomMessageButton(button) {
+  if (!button || button.dataset.customMessageBound === "true") return;
+  button.dataset.customMessageBound = "true";
+  button.addEventListener("click", setCustomMessageDisplay);
+}
+
 function ensureCustomMessageControls() {
   const input = $("resultDisplayMessageInput");
   if (input) {
@@ -33,7 +39,11 @@ function ensureCustomMessageControls() {
     }
   }
 
-  if ($("setCustomMessageButton")) return;
+  const existingButton = $("setCustomMessageButton");
+  if (existingButton) {
+    bindCustomMessageButton(existingButton);
+    return;
+  }
 
   const flowGroup = document.querySelector("#resultDisplayControl .result-control-group .result-control-actions");
   if (!flowGroup) return;
@@ -43,7 +53,7 @@ function ensureCustomMessageControls() {
   button.id = "setCustomMessageButton";
   button.className = "secondary-button";
   button.textContent = "顯示臨時公告";
-  button.addEventListener("click", setCustomMessageDisplay);
+  bindCustomMessageButton(button);
 
   flowGroup.appendChild(button);
 }
