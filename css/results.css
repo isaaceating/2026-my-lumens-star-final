@@ -1,22 +1,12 @@
-/* Final results display foundation */
 @import "./final-results-foundation.css";
-
-/* Award reveal screens */
 @import "./final-results-awards-fix.css";
 @import "./final-results-awards-fix-v2.css";
 @import "./final-results-individual-awards-fix.css";
 @import "./final-results-award-polish.css";
-
-/* Star scout draw screens */
 @import "./final-results-star-scout-standby-fix.css";
 @import "./final-results-star-scout-draw-fix.css";
 @import "./final-results-star-scout-draw-position-fix.css";
-
-/* All winners overview */
-@import "./final-results-all-winners-fix.css";
-@import "./final-results-all-winners-title-fix.css";
-
-/* Event flow and custom message screens */
+@import "./final-results-winners.css";
 @import "./final-results-flow-fix.css";
 
 /* Results CSS module */
