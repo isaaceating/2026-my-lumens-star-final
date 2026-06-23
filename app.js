@@ -7,7 +7,7 @@ import {
   getDoc,
   query,
   where,
-  onSnapshot
+  onSnapshot,
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -16,7 +16,7 @@ const firebaseConfig = {
   projectId: "my-lumens-star-2026",
   storageBucket: "my-lumens-star-2026.firebasestorage.app",
   messagingSenderId: "150108062917",
-  appId: "1:150108062917:web:f7284392bed27438041cac"
+  appId: "1:150108062917:web:f7284392bed27438041cac",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -33,61 +33,67 @@ const mobileMenuButton = document.getElementById("mobileMenuButton");
 const navLinks = document.getElementById("navLinks");
 
 const announcementModal = document.getElementById("announcementModal");
-const closeAnnouncementButton = document.getElementById("closeAnnouncementButton");
-const hideAnnouncementTodayButton = document.getElementById("hideAnnouncementTodayButton");
+const closeAnnouncementButton = document.getElementById(
+  "closeAnnouncementButton",
+);
+const hideAnnouncementTodayButton = document.getElementById(
+  "hideAnnouncementTodayButton",
+);
 const announcementTitle = document.getElementById("announcementTitle");
 const announcementContent = document.getElementById("announcementContent");
-const announcementActionButton = document.getElementById("announcementActionButton");
+const announcementActionButton = document.getElementById(
+  "announcementActionButton",
+);
 
 const MYSTERY_AVATARS = [
   {
     key: "mystery-01",
     label: "神秘歌手 01",
     icon: "♪",
-    className: "avatar-gold"
+    className: "avatar-gold",
   },
   {
     key: "mystery-02",
     label: "神秘歌手 02",
     icon: "★",
-    className: "avatar-blue"
+    className: "avatar-blue",
   },
   {
     key: "mystery-03",
     label: "神秘歌手 03",
     icon: "♬",
-    className: "avatar-purple"
+    className: "avatar-purple",
   },
   {
     key: "mystery-04",
     label: "神秘歌手 04",
     icon: "◆",
-    className: "avatar-pink"
+    className: "avatar-pink",
   },
   {
     key: "mystery-05",
     label: "神秘歌手 05",
     icon: "✦",
-    className: "avatar-green"
+    className: "avatar-green",
   },
   {
     key: "mystery-06",
     label: "神秘歌手 06",
     icon: "●",
-    className: "avatar-orange"
+    className: "avatar-orange",
   },
   {
     key: "mystery-07",
     label: "神秘歌手 07",
     icon: "♩",
-    className: "avatar-cyan"
+    className: "avatar-cyan",
   },
   {
     key: "mystery-08",
     label: "神秘歌手 08",
     icon: "✧",
-    className: "avatar-red"
-  }
+    className: "avatar-red",
+  },
 ];
 
 init();
@@ -136,7 +142,7 @@ function listenToPublishedContestants() {
       snapshot.forEach((docSnap) => {
         contestants.push({
           id: docSnap.id,
-          ...docSnap.data()
+          ...docSnap.data(),
         });
       });
 
@@ -159,7 +165,7 @@ function listenToPublishedContestants() {
       contestantsGrid.innerHTML = `
         <p class="message">選手資料讀取失敗，請稍後再試。</p>
       `;
-    }
+    },
   );
 }
 
@@ -195,14 +201,14 @@ function renderContestants(contestants) {
           <div class="contestant-body">
             <div class="contestant-meta-row">
               <span class="contestant-number">No. ${number}</span>
-              <span class="contestant-status">匿名公開中</span>
+              <span class="contestant-status">匿名登場</span>
             </div>
 
             <h3 class="contestant-name">???</h3>
-            <p class="contestant-stage">${stageName}</p>
+            <h3 class="contestant-stage">${stageName}</h3>
 
             <p class="contestant-teaser">
-              真實身份即將揭曉，先用你的期待為他 / 她應援。
+              真實身份即將揭曉!
             </p>
 
             <a class="vote-link-button" href="${voteLink}">
@@ -218,7 +224,9 @@ function renderContestants(contestants) {
 function getMysteryAvatar(contestant, index) {
   const selectedKey = contestant.mysteryAvatar || contestant.avatarKey || "";
 
-  const matchedAvatar = MYSTERY_AVATARS.find((avatar) => avatar.key === selectedKey);
+  const matchedAvatar = MYSTERY_AVATARS.find(
+    (avatar) => avatar.key === selectedKey,
+  );
   if (matchedAvatar) return matchedAvatar;
 
   return MYSTERY_AVATARS[index % MYSTERY_AVATARS.length];
@@ -245,7 +253,7 @@ function listenToTotalExpectVotes() {
     (error) => {
       console.error("Load total expect votes failed:", error);
       totalExpectVotes.textContent = "—";
-    }
+    },
   );
 }
 
@@ -280,7 +288,7 @@ async function loadAnnouncement() {
         data.content ||
         `7/6–7/10 開放全體員工票選，每人 3 票，選出你最期待登場的歌手！`,
       buttonText: data.buttonText || "查看票選資訊",
-      buttonUrl: data.buttonUrl || "#expectVote"
+      buttonUrl: data.buttonUrl || "#expectVote",
     });
   } catch (error) {
     console.warn("Load announcement failed:", error);
@@ -293,7 +301,7 @@ function showDefaultAnnouncement() {
     title: "最期待歌手票選即將開放",
     content: `${DEFAULT_EXPECT_VOTE_START}–${DEFAULT_EXPECT_VOTE_END} 開放全體員工票選，每人 3 票，選出你最期待登場的歌手！`,
     buttonText: "查看票選資訊",
-    buttonUrl: "#expectVote"
+    buttonUrl: "#expectVote",
   });
 }
 
@@ -301,7 +309,10 @@ function renderAnnouncement(config) {
   if (!announcementModal) return;
 
   announcementTitle.textContent = config.title || "";
-  announcementContent.innerHTML = escapeHtml(config.content || "").replace(/\n/g, "<br>");
+  announcementContent.innerHTML = escapeHtml(config.content || "").replace(
+    /\n/g,
+    "<br>",
+  );
 
   announcementActionButton.textContent = config.buttonText || "查看詳情";
   announcementActionButton.setAttribute("href", config.buttonUrl || "#");
@@ -342,7 +353,7 @@ function getTaiwanDateString(date) {
     timeZone: "Asia/Taipei",
     year: "numeric",
     month: "2-digit",
-    day: "2-digit"
+    day: "2-digit",
   }).format(date);
 }
 
