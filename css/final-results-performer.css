@@ -185,11 +185,11 @@
 }
 
 .performer-recap-stage {
-  min-height: min(780px, 78vh);
+  height: min(820px, calc(100vh - 215px));
+  max-height: min(820px, calc(100vh - 215px));
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: clamp(20px, 2.4vh, 34px);
-  padding: clamp(28px, 3vw, 56px);
+  grid-template-rows: 1fr;
+  padding: clamp(18px, 2vw, 32px);
   border-radius: 42px;
   background:
     radial-gradient(circle at 18% 8%, rgba(255, 209, 102, 0.22), transparent 30%),
@@ -197,99 +197,88 @@
     rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .performer-recap-header {
-  text-align: center;
-}
-
-.performer-recap-header h2 {
-  margin: 6px 0 8px;
-  color: #fff;
-  font-size: clamp(52px, 5.8vw, 106px);
-  line-height: 0.95;
-  font-weight: 1000;
-  letter-spacing: -0.06em;
-}
-
-.performer-recap-header p:not(.section-kicker) {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.76);
-  font-size: clamp(20px, 1.7vw, 32px);
-  font-weight: 900;
+  display: none;
 }
 
 .performer-recap-grid {
+  width: 100%;
+  height: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: clamp(14px, 1.5vw, 24px);
-  align-content: center;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1vw, 18px);
+  align-content: stretch;
 }
 
 .performer-recap-card {
-  min-height: clamp(250px, 28vh, 340px);
+  min-width: 0;
+  min-height: 0;
   display: grid;
-  grid-template-rows: minmax(120px, 1.1fr) auto;
+  grid-template-rows: minmax(0, 1fr) auto;
   overflow: hidden;
-  border-radius: 28px;
+  border-radius: 22px;
   background: rgba(0, 0, 0, 0.24);
   border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
 }
 
 .performer-recap-photo {
-  min-height: 140px;
+  min-height: 0;
   background: rgba(255, 255, 255, 0.08);
   overflow: hidden;
 }
 
 .performer-recap-info {
-  padding: clamp(14px, 1.4vw, 22px);
+  min-width: 0;
+  padding: clamp(9px, 0.9vw, 14px);
 }
 
 .performer-recap-info span {
   display: inline-flex;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   color: var(--color-gold);
-  font-size: clamp(14px, 1.1vw, 20px);
+  font-size: clamp(12px, 0.85vw, 16px);
   font-weight: 1000;
 }
 
 .performer-recap-info strong {
   display: block;
   color: #fff;
-  font-size: clamp(24px, 2vw, 38px);
-  line-height: 1.05;
+  font-size: clamp(18px, 1.35vw, 28px);
+  line-height: 1.02;
   font-weight: 1000;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .performer-recap-info p {
-  margin: 8px 0 0;
+  margin: 5px 0 0;
   color: rgba(255, 255, 255, 0.78);
-  font-size: clamp(15px, 1.25vw, 22px);
-  line-height: 1.2;
+  font-size: clamp(11px, 0.82vw, 16px);
+  line-height: 1.1;
   font-weight: 900;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .performer-recap-info small {
   display: block;
-  margin-top: 10px;
+  margin-top: 5px;
   color: rgba(255, 255, 255, 0.58);
-  font-size: clamp(13px, 1vw, 18px);
-  line-height: 1.25;
+  font-size: clamp(10px, 0.72vw, 13px);
+  line-height: 1.15;
   font-weight: 800;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .performer-recap-footer {
-  padding: clamp(14px, 1.4vw, 22px);
-  border-radius: 999px;
-  color: #fff;
-  background: rgba(255, 209, 102, 0.13);
-  border: 1px solid rgba(255, 209, 102, 0.26);
-  text-align: center;
-  font-size: clamp(16px, 1.3vw, 24px);
-  line-height: 1.35;
-  font-weight: 1000;
+  display: none;
 }
 
 .performer-empty-state {
@@ -316,5 +305,15 @@
 
   .performer-photo-panel {
     height: 360px;
+  }
+
+  .performer-recap-stage {
+    height: auto;
+    max-height: none;
+  }
+
+  .performer-recap-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto;
   }
 }
