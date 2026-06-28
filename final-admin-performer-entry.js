@@ -13,6 +13,23 @@ function ensurePerformerControlEntry() {
   header.appendChild(link);
 }
 
-ensurePerformerControlEntry();
-const performerEntryObserver = new MutationObserver(ensurePerformerControlEntry);
-performerEntryObserver.observe(document.body, { childList: true, subtree: true });
+function ensureAdminStatusMessageIsClear() {
+  const userStatus = document.getElementById('finalAdminUserStatus')?.textContent || '';
+  const accessStatus = document.getElementById('finalAdminAccessStatus');
+  if (!accessStatus) return;
+
+  const isKnownAdmin = userStatus.includes('isaacchenpro@gmail.com');
+  const isMisleadingMessage = accessStatus.textContent.includes('此帳號沒有管理員權限');
+  if (!isKnownAdmin || !isMisleadingMessage) return;
+
+  accessStatus.textContent = 'Firestore 目前無法連線，暫時無法確認管理員權限。請確認網路後重新整理頁面。';
+}
+
+function runFinalAdminEntryEnhancements() {
+  ensurePerformerControlEntry();
+  ensureAdminStatusMessageIsClear();
+}
+
+runFinalAdminEntryEnhancements();
+const performerEntryObserver = new MutationObserver(runFinalAdminEntryEnhancements);
+performerEntryObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
