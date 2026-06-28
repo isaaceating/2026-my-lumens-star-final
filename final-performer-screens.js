@@ -25,8 +25,8 @@ function ensureCompactRecapStyles() {
   style.id = "finalResultsRecapCompactStyles";
   style.textContent = `
     .performer-recap-stage {
-      height: min(620px, calc(100vh - 305px)) !important;
-      max-height: min(620px, calc(100vh - 305px)) !important;
+      height: min(780px, calc(100vh - 225px)) !important;
+      max-height: min(780px, calc(100vh - 225px)) !important;
       padding: 12px !important;
       overflow: hidden !important;
     }
