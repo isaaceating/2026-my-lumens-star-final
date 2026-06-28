@@ -25,21 +25,33 @@ function ensureCompactRecapStyles() {
   style.id = "finalResultsRecapCompactStyles";
   style.textContent = `
     .performer-recap-stage {
+      height: min(620px, calc(100vh - 305px)) !important;
+      max-height: min(620px, calc(100vh - 305px)) !important;
       padding: 12px !important;
+      overflow: hidden !important;
     }
 
     .performer-recap-grid {
+      height: 100% !important;
+      grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+      grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
       gap: 10px !important;
+      align-content: stretch !important;
+      overflow: hidden !important;
     }
 
     .performer-recap-card {
+      height: 100% !important;
+      min-height: 0 !important;
       grid-template-rows: 30% 70% !important;
       border-radius: 18px !important;
+      overflow: hidden !important;
     }
 
     .performer-recap-photo {
       min-height: 0 !important;
       height: 100% !important;
+      overflow: hidden !important;
     }
 
     .performer-recap-info {
