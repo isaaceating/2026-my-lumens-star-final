@@ -32,16 +32,18 @@ function ensureCompactRecapStyles() {
     }
 
     .performer-recap-grid {
-      height: 100% !important;
+      height: auto !important;
+      display: grid !important;
       grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
-      grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+      grid-template-rows: repeat(2, minmax(230px, 250px)) !important;
+      grid-auto-rows: 250px !important;
       gap: 10px !important;
-      align-content: stretch !important;
+      align-content: start !important;
       overflow: hidden !important;
     }
 
     .performer-recap-card {
-      height: 100% !important;
+      height: 250px !important;
       min-height: 0 !important;
       grid-template-rows: 30% 70% !important;
       border-radius: 18px !important;
