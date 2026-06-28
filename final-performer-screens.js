@@ -21,11 +21,55 @@ const STANDARD_SCREEN_IDS = [
 
 function ensureCompactRecapStyles() {
   if (document.getElementById("finalResultsRecapCompactStyles")) return;
-  const link = document.createElement("link");
-  link.id = "finalResultsRecapCompactStyles";
-  link.rel = "stylesheet";
-  link.href = "css/final-results-recap-compact.css";
-  document.head.appendChild(link);
+  const style = document.createElement("style");
+  style.id = "finalResultsRecapCompactStyles";
+  style.textContent = `
+    .performer-recap-stage {
+      padding: 14px !important;
+    }
+
+    .performer-recap-grid {
+      gap: 10px !important;
+    }
+
+    .performer-recap-card {
+      grid-template-rows: 46% 54% !important;
+      border-radius: 18px !important;
+    }
+
+    .performer-recap-photo {
+      min-height: 0 !important;
+      height: 100% !important;
+    }
+
+    .performer-recap-info {
+      padding: 8px 10px !important;
+      overflow: hidden !important;
+    }
+
+    .performer-recap-info span {
+      margin-bottom: 3px !important;
+      font-size: clamp(10px, 0.72vw, 13px) !important;
+    }
+
+    .performer-recap-info strong {
+      font-size: clamp(15px, 1.08vw, 21px) !important;
+      line-height: 1.02 !important;
+    }
+
+    .performer-recap-info p {
+      margin-top: 4px !important;
+      font-size: clamp(9px, 0.68vw, 12px) !important;
+      line-height: 1.08 !important;
+    }
+
+    .performer-recap-info small {
+      margin-top: 4px !important;
+      font-size: clamp(8px, 0.58vw, 10px) !important;
+      line-height: 1.12 !important;
+    }
+  `;
+  document.head.appendChild(style);
 }
 
 function ensurePerformerScreens() {
