@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>選手大螢幕控制｜2026 My Lumens Star</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">2026 My Lumens Star</a>
+    <div class="nav-links">
+      <a href="final-admin.html">決賽控制台</a>
+      <a href="final-results.html" target="_blank" rel="noopener">開啟大螢幕頁</a>
+    </div>
+  </nav>
+
+  <main class="admin-page final-admin-page">
+    <section class="section admin-section admin-hero-section">
+      <div class="section-title-row">
+        <div>
+          <p class="section-kicker">Performer Display Control</p>
+          <h1>選手大螢幕控制</h1>
+          <p class="section-desc">請先在決賽控制台完成 Google Admin 登入，再回到此頁操作選手出場與全選手回顧。</p>
+        </div>
+        <div class="admin-actions">
+          <a class="admin-link-button" href="final-admin.html">前往登入 / 回決賽控制台</a>
+          <a class="admin-link-button" href="final-results.html" target="_blank" rel="noopener">開啟大螢幕頁</a>
+        </div>
+      </div>
+
+      <section id="resultDisplayControl" class="admin-panel-section">
+        <div class="admin-section-header">
+          <div>
+            <p class="section-kicker">Display Control</p>
+            <h2>選手登場與投票前回顧</h2>
+            <p class="section-desc">用於每位歌手上場前，以及所有歌手演唱結束、正式投票前。</p>
+          </div>
+        </div>
+
+        <div class="result-control-card">
+          <p id="resultDisplayControlMessage" class="message">控制元件載入中...</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+  <script type="module" src="final-admin-performer-controls.js"></script>
+</body>
+</html>
