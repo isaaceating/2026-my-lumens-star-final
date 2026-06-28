@@ -19,7 +19,17 @@ const STANDARD_SCREEN_IDS = [
   "awardRevealScreen"
 ];
 
+function ensureCompactRecapStyles() {
+  if (document.getElementById("finalResultsRecapCompactStyles")) return;
+  const link = document.createElement("link");
+  link.id = "finalResultsRecapCompactStyles";
+  link.rel = "stylesheet";
+  link.href = "css/final-results-recap-compact.css";
+  document.head.appendChild(link);
+}
+
 function ensurePerformerScreens() {
+  ensureCompactRecapStyles();
   const displayScreen = $("resultsDisplayScreen");
   if (!displayScreen) return;
 
