@@ -9,8 +9,8 @@
 }
 
 .performer-intro-stage {
-  height: min(700px, 70vh);
-  max-height: min(700px, 70vh);
+  height: min(820px, calc(100vh - 215px));
+  max-height: min(820px, calc(100vh - 215px));
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
   gap: clamp(26px, 3.4vw, 60px);
