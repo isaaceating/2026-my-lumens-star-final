@@ -120,9 +120,7 @@ function renderPerformerIntro() {
 
   stage.innerHTML = `
     <div class="performer-intro-copy">
-      <p class="section-kicker">Next Performer</p>
       <div class="performer-number">No. ${number}</div>
-      <h2>請掌聲歡迎</h2>
       <h1>${escapeHtml(contestant.name || contestant.stageName || "神秘歌手")}</h1>
       <p class="performer-stage-name">A.K.A. ${escapeHtml(contestant.stageName || "—")}</p>
       <div class="performer-song-block">
