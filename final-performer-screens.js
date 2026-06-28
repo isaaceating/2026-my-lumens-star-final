@@ -10,6 +10,8 @@ let currentContestantId = "";
 let contestantsCache = [];
 let renderQueued = false;
 
+const MAX_RECAP_CONTESTANTS = 13;
+
 const STANDARD_SCREEN_IDS = [
   "preVotingStandbyScreen",
   "liveVotingScreen",
@@ -32,18 +34,17 @@ function ensureCompactRecapStyles() {
     }
 
     .performer-recap-grid {
-      height: auto !important;
+      height: 100% !important;
       display: grid !important;
       grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
-      grid-template-rows: repeat(2, minmax(230px, 250px)) !important;
-      grid-auto-rows: 250px !important;
+      grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
       gap: 10px !important;
-      align-content: start !important;
+      align-content: stretch !important;
       overflow: hidden !important;
     }
 
     .performer-recap-card {
-      height: 250px !important;
+      height: auto !important;
       min-height: 0 !important;
       grid-template-rows: 30% 70% !important;
       border-radius: 18px !important;
@@ -194,11 +195,15 @@ function renderPerformerIntro() {
     </div>`;
 }
 
+function getOfficialRecapContestants() {
+  return contestantsCache.slice(0, MAX_RECAP_CONTESTANTS);
+}
+
 function renderPerformerRecap() {
   const grid = $("performerRecapGrid");
   if (!grid) return;
 
-  const contestants = contestantsCache;
+  const contestants = getOfficialRecapContestants();
   if (!contestants.length) {
     grid.innerHTML = `<div class="performer-empty-state">選手資料載入中...</div>`;
     return;
