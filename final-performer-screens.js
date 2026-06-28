@@ -25,7 +25,7 @@ function ensureCompactRecapStyles() {
   style.id = "finalResultsRecapCompactStyles";
   style.textContent = `
     .performer-recap-stage {
-      padding: 14px !important;
+      padding: 12px !important;
     }
 
     .performer-recap-grid {
@@ -33,7 +33,7 @@ function ensureCompactRecapStyles() {
     }
 
     .performer-recap-card {
-      grid-template-rows: 46% 54% !important;
+      grid-template-rows: 30% 70% !important;
       border-radius: 18px !important;
     }
 
@@ -43,30 +43,30 @@ function ensureCompactRecapStyles() {
     }
 
     .performer-recap-info {
-      padding: 8px 10px !important;
+      padding: 10px 12px !important;
       overflow: hidden !important;
     }
 
     .performer-recap-info span {
-      margin-bottom: 3px !important;
-      font-size: clamp(10px, 0.72vw, 13px) !important;
+      margin-bottom: 5px !important;
+      font-size: clamp(13px, 0.95vw, 17px) !important;
     }
 
     .performer-recap-info strong {
-      font-size: clamp(15px, 1.08vw, 21px) !important;
-      line-height: 1.02 !important;
+      font-size: clamp(19px, 1.42vw, 28px) !important;
+      line-height: 1.03 !important;
     }
 
     .performer-recap-info p {
-      margin-top: 4px !important;
-      font-size: clamp(9px, 0.68vw, 12px) !important;
-      line-height: 1.08 !important;
+      margin-top: 7px !important;
+      font-size: clamp(12px, 0.9vw, 16px) !important;
+      line-height: 1.12 !important;
     }
 
     .performer-recap-info small {
-      margin-top: 4px !important;
-      font-size: clamp(8px, 0.58vw, 10px) !important;
-      line-height: 1.12 !important;
+      margin-top: 6px !important;
+      font-size: clamp(10px, 0.78vw, 13px) !important;
+      line-height: 1.15 !important;
     }
   `;
   document.head.appendChild(style);
