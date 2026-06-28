@@ -38,15 +38,7 @@ function ensurePerformerScreens() {
     screen.className = "results-mode-screen performer-recap-screen hidden";
     screen.innerHTML = `
       <div class="performer-recap-stage">
-        <div class="performer-recap-header">
-          <p class="section-kicker">Before Voting</p>
-          <h2>歌手回顧</h2>
-          <p>投票前，帶大家快速回顧所有參賽歌手。</p>
-        </div>
         <div id="performerRecapGrid" class="performer-recap-grid"></div>
-        <div class="performer-recap-footer">
-          所有歌手演唱結束後，將依主持人指示開放投票｜觀眾投票每人 3 票，不可重複｜紅毯巨星投票每人 1 票
-        </div>
       </div>`;
     const awardRevealScreen = $("awardRevealScreen");
     displayScreen.insertBefore(screen, awardRevealScreen || null);
