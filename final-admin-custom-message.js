@@ -118,3 +118,5 @@ document.addEventListener("click", (event) => {
 ensureCustomMessageControls();
 const observer = new MutationObserver(ensureCustomMessageControls);
 observer.observe(document.body, { childList: true, subtree: true });
+
+import("./final-admin-performer-entry.js");
