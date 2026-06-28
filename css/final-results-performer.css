@@ -9,13 +9,13 @@
 }
 
 .performer-intro-stage {
-  height: min(720px, 72vh);
-  max-height: min(720px, 72vh);
+  height: min(640px, 64vh);
+  max-height: min(640px, 64vh);
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(360px, 0.98fr);
   gap: clamp(26px, 3.4vw, 60px);
   align-items: stretch;
-  padding: clamp(24px, 3.2vw, 58px);
+  padding: clamp(22px, 2.8vw, 46px);
   border-radius: 42px;
   background:
     radial-gradient(circle at 18% 12%, rgba(255, 209, 102, 0.28), transparent 34%),
@@ -48,7 +48,7 @@
   min-width: 0;
   min-height: 0;
   display: grid;
-  gap: clamp(12px, 1.35vh, 20px);
+  gap: clamp(10px, 1.15vh, 18px);
   align-content: center;
   align-self: stretch;
   overflow: hidden;
@@ -64,12 +64,12 @@
 
 .performer-number {
   width: fit-content;
-  padding: clamp(10px, 0.85vw, 15px) clamp(20px, 1.65vw, 30px);
+  padding: clamp(9px, 0.75vw, 14px) clamp(18px, 1.55vw, 28px);
   border-radius: 999px;
   color: var(--color-gold);
   background: rgba(255, 209, 102, 0.14);
   border: 1px solid rgba(255, 209, 102, 0.34);
-  font-size: clamp(28px, 2.9vw, 54px);
+  font-size: clamp(26px, 2.6vw, 48px);
   line-height: 1;
   font-weight: 1000;
   box-shadow: 0 18px 44px rgba(255, 209, 102, 0.15);
@@ -88,7 +88,7 @@
   margin: 0;
   max-width: 100%;
   color: #fff;
-  font-size: clamp(44px, 5.4vw, 96px);
+  font-size: clamp(40px, 5vw, 88px);
   line-height: 1;
   font-weight: 1000;
   letter-spacing: -0.04em;
@@ -101,7 +101,7 @@
   margin: 0;
   max-width: 100%;
   color: var(--color-gold);
-  font-size: clamp(23px, 2.2vw, 40px);
+  font-size: clamp(22px, 2vw, 36px);
   line-height: 1.14;
   font-weight: 1000;
   overflow-wrap: anywhere;
@@ -110,8 +110,8 @@
 
 .performer-song-block {
   width: min(720px, 100%);
-  margin-top: clamp(4px, 0.65vh, 12px);
-  padding: clamp(16px, 1.55vw, 26px);
+  margin-top: clamp(3px, 0.5vh, 10px);
+  padding: clamp(14px, 1.35vw, 22px);
   border-radius: 28px;
   background: rgba(0, 0, 0, 0.24);
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -121,9 +121,9 @@
 
 .performer-song-block span {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 7px;
   color: rgba(255, 255, 255, 0.64);
-  font-size: clamp(16px, 1.2vw, 22px);
+  font-size: clamp(15px, 1.1vw, 20px);
   font-weight: 900;
 }
 
@@ -131,7 +131,7 @@
   display: block;
   max-width: 100%;
   color: #fff;
-  font-size: clamp(25px, 2.65vw, 48px);
+  font-size: clamp(24px, 2.45vw, 44px);
   line-height: 1.12;
   font-weight: 1000;
   overflow-wrap: anywhere;
@@ -151,8 +151,8 @@
     rgba(255, 255, 255, 0.11);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.34);
-  display: grid;
-  place-items: center;
+  display: block;
+  position: relative;
   box-sizing: border-box;
 }
 
@@ -164,6 +164,11 @@
   max-height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.performer-photo-panel img {
+  position: absolute;
+  inset: 0;
 }
 
 .performer-photo-placeholder {
