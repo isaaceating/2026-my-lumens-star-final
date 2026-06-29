@@ -62,10 +62,10 @@ function ensureCompactRecapStyles() {
       overflow: hidden !important;
     }
 
-.performer-recap-info {
-  padding: 12px 14px !important;
-  overflow: hidden !important;
-}
+    .performer-recap-info {
+      padding: 12px 14px !important;
+      overflow: hidden !important;
+    }
 
     .performer-recap-info span {
       margin-bottom: 5px !important;
@@ -88,13 +88,66 @@ function ensureCompactRecapStyles() {
       font-weight: 700 !important;
     }
 
-.performer-recap-info small {
-  margin-top: 7px !important;
-  color: rgba(255, 255, 255, 0.82) !important;
-  font-size: clamp(18px, 0.9vw, 22px) !important;
-  line-height: 1.18 !important;
-  font-weight: 600 !important;
-}
+    .performer-recap-info small {
+      margin-top: 7px !important;
+      color: rgba(255, 255, 255, 0.82) !important;
+      font-size: clamp(18px, 0.9vw, 22px) !important;
+      line-height: 1.18 !important;
+      font-weight: 600 !important;
+    }
+
+    .performer-recap-vote-card {
+      min-height: 0 !important;
+      display: grid !important;
+      grid-template-rows: auto 1fr auto !important;
+      gap: 10px !important;
+      align-items: center !important;
+      justify-items: center !important;
+      padding: 16px !important;
+      border-radius: 18px !important;
+      overflow: hidden !important;
+      background:
+        radial-gradient(circle at 50% 16%, rgba(255, 209, 102, 0.26), transparent 34%),
+        linear-gradient(135deg, rgba(255, 209, 102, 0.16), rgba(111, 207, 255, 0.1)),
+        rgba(0, 0, 0, 0.26) !important;
+      border: 1px solid rgba(255, 209, 102, 0.42) !important;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28) !important;
+    }
+
+    .performer-recap-vote-card span {
+      color: #ffd166 !important;
+      font-size: clamp(16px, 1.2vw, 22px) !important;
+      font-weight: 1000 !important;
+      letter-spacing: 0.04em !important;
+    }
+
+    .performer-recap-vote-card img {
+      width: min(150px, 72%) !important;
+      max-width: 100% !important;
+      aspect-ratio: 1 / 1 !important;
+      padding: 8px !important;
+      border-radius: 18px !important;
+      background: #ffffff !important;
+      display: block !important;
+    }
+
+    .performer-recap-vote-card strong {
+      color: #ffffff !important;
+      font-size: clamp(20px, 1.45vw, 28px) !important;
+      line-height: 1.1 !important;
+      font-weight: 1000 !important;
+      text-align: center !important;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.45) !important;
+    }
+
+    .performer-recap-vote-card p {
+      margin: 0 !important;
+      color: rgba(255, 255, 255, 0.82) !important;
+      font-size: clamp(12px, 0.9vw, 16px) !important;
+      line-height: 1.2 !important;
+      font-weight: 800 !important;
+      text-align: center !important;
+    }
   `;
   document.head.appendChild(style);
 }
@@ -215,6 +268,24 @@ function getOfficialRecapContestants() {
   return contestantsCache.slice(0, MAX_RECAP_CONTESTANTS);
 }
 
+function getVoteUrl() {
+  return new URL("final-vote.html", window.location.href).href;
+}
+
+function getVoteQrUrl() {
+  return `https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=16&data=${encodeURIComponent(getVoteUrl())}`;
+}
+
+function renderVoteQrCard() {
+  return `
+    <article class="performer-recap-vote-card">
+      <span>Vote Now</span>
+      <img src="${escapeHtml(getVoteQrUrl())}" alt="決賽投票 QR Code" />
+      <strong>掃描投票</strong>
+      <p>請依主持人指示<br />完成決賽投票</p>
+    </article>`;
+}
+
 function renderPerformerRecap() {
   const grid = $("performerRecapGrid");
   if (!grid) return;
@@ -225,7 +296,7 @@ function renderPerformerRecap() {
     return;
   }
 
-  grid.innerHTML = contestants
+  const contestantCards = contestants
     .map((contestant, index) => {
       const number = String(index + 1).padStart(2, "0");
       const photoUrl = getContestantPhoto(contestant);
@@ -245,6 +316,8 @@ function renderPerformerRecap() {
       </article>`;
     })
     .join("");
+
+  grid.innerHTML = `${contestantCards}${renderVoteQrCard()}`;
 }
 
 function getContestantById(id) {
