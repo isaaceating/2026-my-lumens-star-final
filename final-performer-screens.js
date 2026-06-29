@@ -1,5 +1,10 @@
 import { getApps } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getFirestore, collection, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import {
+  getFirestore,
+  collection,
+  doc,
+  onSnapshot,
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const app = getApps()[0];
 const db = app ? getFirestore(app) : null;
@@ -18,7 +23,7 @@ const STANDARD_SCREEN_IDS = [
   "beforeRevealStandbyScreen",
   "intermissionScreen",
   "customMessageScreen",
-  "awardRevealScreen"
+  "awardRevealScreen",
 ];
 
 function ensureCompactRecapStyles() {
@@ -27,8 +32,8 @@ function ensureCompactRecapStyles() {
   style.id = "finalResultsRecapCompactStyles";
   style.textContent = `
     .performer-recap-stage {
-      height: min(780px, calc(100vh - 225px)) !important;
-      max-height: min(780px, calc(100vh - 225px)) !important;
+      height: min(900px, calc(100vh - 125px)) !important;
+      max-height: min(1300px, calc(200vh - 50px)) !important;
       padding: 12px !important;
       overflow: hidden !important;
     }
@@ -46,7 +51,7 @@ function ensureCompactRecapStyles() {
     .performer-recap-card {
       height: auto !important;
       min-height: 0 !important;
-      grid-template-rows: 30% 70% !important;
+      grid-template-rows: 55% 45% !important;
       border-radius: 18px !important;
       overflow: hidden !important;
     }
@@ -57,10 +62,10 @@ function ensureCompactRecapStyles() {
       overflow: hidden !important;
     }
 
-    .performer-recap-info {
-      padding: 10px 12px !important;
-      overflow: hidden !important;
-    }
+.performer-recap-info {
+  padding: 12px 14px !important;
+  overflow: hidden !important;
+}
 
     .performer-recap-info span {
       margin-bottom: 5px !important;
@@ -68,21 +73,28 @@ function ensureCompactRecapStyles() {
     }
 
     .performer-recap-info strong {
-      font-size: clamp(19px, 1.42vw, 28px) !important;
-      line-height: 1.03 !important;
+      color: #ffffff !important;
+      font-size: clamp(24px, 1.6vw, 28px) !important;
+      line-height: 1.05 !important;
+      font-weight: 800 !important;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.55) !important;
     }
 
     .performer-recap-info p {
-      margin-top: 7px !important;
-      font-size: clamp(12px, 0.9vw, 16px) !important;
+      margin-top: 8px !important;
+      color: #ffd166 !important;
+      font-size: clamp(14px, 1vw, 16px) !important;
       line-height: 1.12 !important;
+      font-weight: 700 !important;
     }
 
-    .performer-recap-info small {
-      margin-top: 6px !important;
-      font-size: clamp(10px, 0.78vw, 13px) !important;
-      line-height: 1.15 !important;
-    }
+.performer-recap-info small {
+  margin-top: 7px !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  font-size: clamp(18px, 0.9vw, 22px) !important;
+  line-height: 1.18 !important;
+  font-weight: 600 !important;
+}
   `;
   document.head.appendChild(style);
 }
@@ -173,8 +185,12 @@ function renderPerformerIntro() {
     return;
   }
 
-  const contestant = getContestantById(currentContestantId) || contestantsCache[0];
-  const index = Math.max(0, contestantsCache.findIndex((item) => item.id === contestant.id));
+  const contestant =
+    getContestantById(currentContestantId) || contestantsCache[0];
+  const index = Math.max(
+    0,
+    contestantsCache.findIndex((item) => item.id === contestant.id),
+  );
   const number = String(index + 1).padStart(2, "0");
   const photoUrl = getContestantPhoto(contestant);
   const songTitle = getContestantSong(contestant);
@@ -209,12 +225,13 @@ function renderPerformerRecap() {
     return;
   }
 
-  grid.innerHTML = contestants.map((contestant, index) => {
-    const number = String(index + 1).padStart(2, "0");
-    const photoUrl = getContestantPhoto(contestant);
-    const songTitle = getContestantSong(contestant);
+  grid.innerHTML = contestants
+    .map((contestant, index) => {
+      const number = String(index + 1).padStart(2, "0");
+      const photoUrl = getContestantPhoto(contestant);
+      const songTitle = getContestantSong(contestant);
 
-    return `
+      return `
       <article class="performer-recap-card">
         <div class="performer-recap-photo">
           ${photoUrl ? `<img src="${escapeHtml(photoUrl)}" alt="${escapeHtml(contestant.name || contestant.stageName || "選手")}" />` : `<div class="performer-photo-placeholder">★</div>`}
@@ -226,7 +243,8 @@ function renderPerformerRecap() {
           <small>${escapeHtml(songTitle || "演唱曲目待補")}</small>
         </div>
       </article>`;
-  }).join("");
+    })
+    .join("");
 }
 
 function getContestantById(id) {
@@ -235,20 +253,24 @@ function getContestantById(id) {
 }
 
 function getContestantPhoto(contestant) {
-  return contestant?.photoUrl
-    || contestant?.photoURL
-    || contestant?.imageUrl
-    || contestant?.imageURL
-    || contestant?.photo
-    || "";
+  return (
+    contestant?.photoUrl ||
+    contestant?.photoURL ||
+    contestant?.imageUrl ||
+    contestant?.imageURL ||
+    contestant?.photo ||
+    ""
+  );
 }
 
 function getContestantSong(contestant) {
-  return contestant?.performanceItem
-    || contestant?.songTitle
-    || contestant?.songName
-    || contestant?.song
-    || "";
+  return (
+    contestant?.performanceItem ||
+    contestant?.songTitle ||
+    contestant?.songName ||
+    contestant?.song ||
+    ""
+  );
 }
 
 function escapeHtml(value) {
