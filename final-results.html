@@ -1,111 +1,160 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>決賽大螢幕｜2026 My Lumens Star</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="css/final-results-performer.css" />
-</head>
-<body class="final-results-body">
-  <main class="final-results-page">
-    <section id="resultsLoginScreen" class="results-login-screen">
-      <div class="results-login-card">
-        <p class="section-kicker">Final Results Display</p>
-        <h1>決賽大螢幕</h1>
-        <p>此頁會讀取即時投票資料，請使用 Admin Google 帳號登入後再投影。</p>
-        <button type="button" id="resultsLoginButton" class="results-primary-button">Google Admin 登入</button>
-        <p id="resultsLoginMessage" class="results-message"></p>
-      </div>
-    </section>
-
-    <section id="resultsDisplayScreen" class="results-display-screen hidden">
-      <div class="results-topbar">
-        <div>
-          <p class="section-kicker">2026 My Lumens Star</p>
-          <h1 id="resultsMainTitle">決賽大螢幕</h1>
-        </div>
-        <div id="resultsStatusBadge" class="results-live-badge"><span></span>LIVE</div>
-      </div>
-
-      <section id="preVotingStandbyScreen" class="results-mode-screen hidden">
-        <div class="results-standby-stage pre-voting-stage">
-          <p class="section-kicker">Get Ready</p>
-          <h2>決賽投票即將開始</h2>
-          <p id="preVotingMessageText">請準備手機，等待主持人開放投票。</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>決賽大螢幕｜2026 My Lumens Star</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/final-results-performer.css" />
+  </head>
+  <body class="final-results-body">
+    <main class="final-results-page">
+      <section id="resultsLoginScreen" class="results-login-screen">
+        <div class="results-login-card">
+          <p class="section-kicker">Final Results Display</p>
+          <h1>決賽大螢幕</h1>
+          <p>此頁會讀取即時投票資料，請使用 Admin Google 帳號登入後再投影。</p>
+          <button
+            type="button"
+            id="resultsLoginButton"
+            class="results-primary-button"
+          >
+            Google Admin 登入
+          </button>
+          <p id="resultsLoginMessage" class="results-message"></p>
         </div>
       </section>
 
-      <section id="liveVotingScreen" class="results-mode-screen results-live-screen hidden">
-        <div class="results-live-progress-wrap">
-          <div id="liveProgressPanel" class="results-progress-panel">
-            <div class="results-progress-title">
-              <span>即時累積投票狀態</span>
-              <strong id="liveUpdatedAtText">資料同步中...</strong>
+      <section id="resultsDisplayScreen" class="results-display-screen hidden">
+        <div class="results-topbar">
+          <div>
+            <p class="section-kicker">2026 My Lumens Star</p>
+            <h1 id="resultsMainTitle">決賽大螢幕</h1>
+          </div>
+          <div id="resultsStatusBadge" class="results-live-badge">
+            <span></span>LIVE
+          </div>
+        </div>
+
+        <section id="preVotingStandbyScreen" class="results-mode-screen hidden">
+          <div class="results-standby-stage pre-voting-stage">
+            <p class="section-kicker">Get Ready</p>
+            <h2>決賽投票即將開始</h2>
+            <p id="preVotingMessageText">請準備手機，等待主持人開放投票。</p>
+          </div>
+        </section>
+
+        <section
+          id="liveVotingScreen"
+          class="results-mode-screen results-live-screen hidden"
+        >
+          <div class="results-live-progress-wrap">
+            <div id="liveProgressPanel" class="results-progress-panel">
+              <div class="results-progress-title">
+                <span>即時累積投票狀態</span>
+                <strong id="liveUpdatedAtText">資料同步中...</strong>
+              </div>
+              <div class="results-live-bars">
+                <div class="results-live-bar-row">
+                  <span>紅毯巨星投票</span>
+                  <div class="results-live-bar">
+                    <i id="redCarpetLiveBar" style="width: 0%"></i>
+                  </div>
+                </div>
+                <div class="results-live-bar-row">
+                  <span>決賽觀眾投票</span>
+                  <div class="results-live-bar">
+                    <i id="finalAudienceLiveBar" style="width: 0%"></i>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="results-live-bars">
-              <div class="results-live-bar-row"><span>紅毯巨星投票</span><div class="results-live-bar"><i id="redCarpetLiveBar" style="width:0%;"></i></div></div>
-              <div class="results-live-bar-row"><span>決賽觀眾投票</span><div class="results-live-bar"><i id="finalAudienceLiveBar" style="width:0%;"></i></div></div>
+          </div>
+
+          <div class="results-live-bottom">
+            <div class="results-qr-card">
+              <h2>掃描 QR Code 開始投票</h2>
+              <div class="results-qr-box">
+                <img id="voteQrImage" src="" alt="決賽投票 QR Code" />
+              </div>
+            </div>
+            <div class="results-countdown-card">
+              <h2 id="countdownTitle">投票倒數</h2>
+              <div id="countdownText" class="results-countdown">10:00</div>
+              <p id="countdownHintText" class="results-countdown-hint">
+                紅毯巨星造型獎＋決賽觀眾投票
+              </p>
             </div>
           </div>
-        </div>
 
-        <div class="results-live-bottom">
-          <div class="results-qr-card">
-            <h2>掃描 QR Code 開始投票</h2>
-            <div class="results-qr-box"><img id="voteQrImage" src="" alt="決賽投票 QR Code" /></div>
+          <div class="results-live-stats-wrap">
+            <div id="liveStatsGrid" class="results-stats-grid">
+              <div class="results-stat-card">
+                <span>紅毯總票數</span
+                ><strong id="liveRedCarpetTotalVotes">0</strong>
+              </div>
+              <div class="results-stat-card">
+                <span>決賽觀眾總票數</span
+                ><strong id="liveFinalAudienceTotalVotes">0</strong>
+              </div>
+              <div class="results-stat-card">
+                <span>完成決賽投票員工</span
+                ><strong id="liveFinalCompletedEmployees">0</strong>
+              </div>
+              <div class="results-stat-card">
+                <span>決賽目前最高票</span
+                ><strong id="liveFinalTopVotes">0</strong>
+              </div>
+            </div>
           </div>
-          <div class="results-countdown-card">
-            <h2 id="countdownTitle">投票倒數</h2>
-            <div id="countdownText" class="results-countdown">10:00</div>
-            <p id="countdownHintText" class="results-countdown-hint">紅毯巨星造型獎＋決賽觀眾投票</p>
+        </section>
+
+        <section
+          id="beforeRevealStandbyScreen"
+          class="results-mode-screen hidden"
+        >
+          <div class="results-standby-stage reveal-standby-stage">
+            <p class="section-kicker">Award Ceremony</p>
+            <h2>成績公布即將開始</h2>
+            <p id="beforeRevealMessageText">請稍候，頒獎結果即將揭曉。</p>
           </div>
-        </div>
+        </section>
 
-        <div class="results-live-stats-wrap">
-          <div id="liveStatsGrid" class="results-stats-grid">
-            <div class="results-stat-card"><span>紅毯總票數</span><strong id="liveRedCarpetTotalVotes">0</strong></div>
-            <div class="results-stat-card"><span>決賽觀眾總票數</span><strong id="liveFinalAudienceTotalVotes">0</strong></div>
-            <div class="results-stat-card"><span>完成決賽投票員工</span><strong id="liveFinalCompletedEmployees">0</strong></div>
-            <div class="results-stat-card"><span>決賽目前最高票</span><strong id="liveFinalTopVotes">0</strong></div>
+        <section id="intermissionScreen" class="results-mode-screen hidden">
+          <div class="results-standby-stage intermission-stage">
+            <p class="section-kicker">Intermission</p>
+            <h2>中場休息</h2>
+            <p id="intermissionMessageText">請稍候，精彩節目即將繼續。</p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="beforeRevealStandbyScreen" class="results-mode-screen hidden">
-        <div class="results-standby-stage reveal-standby-stage">
-          <p class="section-kicker">Award Ceremony</p>
-          <h2>成績公布即將開始</h2>
-          <p id="beforeRevealMessageText">請稍候，頒獎結果即將揭曉。</p>
-        </div>
-      </section>
+        <section
+          id="customMessageScreen"
+          class="results-mode-screen custom-message-screen hidden"
+        >
+          <div class="results-standby-stage custom-message-stage">
+            <h2 id="customMessageTitle">臨時公告</h2>
+            <p id="customMessageText">請稍候，現場流程調整中。</p>
+          </div>
+        </section>
 
-      <section id="intermissionScreen" class="results-mode-screen hidden">
-        <div class="results-standby-stage intermission-stage">
-          <p class="section-kicker">Intermission</p>
-          <h2>中場休息</h2>
-          <p id="intermissionMessageText">請稍候，精彩節目即將繼續。</p>
-        </div>
+        <section id="awardRevealScreen" class="results-mode-screen hidden">
+          <div id="awardRevealStage" class="results-award-stage">
+            <p id="awardRevealKicker" class="section-kicker">Award Reveal</p>
+            <h2 id="awardRevealTitle">獎項公布</h2>
+            <div id="awardRevealContent" class="results-award-content">
+              即將揭曉
+            </div>
+          </div>
+        </section>
       </section>
-
-      <section id="customMessageScreen" class="results-mode-screen custom-message-screen hidden">
-        <div class="results-standby-stage custom-message-stage">
-          <h2 id="customMessageTitle">臨時公告</h2>
-          <p id="customMessageText">請稍候，現場流程調整中。</p>
-        </div>
-      </section>
-
-      <section id="awardRevealScreen" class="results-mode-screen hidden">
-        <div id="awardRevealStage" class="results-award-stage">
-          <p id="awardRevealKicker" class="section-kicker">Award Reveal</p>
-          <h2 id="awardRevealTitle">獎項公布</h2>
-          <div id="awardRevealContent" class="results-award-content">即將揭曉</div>
-        </div>
-      </section>
-    </section>
-  </main>
-  <script type="module" src="final-results.js"></script>
-  <script type="module" src="final-results-flow-overrides.js"></script>
-  <script type="module" src="final-performer-screens.js"></script>
-</body>
+    </main>
+    <script type="module" src="final-results.js"></script>
+    <script type="module" src="final-results-flow-overrides.js"></script>
+    <script
+      type="module"
+      src="final-results-tiebreaker-patch.js?v=tiebreak-20260630"
+    ></script>
+    <script type="module" src="final-performer-screens.js"></script>
+  </body>
 </html>
