@@ -119,6 +119,7 @@ ensureCustomMessageControls();
 const observer = new MutationObserver(ensureCustomMessageControls);
 observer.observe(document.body, { childList: true, subtree: true });
 
+import("./final-admin-program-screens.js?v=program-screens-20260630");
 import("./final-admin-performer-entry.js");
 import("./final-admin-tiebreaker-patch.js?v=tiebreak-20260630");
 import("./final-admin-star-scout-fix.js?v=star-scout-fix-20260630");
