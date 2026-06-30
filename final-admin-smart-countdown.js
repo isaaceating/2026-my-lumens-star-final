@@ -51,7 +51,8 @@ function getCountdownDisplayMessage(data) {
 
 function updateResumeButtonText() {
   const button = $("resumeVotingCountdownButton");
-  if (button) button.textContent = SMART_RESUME_BUTTON_TEXT;
+  if (!button || button.textContent === SMART_RESUME_BUTTON_TEXT) return;
+  button.textContent = SMART_RESUME_BUTTON_TEXT;
 }
 
 async function smartResumeVotingCountdown(event) {
@@ -131,5 +132,3 @@ async function smartResumeVotingCountdown(event) {
 
 updateResumeButtonText();
 document.addEventListener("click", smartResumeVotingCountdown, true);
-const observer = new MutationObserver(updateResumeButtonText);
-observer.observe(document.body, { childList: true, subtree: true });
