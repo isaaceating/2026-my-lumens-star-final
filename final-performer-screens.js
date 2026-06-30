@@ -390,3 +390,5 @@ const observer = new MutationObserver(() => {
   }
 });
 observer.observe(document.body, { childList: true, subtree: true });
+
+import("./final-results-program-screens.js?v=program-screens-20260630");
