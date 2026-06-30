@@ -122,3 +122,4 @@ observer.observe(document.body, { childList: true, subtree: true });
 import("./final-admin-performer-entry.js");
 import("./final-admin-tiebreaker-patch.js?v=tiebreak-20260630");
 import("./final-admin-star-scout-fix.js?v=star-scout-fix-20260630");
+import("./final-admin-smart-countdown.js?v=smart-countdown-20260630");
