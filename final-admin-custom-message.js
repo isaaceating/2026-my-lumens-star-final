@@ -1,17 +1,8 @@
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getApps } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBlj362N4O6ERqgFziQ4Gg9W7SEyquKb0g",
-  authDomain: "my-lumens-star-2026.firebaseapp.com",
-  projectId: "my-lumens-star-2026",
-  storageBucket: "my-lumens-star-2026.firebasestorage.app",
-  messagingSenderId: "150108062917",
-  appId: "1:150108062917:web:f7284392bed27438041cac"
-};
-
-const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+const app = getApps()[0];
 const auth = getAuth(app);
 const db = getFirestore(app);
 const $ = (id) => document.getElementById(id);
@@ -119,6 +110,7 @@ ensureCustomMessageControls();
 const observer = new MutationObserver(ensureCustomMessageControls);
 observer.observe(document.body, { childList: true, subtree: true });
 
+import("./final-admin-display-images.js?v=display-images-20260701");
 import("./final-admin-program-screens.js?v=program-screens-20260630");
 import("./final-admin-performer-entry.js");
 import("./final-admin-tiebreaker-patch.js?v=tiebreak-20260630");
