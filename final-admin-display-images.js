@@ -8,13 +8,15 @@ import {
   getDocs,
   addDoc,
   setDoc,
+  deleteDoc,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 import {
   getStorage,
   ref,
   uploadBytes,
-  getDownloadURL
+  getDownloadURL,
+  deleteObject
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
 
 const firebaseConfig = {
@@ -60,7 +62,7 @@ function setStatus(message, type = "") {
 
 function setBusy(nextBusy) {
   isBusy = nextBusy;
-  ["uploadDisplayImageButton", "showDisplayImageButton", "refreshDisplayImagesButton"].forEach((id) => {
+  ["uploadDisplayImageButton", "showDisplayImageButton", "deleteDisplayImageButton", "refreshDisplayImagesButton"].forEach((id) => {
     const button = $(id);
     if (button) button.disabled = isBusy || !isAdmin;
   });
@@ -102,6 +104,7 @@ function ensureDisplayImageControls() {
         </select>
       </label>
       <button type="button" id="showDisplayImageButton">顯示滿版圖片</button>
+      <button type="button" id="deleteDisplayImageButton" class="danger-button">刪除圖片</button>
     </div>
 
     <div id="displayImagePreview" class="display-image-preview hidden"></div>
@@ -116,6 +119,7 @@ function ensureDisplayImageControls() {
 
   $("uploadDisplayImageButton")?.addEventListener("click", uploadDisplayImage);
   $("showDisplayImageButton")?.addEventListener("click", showSelectedDisplayImage);
+  $("deleteDisplayImageButton")?.addEventListener("click", deleteSelectedDisplayImage);
   $("refreshDisplayImagesButton")?.addEventListener("click", loadDisplayImages);
   $("displayImageSelect")?.addEventListener("change", renderSelectedPreview);
   renderDisplayImageOptions();
@@ -306,6 +310,67 @@ async function showSelectedDisplayImage() {
   } catch (error) {
     console.error("Show display image failed:", error);
     setStatus(`滿版圖片顯示失敗：${error.message}`, "error");
+  } finally {
+    setBusy(false);
+  }
+}
+
+async function deleteSelectedDisplayImage() {
+  if (!isAdmin || !currentUser) {
+    alert("請先使用 Google Admin 帳號登入。");
+    return;
+  }
+
+  const selected = getSelectedImage();
+  if (!selected) {
+    setStatus("請先從選單選擇要刪除的圖片。", "warning");
+    alert("請先選擇圖片。");
+    return;
+  }
+
+  const label = selected.name || selected.fileName || "未命名圖片";
+  const confirmed = confirm(`確定要刪除這張滿版圖片嗎？\n\n${label}\n\n刪除後會從選單移除，Storage 檔案也會一起刪除。`);
+  if (!confirmed) return;
+
+  try {
+    setBusy(true);
+    setStatus("圖片刪除中...");
+
+    const controlSnap = await getDoc(doc(db, "settings", "finalResultControl"));
+    const controlData = controlSnap.exists() ? controlSnap.data() : {};
+    const isCurrentDisplayImage = controlData.mode === "fullImage" && controlData.fullImageId === selected.id;
+
+    if (selected.storagePath) {
+      try {
+        await deleteObject(ref(storage, selected.storagePath));
+      } catch (storageError) {
+        if (storageError?.code !== "storage/object-not-found") throw storageError;
+      }
+    }
+
+    await deleteDoc(doc(db, "finalDisplayImages", selected.id));
+
+    if (isCurrentDisplayImage) {
+      await setDoc(doc(db, "settings", "finalResultControl"), {
+        mode: "preVotingStandby",
+        awardName: "投票即將開始",
+        contestantId: "",
+        countdownStatus: "stopped",
+        displayMessage: "請準備手機，等待主持人開放投票。",
+        fullImageId: "",
+        fullImageName: "",
+        fullImageUrl: "",
+        updatedAt: serverTimestamp(),
+        updatedBy: currentUser.email || "",
+        updatedByUid: currentUser.uid
+      }, { merge: true });
+    }
+
+    await loadDisplayImages();
+    setStatus(`「${label}」已刪除。`, "success");
+  } catch (error) {
+    console.error("Delete display image failed:", error);
+    setStatus(`圖片刪除失敗：${error.message}`, "error");
   } finally {
     setBusy(false);
   }
