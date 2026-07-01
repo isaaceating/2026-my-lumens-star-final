@@ -7,15 +7,6 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 let unsubscribeFullImageSnapshot = null;
 
-function escapeHtml(value) {
-  return String(value ?? "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
 function ensureFullImageScreen() {
   let screen = document.getElementById("fullImageDisplayScreen");
   if (screen) return screen;
@@ -23,10 +14,7 @@ function ensureFullImageScreen() {
   screen = document.createElement("section");
   screen.id = "fullImageDisplayScreen";
   screen.className = "full-image-display-screen hidden";
-  screen.innerHTML = `
-    <img id="fullImageDisplayImage" src="" alt="滿版圖片" />
-    <div id="fullImageDisplayLabel" class="full-image-display-label hidden"></div>
-  `;
+  screen.innerHTML = `<img id="fullImageDisplayImage" src="" alt="滿版圖片" />`;
   document.body.appendChild(screen);
   return screen;
 }
@@ -34,7 +22,6 @@ function ensureFullImageScreen() {
 function renderFullImage(data = {}) {
   const screen = ensureFullImageScreen();
   const image = document.getElementById("fullImageDisplayImage");
-  const label = document.getElementById("fullImageDisplayLabel");
 
   const shouldShow = data.mode === "fullImage" && Boolean(data.fullImageUrl);
   screen.classList.toggle("hidden", !shouldShow);
@@ -45,12 +32,6 @@ function renderFullImage(data = {}) {
   if (image) {
     image.src = data.fullImageUrl;
     image.alt = data.fullImageName || data.awardName || "滿版圖片";
-  }
-
-  const labelText = data.fullImageName || data.awardName || "";
-  if (label) {
-    label.classList.toggle("hidden", !labelText);
-    label.innerHTML = labelText ? escapeHtml(labelText) : "";
   }
 }
 
