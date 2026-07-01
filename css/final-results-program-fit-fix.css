@@ -1,0 +1,207 @@
+/* =========================================================
+   Final Program Screens Fit Fix
+   Keep opening, judges, and scoring screens inside projector viewport.
+========================================================= */
+
+.program-mode-screen {
+  width: 100%;
+  height: calc(100vh - 150px);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.program-screen-stage {
+  width: 100%;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: 100% !important;
+  display: grid !important;
+  place-items: center !important;
+  align-content: center !important;
+  padding: clamp(18px, 2.4vw, 42px) !important;
+  overflow: hidden !important;
+}
+
+.program-screen-stage > div {
+  width: min(1320px, 100%);
+  max-height: 100%;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  overflow: hidden;
+}
+
+.program-logo-lockup {
+  margin-bottom: clamp(10px, 1.5vh, 22px) !important;
+  gap: 0.08em !important;
+}
+
+.program-logo-year {
+  font-size: clamp(18px, 2vw, 36px) !important;
+}
+
+.program-logo-title {
+  font-size: clamp(30px, 4vw, 72px) !important;
+  line-height: 0.96 !important;
+}
+
+.program-logo-subtitle {
+  font-size: clamp(24px, 3.1vw, 58px) !important;
+  line-height: 1 !important;
+}
+
+.program-screen-kicker {
+  margin-bottom: clamp(6px, 1vh, 14px) !important;
+  font-size: clamp(13px, 1.1vw, 20px) !important;
+}
+
+.program-main-title {
+  font-size: clamp(46px, 6.4vw, 112px) !important;
+  line-height: 0.98 !important;
+}
+
+.program-main-subtitle {
+  margin-top: clamp(8px, 1vh, 16px) !important;
+  font-size: clamp(18px, 1.9vw, 34px) !important;
+  line-height: 1.22 !important;
+}
+
+.program-opening-orbit {
+  width: min(760px, 64vw) !important;
+  height: clamp(10px, 1vw, 18px) !important;
+  margin-top: clamp(18px, 2.5vh, 36px) !important;
+}
+
+.judges-grid {
+  width: min(1180px, 100%) !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: clamp(12px, 1.5vw, 22px) !important;
+  margin-top: clamp(16px, 2vh, 28px) !important;
+}
+
+.judge-card {
+  min-height: 0 !important;
+  height: clamp(190px, 26vh, 300px) !important;
+  gap: clamp(8px, 1vh, 14px) !important;
+  padding: clamp(12px, 1.5vw, 22px) !important;
+  border-radius: 22px !important;
+}
+
+.judge-avatar {
+  font-size: clamp(44px, 4.6vw, 84px) !important;
+  border-radius: 18px !important;
+}
+
+.judge-card strong {
+  font-size: clamp(20px, 1.9vw, 34px) !important;
+}
+
+.judge-card span {
+  margin-top: 4px !important;
+  font-size: clamp(12px, 1vw, 18px) !important;
+}
+
+.scoring-equation {
+  width: min(1180px, 100%) !important;
+  gap: clamp(8px, 1.2vw, 18px) !important;
+  margin-top: clamp(12px, 1.6vh, 24px) !important;
+}
+
+.scoring-card {
+  padding: clamp(12px, 1.5vw, 22px) !important;
+  border-radius: 22px !important;
+}
+
+.scoring-card span {
+  font-size: clamp(18px, 1.8vw, 32px) !important;
+}
+
+.scoring-card strong {
+  margin-top: 4px !important;
+  font-size: clamp(38px, 4.6vw, 86px) !important;
+}
+
+.scoring-symbol {
+  font-size: clamp(32px, 3.4vw, 64px) !important;
+}
+
+.scoring-detail-grid {
+  width: min(1180px, 100%) !important;
+  gap: clamp(10px, 1.4vw, 22px) !important;
+  margin-top: clamp(12px, 1.8vh, 24px) !important;
+}
+
+.scoring-breakdown,
+.scoring-formula-card {
+  padding: clamp(14px, 1.7vw, 24px) !important;
+  border-radius: 22px !important;
+}
+
+.scoring-breakdown h3,
+.scoring-formula-card h3 {
+  margin-bottom: clamp(6px, 0.8vh, 12px) !important;
+  font-size: clamp(18px, 1.6vw, 30px) !important;
+}
+
+.scoring-row {
+  padding: clamp(6px, 0.9vh, 12px) 0 !important;
+  font-size: clamp(18px, 1.6vw, 28px) !important;
+}
+
+.scoring-row strong {
+  font-size: clamp(24px, 2.2vw, 42px) !important;
+}
+
+.scoring-formula-card p {
+  font-size: clamp(19px, 1.8vw, 34px) !important;
+  line-height: 1.28 !important;
+}
+
+.scoring-formula-card small {
+  margin-top: clamp(8px, 1vh, 14px) !important;
+  font-size: clamp(13px, 1vw, 19px) !important;
+  line-height: 1.35 !important;
+}
+
+@media (max-height: 760px) {
+  .program-mode-screen {
+    height: calc(100vh - 128px);
+  }
+
+  .program-screen-stage {
+    padding: 14px !important;
+  }
+
+  .program-logo-lockup {
+    margin-bottom: 8px !important;
+  }
+
+  .program-logo-year {
+    font-size: clamp(16px, 1.7vw, 28px) !important;
+  }
+
+  .program-logo-title {
+    font-size: clamp(26px, 3.3vw, 56px) !important;
+  }
+
+  .program-logo-subtitle {
+    font-size: clamp(20px, 2.5vw, 44px) !important;
+  }
+
+  .program-main-title {
+    font-size: clamp(38px, 5vw, 88px) !important;
+  }
+
+  .judges-grid {
+    margin-top: 12px !important;
+  }
+
+  .judge-card {
+    height: clamp(160px, 24vh, 235px) !important;
+  }
+
+  .scoring-equation,
+  .scoring-detail-grid {
+    margin-top: 10px !important;
+  }
+}
