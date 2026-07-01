@@ -1,0 +1,205 @@
+.mystery-avatar.has-mystery-photo {
+  height: 300px;
+  padding: 0;
+  align-items: stretch;
+  background: #080915;
+  color: inherit;
+}
+
+.mystery-avatar.has-mystery-photo::before,
+.mystery-avatar.has-mystery-photo::after {
+  content: none;
+}
+
+.mystery-photo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.contestant-card.is-revealed-contestant .mystery-avatar,
+.contestant-card.is-revealed-contestant .revealed-contestant-photo {
+  height: 300px;
+}
+
+.revealed-contestant-photo {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  display: block;
+  background: #080915;
+}
+
+.contestant-card.is-revealed-contestant .contestant-name {
+  letter-spacing: 0.02em;
+  font-size: 28px;
+}
+
+.contestant-card.is-revealed-contestant .contestant-status {
+  color: var(--color-gold);
+}
+
+.contestant-detail-list {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 20px;
+}
+
+.contestant-detail-list div {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  color: var(--color-muted);
+  line-height: 1.55;
+}
+
+.contestant-detail-list span {
+  color: var(--color-gold);
+  font-weight: 900;
+}
+
+.contestant-detail-list strong {
+  color: var(--color-text);
+  font-weight: 800;
+}
+
+.home-reveal-admin-card {
+  margin: 22px 0;
+}
+
+.home-reveal-admin-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.home-reveal-admin-header h3 {
+  margin: 0 0 8px;
+  color: var(--color-text);
+  font-size: 24px;
+}
+
+.home-reveal-status-card {
+  min-width: 180px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 209, 102, 0.28);
+  background: rgba(255, 209, 102, 0.08);
+  text-align: center;
+}
+
+.home-reveal-status-card span,
+.mystery-preview-info span {
+  display: block;
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.home-reveal-status-card strong {
+  display: block;
+  margin-top: 6px;
+  color: var(--color-gold);
+  font-size: 20px;
+}
+
+.home-reveal-action-row,
+.mystery-image-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, auto));
+  gap: 14px;
+  align-items: end;
+  margin-top: 18px;
+}
+
+.mystery-image-admin-grid {
+  grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr) auto auto;
+}
+
+.home-reveal-divider {
+  margin: 22px 0;
+  border: 0;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+.home-reveal-admin-card label {
+  display: grid;
+  gap: 8px;
+  color: var(--color-muted-2);
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.home-reveal-admin-card select,
+.home-reveal-admin-card input {
+  width: 100%;
+}
+
+.mystery-image-admin-preview {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 16px;
+  align-items: center;
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 18px;
+  border: 1px solid var(--color-border-soft);
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.mystery-preview-image-wrap {
+  width: 190px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 209, 102, 0.28);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.mystery-preview-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mystery-preview-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  color: var(--color-muted);
+  text-align: center;
+  font-weight: 800;
+}
+
+.mystery-preview-info strong {
+  display: block;
+  color: var(--color-gold);
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.home-reveal-admin-card .danger-button {
+  background: rgba(255, 92, 92, 0.14);
+  border: 1px solid rgba(255, 92, 92, 0.38);
+  color: #ffb8b8;
+}
+
+@media (max-width: 900px) {
+  .home-reveal-action-row,
+  .mystery-image-admin-grid,
+  .mystery-image-admin-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .mystery-preview-image-wrap {
+    width: 100%;
+    max-width: 240px;
+  }
+}
