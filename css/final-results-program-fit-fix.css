@@ -1,30 +1,48 @@
 /* =========================================================
    Final Program Screens Fit Fix
-   Keep opening, judges, and scoring screens inside projector viewport.
+   Make opening, judges, and scoring screens occupy full projector viewport.
 ========================================================= */
+
+.results-display-screen:has(.program-mode-screen:not(.hidden)) {
+  height: 100vh !important;
+  min-height: 100vh !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.results-display-screen:has(.program-mode-screen:not(.hidden)) .results-topbar {
+  display: none !important;
+}
+
+.results-display-screen:has(.program-mode-screen:not(.hidden)) .program-mode-screen {
+  display: block;
+}
 
 .program-mode-screen {
   width: 100%;
-  height: calc(100vh - 150px);
-  min-height: 0;
+  height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
 }
 
 .program-screen-stage {
   width: 100%;
-  height: 100% !important;
+  height: 100vh !important;
   min-height: 0 !important;
-  max-height: 100% !important;
+  max-height: 100vh !important;
   display: grid !important;
   place-items: center !important;
   align-content: center !important;
-  padding: clamp(18px, 2.4vw, 42px) !important;
+  padding: clamp(28px, 3vw, 56px) !important;
   overflow: hidden !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
 
 .program-screen-stage > div {
-  width: min(1320px, 100%);
-  max-height: 100%;
+  width: min(1360px, 92vw);
+  max-height: 92vh;
   display: grid;
   justify-items: center;
   align-content: center;
@@ -32,21 +50,21 @@
 }
 
 .program-logo-lockup {
-  margin-bottom: clamp(10px, 1.5vh, 22px) !important;
+  margin-bottom: clamp(10px, 1.6vh, 24px) !important;
   gap: 0.08em !important;
 }
 
 .program-logo-year {
-  font-size: clamp(18px, 2vw, 36px) !important;
+  font-size: clamp(18px, 2vw, 38px) !important;
 }
 
 .program-logo-title {
-  font-size: clamp(30px, 4vw, 72px) !important;
+  font-size: clamp(34px, 4.4vw, 82px) !important;
   line-height: 0.96 !important;
 }
 
 .program-logo-subtitle {
-  font-size: clamp(24px, 3.1vw, 58px) !important;
+  font-size: clamp(26px, 3.4vw, 64px) !important;
   line-height: 1 !important;
 }
 
@@ -56,18 +74,18 @@
 }
 
 .program-main-title {
-  font-size: clamp(46px, 6.4vw, 112px) !important;
+  font-size: clamp(50px, 6.6vw, 122px) !important;
   line-height: 0.98 !important;
 }
 
 .program-main-subtitle {
   margin-top: clamp(8px, 1vh, 16px) !important;
-  font-size: clamp(18px, 1.9vw, 34px) !important;
+  font-size: clamp(18px, 2vw, 36px) !important;
   line-height: 1.22 !important;
 }
 
 .program-opening-orbit {
-  width: min(760px, 64vw) !important;
+  width: min(780px, 64vw) !important;
   height: clamp(10px, 1vw, 18px) !important;
   margin-top: clamp(18px, 2.5vh, 36px) !important;
 }
@@ -75,25 +93,25 @@
 .judges-grid {
   width: min(1180px, 100%) !important;
   grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: clamp(12px, 1.5vw, 22px) !important;
-  margin-top: clamp(16px, 2vh, 28px) !important;
+  gap: clamp(12px, 1.6vw, 24px) !important;
+  margin-top: clamp(16px, 2vh, 30px) !important;
 }
 
 .judge-card {
   min-height: 0 !important;
-  height: clamp(190px, 26vh, 300px) !important;
+  height: clamp(205px, 27vh, 320px) !important;
   gap: clamp(8px, 1vh, 14px) !important;
   padding: clamp(12px, 1.5vw, 22px) !important;
   border-radius: 22px !important;
 }
 
 .judge-avatar {
-  font-size: clamp(44px, 4.6vw, 84px) !important;
+  font-size: clamp(48px, 4.8vw, 88px) !important;
   border-radius: 18px !important;
 }
 
 .judge-card strong {
-  font-size: clamp(20px, 1.9vw, 34px) !important;
+  font-size: clamp(20px, 2vw, 36px) !important;
 }
 
 .judge-card span {
@@ -102,7 +120,7 @@
 }
 
 .scoring-equation {
-  width: min(1180px, 100%) !important;
+  width: min(1200px, 100%) !important;
   gap: clamp(8px, 1.2vw, 18px) !important;
   margin-top: clamp(12px, 1.6vh, 24px) !important;
 }
@@ -118,15 +136,15 @@
 
 .scoring-card strong {
   margin-top: 4px !important;
-  font-size: clamp(38px, 4.6vw, 86px) !important;
+  font-size: clamp(40px, 4.8vw, 90px) !important;
 }
 
 .scoring-symbol {
-  font-size: clamp(32px, 3.4vw, 64px) !important;
+  font-size: clamp(32px, 3.5vw, 66px) !important;
 }
 
 .scoring-detail-grid {
-  width: min(1180px, 100%) !important;
+  width: min(1200px, 100%) !important;
   gap: clamp(10px, 1.4vw, 22px) !important;
   margin-top: clamp(12px, 1.8vh, 24px) !important;
 }
@@ -164,12 +182,12 @@
 }
 
 @media (max-height: 760px) {
-  .program-mode-screen {
-    height: calc(100vh - 128px);
+  .program-screen-stage {
+    padding: 18px !important;
   }
 
-  .program-screen-stage {
-    padding: 14px !important;
+  .program-screen-stage > div {
+    max-height: 96vh;
   }
 
   .program-logo-lockup {
