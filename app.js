@@ -45,6 +45,11 @@ const announcementActionButton = document.getElementById(
   "announcementActionButton",
 );
 
+let homeContestantsCache = [];
+let homeContestantRevealSettings = {
+  isRevealed: false,
+};
+
 const MYSTERY_AVATARS = [
   {
     key: "mystery-01",
@@ -101,6 +106,7 @@ init();
 function init() {
   setupMobileNav();
   setupSmoothNavClose();
+  listenToHomeContestantRevealSettings();
   listenToPublishedContestants();
   listenToTotalExpectVotes();
   loadAnnouncement();
@@ -122,6 +128,26 @@ function setupSmoothNavClose() {
       navLinks.classList.remove("open");
     });
   });
+}
+
+function listenToHomeContestantRevealSettings() {
+  const settingsRef = doc(db, "settings", "homeContestantReveal");
+
+  onSnapshot(
+    settingsRef,
+    (snapshot) => {
+      const data = snapshot.exists() ? snapshot.data() : {};
+      homeContestantRevealSettings = {
+        isRevealed: data.isRevealed === true,
+      };
+      renderContestants(homeContestantsCache);
+    },
+    (error) => {
+      console.warn("Load home contestant reveal settings failed:", error);
+      homeContestantRevealSettings = { isRevealed: false };
+      renderContestants(homeContestantsCache);
+    },
+  );
 }
 
 function listenToPublishedContestants() {
@@ -158,6 +184,7 @@ function listenToPublishedContestants() {
         return timeA - timeB;
       });
 
+      homeContestantsCache = contestants;
       renderContestants(contestants);
     },
     (error) => {
@@ -179,46 +206,130 @@ function renderContestants(contestants) {
     return;
   }
 
+  const isRevealed = homeContestantRevealSettings.isRevealed === true;
+
   contestantsGrid.innerHTML = contestants
     .map((contestant, index) => {
-      const number = String(index + 1).padStart(2, "0");
-      const stageName = contestant.stageName
-        ? `A.K.A. ${escapeHtml(contestant.stageName)}`
-        : "A.K.A. 神秘登場";
-
-      const avatar = getMysteryAvatar(contestant, index);
-      const voteLink = `${EXPECT_VOTE_PAGE}?contestantId=${encodeURIComponent(contestant.id)}`;
-
-      return `
-        <article class="contestant-card mystery-contestant-card">
-          <div class="mystery-avatar ${avatar.className}" aria-label="${escapeHtml(avatar.label)}">
-            <div class="mystery-avatar-glow"></div>
-            <div class="mystery-avatar-head"></div>
-            <div class="mystery-avatar-body"></div>
-            <div class="mystery-avatar-badge">${escapeHtml(avatar.icon)}</div>
-          </div>
-
-          <div class="contestant-body">
-            <div class="contestant-meta-row">
-              <span class="contestant-number">No. ${number}</span>
-              <span class="contestant-status">匿名登場</span>
-            </div>
-
-            <h3 class="contestant-name">???</h3>
-            <h3 class="contestant-stage">${stageName}</h3>
-
-            <p class="contestant-teaser">
-              真實身份即將揭曉!
-            </p>
-
-            <a class="vote-link-button" href="${voteLink}">
-              投給他 / 她
-            </a>
-          </div>
-        </article>
-      `;
+      return isRevealed
+        ? renderRevealedContestantCard(contestant, index)
+        : renderMysteryContestantCard(contestant, index);
     })
     .join("");
+}
+
+function renderMysteryContestantCard(contestant, index) {
+  const number = String(index + 1).padStart(2, "0");
+  const stageName = contestant.stageName
+    ? `A.K.A. ${escapeHtml(contestant.stageName)}`
+    : "A.K.A. 神秘登場";
+
+  const voteLink = `${EXPECT_VOTE_PAGE}?contestantId=${encodeURIComponent(contestant.id)}`;
+
+  return `
+    <article class="contestant-card mystery-contestant-card">
+      ${renderMysteryMedia(contestant, index)}
+
+      <div class="contestant-body">
+        <div class="contestant-meta-row">
+          <span class="contestant-number">No. ${number}</span>
+          <span class="contestant-status">匿名登場</span>
+        </div>
+
+        <h3 class="contestant-name">???</h3>
+        <h3 class="contestant-stage">${stageName}</h3>
+
+        <p class="contestant-teaser">
+          真實身份即將揭曉!
+        </p>
+
+        <a class="vote-link-button" href="${voteLink}">
+          投給他 / 她
+        </a>
+      </div>
+    </article>
+  `;
+}
+
+function renderRevealedContestantCard(contestant, index) {
+  const number = String(index + 1).padStart(2, "0");
+  const name = contestant.name || contestant.stageName || "神秘歌手";
+  const stageName = contestant.stageName || "—";
+  const department = contestant.department || "—";
+  const performanceItem = contestant.performanceItem || "—";
+
+  return `
+    <article class="contestant-card mystery-contestant-card is-revealed-contestant">
+      ${renderRevealedMedia(contestant, index)}
+
+      <div class="contestant-body">
+        <div class="contestant-meta-row">
+          <span class="contestant-number">No. ${number}</span>
+          <span class="contestant-status">完整公布</span>
+        </div>
+
+        <h3 class="contestant-name">${escapeHtml(name)}</h3>
+        <h3 class="contestant-stage">A.K.A. ${escapeHtml(stageName)}</h3>
+
+        <div class="contestant-detail-list">
+          <div>
+            <span>部門</span>
+            <strong>${escapeHtml(department)}</strong>
+          </div>
+          <div>
+            <span>曲目</span>
+            <strong>${escapeHtml(performanceItem)}</strong>
+          </div>
+        </div>
+
+        <a class="vote-link-button" href="#timeline">
+          決賽資訊
+        </a>
+      </div>
+    </article>
+  `;
+}
+
+function renderMysteryMedia(contestant, index) {
+  const imageUrl = contestant.mysteryPhotoUrl || "";
+  if (imageUrl) {
+    return `
+      <div class="mystery-avatar has-mystery-photo">
+        <img class="mystery-photo-image" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(contestant.stageName || "神秘歌手")}" />
+      </div>
+    `;
+  }
+
+  const avatar = getMysteryAvatar(contestant, index);
+  return `
+    <div class="mystery-avatar ${avatar.className}" aria-label="${escapeHtml(avatar.label)}">
+      <div class="mystery-avatar-glow"></div>
+      <div class="mystery-avatar-head"></div>
+      <div class="mystery-avatar-body"></div>
+      <div class="mystery-avatar-badge">${escapeHtml(avatar.icon)}</div>
+    </div>
+  `;
+}
+
+function renderRevealedMedia(contestant, index) {
+  const imageUrl = getContestantPhoto(contestant);
+  if (imageUrl) {
+    return `
+      <img class="revealed-contestant-photo" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(contestant.name || contestant.stageName || "選手")}" />
+    `;
+  }
+
+  return renderMysteryMedia(contestant, index);
+}
+
+function getContestantPhoto(contestant) {
+  return (
+    contestant?.photoUrl ||
+    contestant?.photoURL ||
+    contestant?.imageUrl ||
+    contestant?.imageURL ||
+    contestant?.photo ||
+    ""
+  );
 }
 
 function getMysteryAvatar(contestant, index) {
