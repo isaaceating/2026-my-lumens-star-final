@@ -1,0 +1,91 @@
+/* =========================================================
+   Performer Intro Fullscreen Override
+   Purpose: enlarge the performer entry screen and remove topbar title/badge.
+========================================================= */
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) {
+  padding: 30px;
+  overflow: hidden;
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .results-topbar {
+  display: none;
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-intro-screen {
+  width: 100%;
+  min-height: 0;
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-intro-stage {
+  height: calc(100vh - 60px);
+  max-height: none;
+  grid-template-columns: minmax(0, 0.98fr) minmax(560px, 1.12fr);
+  gap: clamp(36px, 4vw, 82px);
+  padding: clamp(36px, 4.2vw, 72px);
+  border-radius: 42px;
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-intro-copy {
+  align-content: center;
+  gap: clamp(12px, 1.55vh, 24px);
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-intro-copy::before {
+  content: "登場歌手";
+  display: block;
+  width: fit-content;
+  margin: 0 0 clamp(6px, 0.9vh, 14px);
+  color: var(--color-gold);
+  font-size: clamp(34px, 3.6vw, 72px);
+  line-height: 1;
+  font-weight: 1000;
+  letter-spacing: 0.04em;
+  text-shadow: 0 14px 42px rgba(0, 0, 0, 0.36);
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-number {
+  font-size: clamp(30px, 3vw, 54px);
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-intro-copy h1 {
+  font-size: clamp(50px, 5.8vw, 108px);
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-stage-name {
+  font-size: clamp(26px, 2.4vw, 46px);
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-song-block {
+  width: min(760px, 100%);
+  padding: clamp(18px, 1.6vw, 28px);
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-song-block span {
+  font-size: clamp(16px, 1.15vw, 22px);
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-song-block strong {
+  font-size: clamp(28px, 2.7vw, 52px);
+}
+
+.results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-photo-panel {
+  border-radius: 36px;
+}
+
+@media (max-width: 1080px) {
+  .results-display-screen:has(#performerIntroScreen:not(.hidden)) {
+    padding: 20px;
+    overflow: auto;
+  }
+
+  .results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-intro-stage {
+    height: auto;
+    min-height: calc(100vh - 40px);
+    grid-template-columns: 1fr;
+  }
+
+  .results-display-screen:has(#performerIntroScreen:not(.hidden)) .performer-photo-panel {
+    height: min(520px, 48vh);
+  }
+}
