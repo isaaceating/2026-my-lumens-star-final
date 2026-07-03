@@ -2,3 +2,32 @@
 .mystery-contestant-card .contestant-body {
   text-align: center;
 }
+
+.mystery-contestant-card:not(.is-revealed-contestant) .contestant-status {
+  font-size: 0;
+}
+
+.mystery-contestant-card:not(.is-revealed-contestant) .contestant-status::after {
+  content: "我是誰?";
+  font-size: 16px;
+  color: #9be7ff;
+  font-weight: 950;
+}
+
+.mystery-contestant-card:not(.is-revealed-contestant) .contestant-name {
+  margin-top: 26px;
+  text-align: center;
+  font-size: clamp(38px, 4.4vw, 52px);
+  line-height: 1.05;
+}
+
+.mystery-contestant-card:not(.is-revealed-contestant) .contestant-stage {
+  text-align: center;
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.2;
+  margin-bottom: 26px;
+}
+
+.mystery-contestant-card:not(.is-revealed-contestant) .contestant-teaser {
+  display: none;
+}
