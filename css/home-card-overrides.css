@@ -31,3 +31,43 @@
 .mystery-contestant-card:not(.is-revealed-contestant) .contestant-teaser {
   display: none;
 }
+
+.is-revealed-contestant .contestant-body {
+  padding: 26px 24px 28px;
+}
+
+.is-revealed-contestant .contestant-name {
+  margin: 20px 0 8px;
+  text-align: center;
+  color: #f7f3ff;
+  font-size: clamp(38px, 4.2vw, 54px);
+  line-height: 1.08;
+  letter-spacing: 2px;
+}
+
+.is-revealed-contestant .contestant-stage {
+  margin: 0 0 28px;
+  text-align: center;
+  color: #9be7ff;
+  font-size: clamp(24px, 2.8vw, 34px);
+  line-height: 1.2;
+}
+
+.is-revealed-contestant .contestant-detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.is-revealed-contestant .contestant-detail-list div {
+  padding: 16px 18px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  text-align: center;
+}
+
+.is-revealed-contestant .vote-link-button {
+  display: none;
+}
