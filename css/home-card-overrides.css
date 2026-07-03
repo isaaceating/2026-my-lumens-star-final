@@ -72,11 +72,11 @@
   display: none;
 }
 
-/* Show more of each contestant photo instead of cropping too tightly. */
+/* Keep both mystery and revealed photo areas more compact. */
 .mystery-avatar.has-mystery-photo,
 .contestant-card.is-revealed-contestant .mystery-avatar,
 .contestant-card.is-revealed-contestant .revealed-contestant-photo {
-  height: 340px;
+  height: 280px;
 }
 
 .mystery-photo-image,
@@ -84,4 +84,38 @@
   object-fit: contain;
   object-position: center center;
   background: #080915;
+}
+
+/* Revealed performer info card, matching the fullscreen performer-intro layout. */
+.revealed-card-body {
+  min-height: 360px;
+}
+
+.revealed-meta-row {
+  width: 100%;
+}
+
+.revealed-song-card {
+  width: 100%;
+  margin-top: auto;
+  padding: 24px 18px;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  text-align: center;
+}
+
+.revealed-song-card span {
+  display: block;
+  margin-bottom: 12px;
+  color: #ffd166;
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 950;
+}
+
+.revealed-song-card strong {
+  display: block;
+  color: #f7f3ff;
+  font-size: clamp(24px, 2.8vw, 34px);
+  line-height: 1.35;
 }
