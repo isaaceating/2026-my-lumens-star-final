@@ -71,3 +71,17 @@
 .is-revealed-contestant .vote-link-button {
   display: none;
 }
+
+/* Show more of each contestant photo instead of cropping too tightly. */
+.mystery-avatar.has-mystery-photo,
+.contestant-card.is-revealed-contestant .mystery-avatar,
+.contestant-card.is-revealed-contestant .revealed-contestant-photo {
+  height: 340px;
+}
+
+.mystery-photo-image,
+.revealed-contestant-photo {
+  object-fit: contain;
+  object-position: center center;
+  background: #080915;
+}
