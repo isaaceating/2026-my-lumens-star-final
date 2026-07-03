@@ -1,6 +1,6 @@
 import { getApps } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore, collection, doc, getDoc, setDoc, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const app = getApps()[0];
 const auth = getAuth(app);
@@ -98,6 +98,130 @@ async function setCustomMessageDisplay() {
     if (status) status.textContent = `臨時公告顯示失敗：${error.message}`;
   }
 }
+
+async function isCurrentUserAdmin(user) {
+  if (!user || user.isAnonymous) return false;
+  const adminSnap = await getDoc(doc(db, "admins", user.uid));
+  return adminSnap.exists() && adminSnap.data().role === "admin";
+}
+
+function getContestantLabel(input) {
+  const row = input.closest("tr");
+  const name = normalizeText(row?.querySelector("td strong")?.textContent || "未知選手");
+  const aka = normalizeText(row?.querySelector("td:nth-child(2)")?.textContent || "").replace(/^A\.K\.A\.\s*/i, "");
+  return aka ? `${name} / A.K.A. ${aka}` : name;
+}
+
+function collectJudgeScoreRowsFromInputs() {
+  const inputs = Array.from(document.querySelectorAll("#judgeScoreTableBody .judge-score-input"));
+  const rowsByContestant = new Map();
+
+  for (const input of inputs) {
+    const contestantId = input.dataset.contestantId;
+    const judgeId = input.dataset.judgeId;
+    if (!contestantId || !judgeId) continue;
+
+    if (!rowsByContestant.has(contestantId)) {
+      rowsByContestant.set(contestantId, {
+        contestantId,
+        contestantLabel: getContestantLabel(input),
+        scores: {}
+      });
+    }
+
+    const rawValue = normalizeText(input.value);
+    if (!rawValue) continue;
+
+    const score = Number(rawValue);
+    if (!Number.isFinite(score) || score < 1 || score > 10) {
+      return {
+        error: `「${getContestantLabel(input)}」的評審分數必須是 1 到 10 之間的數字，可輸入小數。`,
+        input
+      };
+    }
+
+    rowsByContestant.get(contestantId).scores[judgeId] = score;
+  }
+
+  return { rows: Array.from(rowsByContestant.values()) };
+}
+
+async function saveAllJudgeScoresBatch() {
+  const message = $("judgeScoreMessage");
+  const button = $("saveAllJudgeScoresButton");
+  const user = auth.currentUser;
+
+  if (!user) {
+    alert("請先使用 Google Admin 帳號登入。");
+    return;
+  }
+
+  try {
+    if (!(await isCurrentUserAdmin(user))) {
+      alert("此帳號沒有管理員權限。");
+      return;
+    }
+  } catch (error) {
+    if (message) message.textContent = `管理員驗證失敗：${error.message}`;
+    return;
+  }
+
+  const { rows, error, input } = collectJudgeScoreRowsFromInputs();
+  if (error) {
+    if (message) message.textContent = error;
+    input?.focus();
+    return;
+  }
+
+  if (!rows?.length) {
+    if (message) message.textContent = "目前沒有可儲存的評審分數欄位。";
+    return;
+  }
+
+  try {
+    if (button) {
+      button.disabled = true;
+      button.dataset.originalText = button.dataset.originalText || button.textContent || "儲存全部分數";
+      button.textContent = "全部分數儲存中...";
+    }
+    if (message) message.textContent = "全部評審分數驗證完成，正在一次儲存...";
+
+    const batch = writeBatch(db);
+    rows.forEach((row) => {
+      batch.set(doc(collection(db, "judgeScores"), row.contestantId), {
+        contestantId: row.contestantId,
+        scores: row.scores,
+        updatedAt: serverTimestamp(),
+        updatedBy: user.email || "",
+        updatedByUid: user.uid
+      });
+    });
+    await batch.commit();
+
+    if (message) message.textContent = `全部評審分數已儲存，共更新 ${rows.length} 位選手。`;
+    $("refreshFinalAdminDataButton")?.click();
+    setTimeout(() => {
+      if (message) message.textContent = `全部評審分數已儲存，共更新 ${rows.length} 位選手。`;
+    }, 500);
+  } catch (error) {
+    console.error("Save all judge scores failed:", error);
+    if (message) message.textContent = `全部評審分數儲存失敗：${error.message}`;
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = button.dataset.originalText || "儲存全部分數";
+    }
+  }
+}
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("#saveAllJudgeScoresButton");
+  if (!button) return;
+  event.preventDefault();
+  event.stopPropagation();
+  event.stopImmediatePropagation();
+  saveAllJudgeScoresBatch();
+}, true);
 
 document.addEventListener("click", (event) => {
   const button = event.target.closest("#setCustomMessageButton");
