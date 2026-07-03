@@ -65,3 +65,6 @@
 }
 
 /* card layout update */
+.contestant-name {
+  text-align: center;
+}
