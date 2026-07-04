@@ -314,7 +314,9 @@ function renderRevealedMedia(contestant, index) {
   const imageUrl = getContestantPhoto(contestant);
   if (imageUrl) {
     return `
-      <img class="revealed-contestant-photo" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(contestant.name || contestant.stageName || "選手")}" />
+      <div class="revealed-photo-frame">
+        <img class="revealed-contestant-photo" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(contestant.name || contestant.stageName || "選手")}" />
+      </div>
     `;
   }
 
