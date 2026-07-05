@@ -134,6 +134,15 @@
   transform: none;
 }
 
+.contestant-stage {
+  margin: 8px 0 0;
+  color: #8ef4ff;
+  font-size: 18px !important;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+
 .vote-contestants-area {
   min-width: 0;
 }
