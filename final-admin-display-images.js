@@ -1,5 +1,11 @@
-import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import {
+  initializeApp,
+  getApps,
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import {
   getFirestore,
   collection,
@@ -9,14 +15,14 @@ import {
   addDoc,
   setDoc,
   deleteDoc,
-  serverTimestamp
+  serverTimestamp,
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 import {
   getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
-  deleteObject
+  deleteObject,
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-storage.js";
 
 const firebaseConfig = {
@@ -25,7 +31,7 @@ const firebaseConfig = {
   projectId: "my-lumens-star-2026",
   storageBucket: "my-lumens-star-2026.firebasestorage.app",
   messagingSenderId: "150108062917",
-  appId: "1:150108062917:web:f7284392bed27438041cac"
+  appId: "1:150108062917:web:f7284392bed27438041cac",
 };
 
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
@@ -53,6 +59,33 @@ function normalizeText(value) {
   return String(value || "").trim();
 }
 
+function getMediaTypeFromContentType(contentType = "") {
+  const normalized = String(contentType || "").toLowerCase();
+  if (normalized.startsWith("video/")) return "video";
+  return "image";
+}
+
+function getDisplayMediaType(media = {}) {
+  const explicitType = String(
+    media.mediaType || media.fullMediaType || "",
+  ).toLowerCase();
+  if (explicitType === "video" || explicitType === "image") return explicitType;
+  return getMediaTypeFromContentType(
+    media.contentType || media.fullImageContentType || "",
+  );
+}
+
+function getMediaTypeLabel(media = {}) {
+  return getDisplayMediaType(media) === "video" ? "影片" : "圖片";
+}
+
+function isSupportedDisplayMedia(file) {
+  const type = String(file?.type || "").toLowerCase();
+  return (
+    type.startsWith("image/") || type === "video/mp4" || type === "video/webm"
+  );
+}
+
 function setStatus(message, type = "") {
   const status = $("displayImageControlMessage");
   if (!status) return;
@@ -62,7 +95,12 @@ function setStatus(message, type = "") {
 
 function setBusy(nextBusy) {
   isBusy = nextBusy;
-  ["uploadDisplayImageButton", "showDisplayImageButton", "deleteDisplayImageButton", "refreshDisplayImagesButton"].forEach((id) => {
+  [
+    "uploadDisplayImageButton",
+    "showDisplayImageButton",
+    "deleteDisplayImageButton",
+    "refreshDisplayImagesButton",
+  ].forEach((id) => {
     const button = $(id);
     if (button) button.disabled = isBusy || !isAdmin;
   });
@@ -71,7 +109,9 @@ function setBusy(nextBusy) {
 function ensureDisplayImageControls() {
   if ($("displayImageControlPanel")) return;
 
-  const resultControlCard = document.querySelector("#resultDisplayControl .result-control-card");
+  const resultControlCard = document.querySelector(
+    "#resultDisplayControl .result-control-card",
+  );
   const controlMessage = $("resultDisplayControlMessage");
   if (!resultControlCard) return;
 
@@ -81,30 +121,30 @@ function ensureDisplayImageControls() {
   panel.innerHTML = `
     <div class="display-image-control-header">
       <div>
-        <h3>滿版圖片畫面</h3>
-        <p class="section-desc">上傳活動用圖片，命名後會進入選單；選取後可一鍵切到大螢幕滿版畫面。</p>
+        <h3>滿版媒體畫面</h3>
+        <p class="section-desc">上傳活動用圖片或影片，命名後會進入選單；選取後可一鍵切到大螢幕滿版畫面。影片支援 MP4 / WebM。</p>
       </div>
-      <button type="button" id="refreshDisplayImagesButton" class="secondary-button">重新整理圖片</button>
+      <button type="button" id="refreshDisplayImagesButton" class="secondary-button">重新整理媒體</button>
     </div>
 
     <div class="display-image-uploader">
-      <label>圖片名稱
-        <input type="text" id="displayImageNameInput" placeholder="例如：決賽正式開始、評分規則、評審介紹" />
+      <label>媒體名稱
+        <input type="text" id="displayImageNameInput" placeholder="例如：決賽正式開始、評分規則、開場影片" />
       </label>
-      <label>選擇圖片
-        <input type="file" id="displayImageFileInput" accept="image/*" />
+      <label>選擇圖片或影片
+        <input type="file" id="displayImageFileInput" accept="image/*,video/mp4,video/webm" />
       </label>
-      <button type="button" id="uploadDisplayImageButton" class="secondary-button">上傳圖片</button>
+      <button type="button" id="uploadDisplayImageButton" class="secondary-button">上傳媒體</button>
     </div>
 
     <div class="display-image-picker-row">
-      <label>選擇要顯示的圖片
+      <label>選擇要顯示的媒體
         <select id="displayImageSelect">
-          <option value="">圖片清單讀取中...</option>
+          <option value="">媒體清單讀取中...</option>
         </select>
       </label>
-      <button type="button" id="showDisplayImageButton">顯示滿版圖片</button>
-      <button type="button" id="deleteDisplayImageButton" class="danger-button">刪除圖片</button>
+      <button type="button" id="showDisplayImageButton">顯示滿版媒體</button>
+      <button type="button" id="deleteDisplayImageButton" class="danger-button">刪除媒體</button>
     </div>
 
     <div id="displayImagePreview" class="display-image-preview hidden"></div>
@@ -118,8 +158,14 @@ function ensureDisplayImageControls() {
   }
 
   $("uploadDisplayImageButton")?.addEventListener("click", uploadDisplayImage);
-  $("showDisplayImageButton")?.addEventListener("click", showSelectedDisplayImage);
-  $("deleteDisplayImageButton")?.addEventListener("click", deleteSelectedDisplayImage);
+  $("showDisplayImageButton")?.addEventListener(
+    "click",
+    showSelectedDisplayImage,
+  );
+  $("deleteDisplayImageButton")?.addEventListener(
+    "click",
+    deleteSelectedDisplayImage,
+  );
   $("refreshDisplayImagesButton")?.addEventListener("click", loadDisplayImages);
   $("displayImageSelect")?.addEventListener("change", renderSelectedPreview);
   renderDisplayImageOptions();
@@ -130,21 +176,21 @@ async function checkAdmin(uid) {
     const adminSnap = await getDoc(doc(db, "admins", uid));
     return adminSnap.exists() && adminSnap.data().role === "admin";
   } catch (error) {
-    console.error("Display image admin check failed:", error);
+    console.error("Display media admin check failed:", error);
     return false;
   }
 }
 
 async function loadDisplayImages() {
   if (!isAdmin) {
-    setStatus("請使用 Admin 帳號登入後管理滿版圖片。", "warning");
+    setStatus("請使用 Admin 帳號登入後管理滿版媒體。", "warning");
     renderDisplayImageOptions();
     return;
   }
 
   try {
     setBusy(true);
-    setStatus("圖片清單讀取中...");
+    setStatus("媒體清單讀取中...");
     const snapshot = await getDocs(collection(db, "finalDisplayImages"));
     displayImages = [];
     snapshot.forEach((docSnap) => {
@@ -158,10 +204,15 @@ async function loadDisplayImages() {
       return timeB - timeA;
     });
     renderDisplayImageOptions();
-    setStatus(displayImages.length ? `已載入 ${displayImages.length} 張滿版圖片。` : "目前尚未上傳滿版圖片。", "success");
+    setStatus(
+      displayImages.length
+        ? `已載入 ${displayImages.length} 個滿版媒體。`
+        : "目前尚未上傳滿版媒體。",
+      "success",
+    );
   } catch (error) {
-    console.error("Load display images failed:", error);
-    setStatus(`圖片清單讀取失敗：${error.message}`, "error");
+    console.error("Load display media failed:", error);
+    setStatus(`媒體清單讀取失敗：${error.message}`, "error");
   } finally {
     setBusy(false);
   }
@@ -179,15 +230,20 @@ function renderDisplayImageOptions() {
   }
 
   if (!displayImages.length) {
-    select.innerHTML = `<option value="">尚未上傳圖片</option>`;
+    select.innerHTML = `<option value="">尚未上傳媒體</option>`;
     renderSelectedPreview();
     return;
   }
 
-  select.innerHTML = `<option value="">請選擇圖片</option>` + displayImages.map((image) => {
-    const label = image.name || image.fileName || "未命名圖片";
-    return `<option value="${escapeHtml(image.id)}">${escapeHtml(label)}</option>`;
-  }).join("");
+  select.innerHTML =
+    `<option value="">請選擇媒體</option>` +
+    displayImages
+      .map((image) => {
+        const label = image.name || image.fileName || "未命名媒體";
+        const typeLabel = getMediaTypeLabel(image);
+        return `<option value="${escapeHtml(image.id)}">[${typeLabel}] ${escapeHtml(label)}</option>`;
+      })
+      .join("");
   renderSelectedPreview();
 }
 
@@ -207,12 +263,19 @@ function renderSelectedPreview() {
     return;
   }
 
+  const mediaType = getDisplayMediaType(selected);
+  const mediaName = selected.name || "滿版媒體預覽";
+  const previewMedia =
+    mediaType === "video"
+      ? `<video src="${escapeHtml(selected.url)}" muted playsinline preload="metadata"></video>`
+      : `<img src="${escapeHtml(selected.url)}" alt="${escapeHtml(mediaName)}" />`;
+
   preview.classList.remove("hidden");
   preview.innerHTML = `
-    <img src="${escapeHtml(selected.url)}" alt="${escapeHtml(selected.name || "滿版圖片預覽")}" />
+    ${previewMedia}
     <div>
-      <strong>${escapeHtml(selected.name || "未命名圖片")}</strong>
-      <span>${escapeHtml(selected.fileName || "")}</span>
+      <strong>${escapeHtml(selected.name || "未命名媒體")}</strong>
+      <span>${escapeHtml(getMediaTypeLabel(selected))}｜${escapeHtml(selected.fileName || "")}</span>
     </div>
   `;
 }
@@ -228,26 +291,34 @@ async function uploadDisplayImage() {
   const file = fileInput?.files?.[0];
 
   if (!file) {
-    setStatus("請先選擇要上傳的圖片。", "warning");
-    alert("請先選擇要上傳的圖片。");
+    setStatus("請先選擇要上傳的圖片或影片。", "warning");
+    alert("請先選擇要上傳的圖片或影片。");
     return;
   }
 
-  if (!file.type.startsWith("image/")) {
-    setStatus("檔案格式不正確，請上傳圖片檔。", "error");
-    alert("請上傳圖片檔。");
+  if (!isSupportedDisplayMedia(file)) {
+    setStatus("檔案格式不正確，請上傳圖片、MP4 或 WebM 影片。", "error");
+    alert("請上傳圖片、MP4 或 WebM 影片。");
     return;
   }
 
-  const imageName = normalizeText(nameInput?.value) || file.name.replace(/\.[^.]+$/, "") || "未命名圖片";
+  const mediaType = getMediaTypeFromContentType(file.type);
+  const mediaTypeLabel = mediaType === "video" ? "影片" : "圖片";
+  const imageName =
+    normalizeText(nameInput?.value) ||
+    file.name.replace(/\.[^.]+$/, "") ||
+    "未命名媒體";
   const safeFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
   const storagePath = `final-display-images/${Date.now()}-${safeFileName}`;
 
   try {
     setBusy(true);
-    setStatus("圖片上傳中，請稍候...");
+    setStatus(`${mediaTypeLabel}上傳中，請稍候...`);
     const storageRef = ref(storage, storagePath);
-    await uploadBytes(storageRef, file, { contentType: file.type || "image/png" });
+    await uploadBytes(storageRef, file, {
+      contentType:
+        file.type || (mediaType === "video" ? "video/mp4" : "image/png"),
+    });
     const url = await getDownloadURL(storageRef);
 
     const docRef = await addDoc(collection(db, "finalDisplayImages"), {
@@ -257,9 +328,10 @@ async function uploadDisplayImage() {
       storagePath,
       size: file.size || 0,
       contentType: file.type || "",
+      mediaType,
       createdAt: serverTimestamp(),
       createdBy: currentUser.email || "",
-      createdByUid: currentUser.uid
+      createdByUid: currentUser.uid,
     });
 
     if (fileInput) fileInput.value = "";
@@ -270,8 +342,8 @@ async function uploadDisplayImage() {
     renderSelectedPreview();
     setStatus(`「${imageName}」已上傳並加入選單。`, "success");
   } catch (error) {
-    console.error("Upload display image failed:", error);
-    setStatus(`圖片上傳失敗：${error.message}`, "error");
+    console.error("Upload display media failed:", error);
+    setStatus(`媒體上傳失敗：${error.message}`, "error");
   } finally {
     setBusy(false);
   }
@@ -285,31 +357,45 @@ async function showSelectedDisplayImage() {
 
   const selected = getSelectedImage();
   if (!selected) {
-    setStatus("請先從選單選擇要顯示的圖片。", "warning");
-    alert("請先選擇圖片。");
+    setStatus("請先從選單選擇要顯示的媒體。", "warning");
+    alert("請先選擇媒體。");
     return;
   }
 
+  const mediaType = getDisplayMediaType(selected);
+  const mediaTypeLabel = getMediaTypeLabel(selected);
+
   try {
     setBusy(true);
-    setStatus("正在切換大螢幕滿版圖片...");
-    await setDoc(doc(db, "settings", "finalResultControl"), {
-      mode: "fullImage",
-      awardName: selected.name || "滿版圖片",
-      contestantId: "",
-      countdownStatus: "stopped",
-      fullImageId: selected.id,
-      fullImageName: selected.name || "滿版圖片",
-      fullImageUrl: selected.url,
-      displayMessage: selected.name || "滿版圖片",
-      updatedAt: serverTimestamp(),
-      updatedBy: currentUser.email || "",
-      updatedByUid: currentUser.uid
-    }, { merge: true });
-    setStatus(`已顯示滿版圖片：「${selected.name || "未命名圖片"}」。`, "success");
+    setStatus("正在切換大螢幕滿版媒體...");
+    await setDoc(
+      doc(db, "settings", "finalResultControl"),
+      {
+        mode: "fullImage",
+        awardName: selected.name || "滿版媒體",
+        contestantId: "",
+        countdownStatus: "stopped",
+        fullImageId: selected.id,
+        fullImageName: selected.name || "滿版媒體",
+        fullImageUrl: selected.url,
+        fullImageContentType: selected.contentType || "",
+        fullMediaType: mediaType,
+        fullMediaUrl: selected.url,
+        fullMediaLoop: false,
+        displayMessage: selected.name || "滿版媒體",
+        updatedAt: serverTimestamp(),
+        updatedBy: currentUser.email || "",
+        updatedByUid: currentUser.uid,
+      },
+      { merge: true },
+    );
+    setStatus(
+      `已顯示滿版${mediaTypeLabel}：「${selected.name || "未命名媒體"}」。`,
+      "success",
+    );
   } catch (error) {
-    console.error("Show display image failed:", error);
-    setStatus(`滿版圖片顯示失敗：${error.message}`, "error");
+    console.error("Show display media failed:", error);
+    setStatus(`滿版媒體顯示失敗：${error.message}`, "error");
   } finally {
     setBusy(false);
   }
@@ -323,54 +409,66 @@ async function deleteSelectedDisplayImage() {
 
   const selected = getSelectedImage();
   if (!selected) {
-    setStatus("請先從選單選擇要刪除的圖片。", "warning");
-    alert("請先選擇圖片。");
+    setStatus("請先從選單選擇要刪除的媒體。", "warning");
+    alert("請先選擇媒體。");
     return;
   }
 
-  const label = selected.name || selected.fileName || "未命名圖片";
-  const confirmed = confirm(`確定要刪除這張滿版圖片嗎？\n\n${label}\n\n刪除後會從選單移除，Storage 檔案也會一起刪除。`);
+  const label = selected.name || selected.fileName || "未命名媒體";
+  const confirmed = confirm(
+    `確定要刪除這個滿版媒體嗎？\n\n${label}\n\n刪除後會從選單移除，Storage 檔案也會一起刪除。`,
+  );
   if (!confirmed) return;
 
   try {
     setBusy(true);
-    setStatus("圖片刪除中...");
+    setStatus("媒體刪除中...");
 
     const controlSnap = await getDoc(doc(db, "settings", "finalResultControl"));
     const controlData = controlSnap.exists() ? controlSnap.data() : {};
-    const isCurrentDisplayImage = controlData.mode === "fullImage" && controlData.fullImageId === selected.id;
+    const isCurrentDisplayImage =
+      controlData.mode === "fullImage" &&
+      controlData.fullImageId === selected.id;
 
     if (selected.storagePath) {
       try {
         await deleteObject(ref(storage, selected.storagePath));
       } catch (storageError) {
-        if (storageError?.code !== "storage/object-not-found") throw storageError;
+        if (storageError?.code !== "storage/object-not-found")
+          throw storageError;
       }
     }
 
     await deleteDoc(doc(db, "finalDisplayImages", selected.id));
 
     if (isCurrentDisplayImage) {
-      await setDoc(doc(db, "settings", "finalResultControl"), {
-        mode: "preVotingStandby",
-        awardName: "投票即將開始",
-        contestantId: "",
-        countdownStatus: "stopped",
-        displayMessage: "請準備手機，等待主持人開放投票。",
-        fullImageId: "",
-        fullImageName: "",
-        fullImageUrl: "",
-        updatedAt: serverTimestamp(),
-        updatedBy: currentUser.email || "",
-        updatedByUid: currentUser.uid
-      }, { merge: true });
+      await setDoc(
+        doc(db, "settings", "finalResultControl"),
+        {
+          mode: "preVotingStandby",
+          awardName: "投票即將開始",
+          contestantId: "",
+          countdownStatus: "stopped",
+          displayMessage: "請準備手機，等待主持人開放投票。",
+          fullImageId: "",
+          fullImageName: "",
+          fullImageUrl: "",
+          fullImageContentType: "",
+          fullMediaType: "",
+          fullMediaUrl: "",
+          updatedAt: serverTimestamp(),
+          updatedBy: currentUser.email || "",
+          updatedByUid: currentUser.uid,
+        },
+        { merge: true },
+      );
     }
 
     await loadDisplayImages();
     setStatus(`「${label}」已刪除。`, "success");
   } catch (error) {
-    console.error("Delete display image failed:", error);
-    setStatus(`圖片刪除失敗：${error.message}`, "error");
+    console.error("Delete display media failed:", error);
+    setStatus(`媒體刪除失敗：${error.message}`, "error");
   } finally {
     setBusy(false);
   }
@@ -386,7 +484,7 @@ onAuthStateChanged(auth, async (user) => {
   ensureDisplayImageControls();
 
   if (!user || user.isAnonymous) {
-    setStatus("請使用 Google Admin 帳號登入後管理滿版圖片。", "warning");
+    setStatus("請使用 Google Admin 帳號登入後管理滿版媒體。", "warning");
     displayImages = [];
     renderDisplayImageOptions();
     setBusy(false);
@@ -395,7 +493,7 @@ onAuthStateChanged(auth, async (user) => {
 
   isAdmin = await checkAdmin(user.uid);
   if (!isAdmin) {
-    setStatus("此帳號沒有 Admin 權限，無法管理滿版圖片。", "error");
+    setStatus("此帳號沒有 Admin 權限，無法管理滿版媒體。", "error");
     displayImages = [];
     renderDisplayImageOptions();
     setBusy(false);
