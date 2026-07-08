@@ -2,6 +2,7 @@
    Final Vote UX Fix
    - restore song field visual box
    - reduce mobile card height
+   - improve desktop voting workspace
    - add safe spacing for mobile sticky submit bar
 ========================================================= */
 
@@ -27,6 +28,169 @@
   font-size: 12px;
   font-weight: 950;
   letter-spacing: 0.12em;
+}
+
+/* =========================================================
+   Desktop voting workspace
+========================================================= */
+
+@media (min-width: 761px) {
+  .final-vote-page .vote-hero-section {
+    padding-top: 44px;
+  }
+
+  .final-vote-page .vote-rule-strip {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin: 24px 0 26px;
+  }
+
+  .final-vote-page .vote-rule-strip::before {
+    content: "1 輸入工號 → 2 投紅毯巨星 → 3 投決賽觀眾 3 票 → 4 完成";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1 / -1;
+    min-height: 48px;
+    padding: 12px 18px;
+    border-radius: 999px;
+    background: rgba(101, 227, 244, 0.08);
+    border: 1px solid rgba(101, 227, 244, 0.22);
+    color: var(--color-cyan-soft);
+    font-weight: 950;
+    letter-spacing: 0.06em;
+    box-shadow: var(--shadow-card);
+  }
+
+  .final-vote-page .vote-rule-strip div {
+    padding: 14px 16px;
+  }
+
+  .final-vote-layout {
+    grid-template-columns: minmax(280px, 310px) minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .final-vote-side-card {
+    padding: 22px;
+    border-color: rgba(255, 209, 102, 0.2);
+  }
+
+  .final-vote-side-card h2 {
+    font-size: 24px;
+  }
+
+  .final-vote-side-card > p {
+    margin-bottom: 14px;
+    line-height: 1.65;
+  }
+
+  .final-vote-side-card .vote-summary-box {
+    background:
+      linear-gradient(135deg, rgba(255, 209, 102, 0.08), rgba(101, 227, 244, 0.06)),
+      rgba(255, 255, 255, 0.05);
+  }
+
+  .final-vote-side-card .vote-summary-box strong {
+    font-size: 18px;
+  }
+
+  .employee-info-box div {
+    padding: 10px 12px;
+  }
+
+  .final-vote-main {
+    gap: 22px;
+  }
+
+  .final-vote-block {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 18px;
+    row-gap: 16px;
+    padding: 22px;
+  }
+
+  .final-vote-block .vote-list-title {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .final-vote-block .vote-list-title h2 {
+    margin-bottom: 8px;
+  }
+
+  .final-vote-block .final-selected-row {
+    grid-column: 1;
+    margin: 0;
+    min-height: 54px;
+  }
+
+  .final-vote-block #submitRedCarpetVoteButton,
+  .final-vote-block #submitFinalAudienceVoteButton {
+    grid-column: 2;
+    min-width: 210px;
+    min-height: 54px;
+    margin: 0;
+    padding-inline: 24px;
+    white-space: nowrap;
+    box-shadow: var(--shadow-gold);
+  }
+
+  .final-vote-block #redCarpetContestantsGrid,
+  .final-vote-block #finalAudienceContestantsGrid {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .final-vote-block #redCarpetVoteMessage,
+  .final-vote-block #finalAudienceVoteMessage {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  .final-vote-page .final-vote-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .final-vote-card .red-carpet-photo,
+  .final-vote-card .red-carpet-photo-placeholder {
+    height: 210px;
+  }
+
+  .final-vote-card .contestant-body {
+    padding: 16px;
+  }
+
+  .final-vote-card .red-carpet-contestant-name {
+    margin-top: 8px;
+    font-size: 24px;
+  }
+
+  .final-vote-card .contestant-stage {
+    font-size: 15px !important;
+    text-align: left;
+  }
+
+  .final-vote-page .final-vote-card .contestant-teaser {
+    min-height: 68px;
+    margin-top: 10px;
+  }
+
+  .final-vote-card .vote-card-check {
+    margin-top: 12px;
+  }
+
+  .final-vote-card.selected .vote-card-check,
+  .final-vote-card.selected .contestant-teaser {
+    border-color: rgba(255, 209, 102, 0.46);
+  }
+
+  .final-vote-sticky-submit {
+    display: none !important;
+  }
 }
 
 .final-vote-sticky-submit {
@@ -195,11 +359,5 @@
   #submitRedCarpetVoteButton,
   #submitFinalAudienceVoteButton {
     min-height: 48px;
-  }
-}
-
-@media (min-width: 761px) {
-  .final-vote-sticky-submit {
-    display: none !important;
   }
 }
