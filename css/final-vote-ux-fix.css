@@ -271,7 +271,7 @@
 
 @media (max-width: 760px) {
   .final-vote-page {
-    padding-bottom: 132px;
+    padding-bottom: 176px;
   }
 
   .vote-hero-section h1 {
@@ -374,8 +374,14 @@
   }
 
   .final-vote-sticky-submit {
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
     padding: 12px;
+  }
+
+  .final-vote-sticky-info {
+    width: 100%;
   }
 
   .final-vote-sticky-info strong {
@@ -384,13 +390,14 @@
   }
 
   .final-vote-sticky-submit button {
-    min-width: 110px;
-    padding: 12px 12px;
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
     font-size: 14px;
   }
 
   #submitRedCarpetVoteButton,
   #submitFinalAudienceVoteButton {
-    min-height: 48px;
+    display: none !important;
   }
 }
