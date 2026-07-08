@@ -3,7 +3,7 @@
    - restore song field visual box
    - reduce mobile card height
    - improve desktop voting workspace
-   - add safe spacing for mobile sticky submit bar
+   - add sticky submit bar for mobile and desktop
 ========================================================= */
 
 .final-vote-page .final-vote-card .contestant-teaser {
@@ -30,11 +30,74 @@
   letter-spacing: 0.12em;
 }
 
+.final-vote-sticky-submit {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 90;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255, 209, 102, 0.2), transparent 34%),
+    rgba(12, 13, 28, 0.96);
+  border: 1px solid rgba(255, 209, 102, 0.3);
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+}
+
+.final-vote-sticky-submit.is-visible {
+  display: flex;
+}
+
+.final-vote-sticky-info {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.final-vote-sticky-info span {
+  color: var(--color-muted-2);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.final-vote-sticky-info strong {
+  color: var(--color-gold);
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.final-vote-sticky-submit button {
+  flex: 0 0 auto;
+  min-width: 132px;
+  padding: 12px 16px;
+  font-size: 15px;
+}
+
+.final-vote-sticky-submit button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* =========================================================
    Desktop voting workspace
 ========================================================= */
 
 @media (min-width: 761px) {
+  .final-vote-page {
+    padding-bottom: 116px;
+  }
+
   .final-vote-page .vote-hero-section {
     padding-top: 44px;
   }
@@ -105,15 +168,22 @@
 
   .final-vote-block {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: 1fr;
     align-items: center;
-    column-gap: 18px;
     row-gap: 16px;
     padding: 22px;
   }
 
-  .final-vote-block .vote-list-title {
+  .final-vote-block .vote-list-title,
+  .final-vote-block .final-selected-row,
+  .final-vote-block #redCarpetContestantsGrid,
+  .final-vote-block #finalAudienceContestantsGrid,
+  .final-vote-block #redCarpetVoteMessage,
+  .final-vote-block #finalAudienceVoteMessage {
     grid-column: 1 / -1;
+  }
+
+  .final-vote-block .vote-list-title {
     margin-bottom: 0;
   }
 
@@ -122,65 +192,49 @@
   }
 
   .final-vote-block .final-selected-row {
-    grid-column: 1;
     margin: 0;
     min-height: 54px;
   }
 
-  .final-vote-block #submitRedCarpetVoteButton,
-  .final-vote-block #submitFinalAudienceVoteButton {
-    grid-column: 2;
-    min-width: 210px;
-    min-height: 54px;
-    margin: 0;
-    padding-inline: 24px;
-    white-space: nowrap;
-    box-shadow: var(--shadow-gold);
-  }
-
-  .final-vote-block #redCarpetContestantsGrid,
-  .final-vote-block #finalAudienceContestantsGrid {
-    grid-column: 1 / -1;
-    margin-bottom: 0;
-  }
-
-  .final-vote-block #redCarpetVoteMessage,
-  .final-vote-block #finalAudienceVoteMessage {
-    grid-column: 1 / -1;
-    margin: 0;
+  #submitRedCarpetVoteButton,
+  #submitFinalAudienceVoteButton {
+    display: none !important;
   }
 
   .final-vote-page .final-vote-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 14px;
+    margin-bottom: 0;
   }
 
   .final-vote-card .red-carpet-photo,
   .final-vote-card .red-carpet-photo-placeholder {
-    height: 210px;
+    height: 160px !important;
   }
 
   .final-vote-card .contestant-body {
-    padding: 16px;
+    padding: 14px;
   }
 
   .final-vote-card .red-carpet-contestant-name {
-    margin-top: 8px;
-    font-size: 24px;
+    margin-top: 6px;
+    font-size: 23px;
   }
 
   .final-vote-card .contestant-stage {
-    font-size: 15px !important;
+    font-size: 14px !important;
     text-align: left;
   }
 
   .final-vote-page .final-vote-card .contestant-teaser {
-    min-height: 68px;
-    margin-top: 10px;
+    min-height: 62px;
+    margin-top: 9px;
+    padding: 10px 12px;
   }
 
   .final-vote-card .vote-card-check {
-    margin-top: 12px;
+    margin-top: 10px;
+    padding: 10px 14px;
   }
 
   .final-vote-card.selected .vote-card-check,
@@ -189,67 +243,28 @@
   }
 
   .final-vote-sticky-submit {
-    display: none !important;
+    left: 50%;
+    right: auto;
+    bottom: 22px;
+    width: min(760px, calc(100vw - 48px));
+    transform: translateX(-50%);
+    padding: 14px 16px;
+    border-radius: 24px;
   }
-}
 
-.final-vote-sticky-submit {
-  position: fixed;
-  left: 14px;
-  right: 14px;
-  bottom: 14px;
-  z-index: 90;
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 22px;
-  background:
-    radial-gradient(circle at 15% 0%, rgba(255, 209, 102, 0.2), transparent 34%),
-    rgba(12, 13, 28, 0.96);
-  border: 1px solid rgba(255, 209, 102, 0.3);
-  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(12px);
-}
+  .final-vote-sticky-info span {
+    font-size: 13px;
+  }
 
-.final-vote-sticky-submit.is-visible {
-  display: flex;
-}
+  .final-vote-sticky-info strong {
+    font-size: 17px;
+  }
 
-.final-vote-sticky-info {
-  min-width: 0;
-  display: grid;
-  gap: 3px;
-}
-
-.final-vote-sticky-info span {
-  color: var(--color-muted-2);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.final-vote-sticky-info strong {
-  color: var(--color-gold);
-  font-size: 15px;
-  font-weight: 950;
-  line-height: 1.35;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.final-vote-sticky-submit button {
-  flex: 0 0 auto;
-  min-width: 132px;
-  padding: 12px 16px;
-  font-size: 15px;
-}
-
-.final-vote-sticky-submit button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
+  .final-vote-sticky-submit button {
+    min-width: 156px;
+    min-height: 48px;
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 760px) {
