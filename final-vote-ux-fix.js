@@ -26,8 +26,10 @@ const selectedFinalAudienceText = document.getElementById("selectedFinalAudience
 const submitRedCarpetButton = document.getElementById("submitRedCarpetVoteButton");
 const submitFinalAudienceButton = document.getElementById("submitFinalAudienceVoteButton");
 const employeeIdInput = document.getElementById("employeeIdInput");
+const finalAudienceVoteSection = document.getElementById("finalAudienceVoteSection");
 
 let currentStickyMode = "redCarpet";
+let isWaitingForRedCarpetScroll = false;
 
 stickyButton?.addEventListener("click", () => {
   const targetButton = currentStickyMode === "finalAudience"
@@ -36,10 +38,20 @@ stickyButton?.addEventListener("click", () => {
 
   if (!targetButton || targetButton.disabled) return;
 
+  const shouldScrollToFinalAudience = currentStickyMode === "redCarpet";
+
   targetButton.click();
+
+  if (shouldScrollToFinalAudience) {
+    waitForRedCarpetVoteThenScroll();
+  }
 
   window.setTimeout(updateStickyBar, 250);
   window.setTimeout(updateStickyBar, 900);
+});
+
+submitRedCarpetButton?.addEventListener("click", () => {
+  waitForRedCarpetVoteThenScroll();
 });
 
 function updateStickyBar() {
@@ -84,12 +96,57 @@ function updateStickyBar() {
   stickyBar.classList.remove("is-visible");
 }
 
+function waitForRedCarpetVoteThenScroll() {
+  if (isWaitingForRedCarpetScroll || !finalAudienceVoteSection) return;
+
+  isWaitingForRedCarpetScroll = true;
+
+  let attempts = 0;
+  const maxAttempts = 24;
+
+  const timer = window.setInterval(() => {
+    attempts += 1;
+    updateStickyBar();
+
+    const redStatus = redCarpetStatusText?.textContent || "";
+    const redDone = redStatus.includes("已投票");
+
+    if (redDone) {
+      window.clearInterval(timer);
+      isWaitingForRedCarpetScroll = false;
+      scrollToFinalAudienceVote();
+      return;
+    }
+
+    if (attempts >= maxAttempts) {
+      window.clearInterval(timer);
+      isWaitingForRedCarpetScroll = false;
+    }
+  }, 250);
+}
+
+function scrollToFinalAudienceVote() {
+  if (!finalAudienceVoteSection) return;
+
+  const navOffset = 88;
+  const targetY = finalAudienceVoteSection.getBoundingClientRect().top + window.scrollY - navOffset;
+
+  window.scrollTo({
+    top: Math.max(targetY, 0),
+    behavior: "smooth"
+  });
+
+  if (history.replaceState) {
+    history.replaceState(null, "", "#finalAudienceVoteSection");
+  }
+}
+
 function observeVotePage() {
   const observer = new MutationObserver(updateStickyBar);
 
   [
     document.getElementById("redCarpetVoteSection"),
-    document.getElementById("finalAudienceVoteSection"),
+    finalAudienceVoteSection,
     selectedRedCarpetText,
     selectedFinalAudienceText,
     redCarpetStatusText,
