@@ -130,8 +130,13 @@
   .final-vote-card .red-carpet-photo-placeholder {
     width: 92px;
     min-width: 92px;
-    height: auto;
+    height: 122px;
     min-height: 122px;
+    align-self: flex-start;
+  }
+
+  .final-vote-card .red-carpet-photo {
+    object-fit: cover;
   }
 
   .final-vote-card .red-carpet-photo-placeholder span {
