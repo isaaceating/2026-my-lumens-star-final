@@ -1129,7 +1129,7 @@
 .results-award-stage.third-place-stage::after,
 .results-award-stage.second-place-stage::after,
 .results-award-stage.first-place-stage::after {
-  content: "2026 捷揚好聲音\A舉辦單位：捷揚光電職工福利委員會2026";
+  content: "2026 捷揚好聲音 舉辦單位：捷揚光電職工福利委員會-2026";
   position: absolute;
   left: 50%;
   bottom: clamp(16px, 2.4vh, 30px);

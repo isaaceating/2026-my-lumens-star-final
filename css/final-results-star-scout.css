@@ -103,7 +103,7 @@
 }
 
 .results-award-stage.star-scout-standby-stage::after {
-  content: "2026 捷揚好聲音\A舉辦單位：捷揚光電職工福利委員會2026";
+  content: "2026 捷揚好聲音 舉辦單位：捷揚光電職工福利委員會-2026";
   position: absolute;
   left: 50%;
   bottom: clamp(16px, 2.4vh, 30px);
@@ -491,7 +491,7 @@
 }
 
 .results-award-stage.star-scout-stage::after {
-  content: "2026 捷揚好聲音\A舉辦單位：捷揚光電職工福利委員會2026";
+  content: "2026 捷揚好聲音 舉辦單位：捷揚光電職工福利委員會-2026";
   position: absolute;
   left: 50%;
   bottom: clamp(16px, 2.4vh, 30px);
