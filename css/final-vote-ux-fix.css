@@ -1,0 +1,200 @@
+/* =========================================================
+   Final Vote UX Fix
+   - restore song field visual box
+   - reduce mobile card height
+   - add safe spacing for mobile sticky submit bar
+========================================================= */
+
+.final-vote-page .final-vote-card .contestant-teaser {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 209, 102, 0.1);
+  border: 1px solid rgba(255, 209, 102, 0.24);
+  color: #fff4cf;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.45;
+  text-align: left;
+  letter-spacing: 0;
+}
+
+.final-vote-page .final-vote-card .contestant-teaser::before {
+  content: "演唱歌曲";
+  color: var(--color-gold);
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+}
+
+.final-vote-sticky-submit {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  z-index: 90;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(255, 209, 102, 0.2), transparent 34%),
+    rgba(12, 13, 28, 0.96);
+  border: 1px solid rgba(255, 209, 102, 0.3);
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+}
+
+.final-vote-sticky-submit.is-visible {
+  display: flex;
+}
+
+.final-vote-sticky-info {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.final-vote-sticky-info span {
+  color: var(--color-muted-2);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.final-vote-sticky-info strong {
+  color: var(--color-gold);
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.final-vote-sticky-submit button {
+  flex: 0 0 auto;
+  min-width: 132px;
+  padding: 12px 16px;
+  font-size: 15px;
+}
+
+.final-vote-sticky-submit button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 760px) {
+  .final-vote-page {
+    padding-bottom: 104px;
+  }
+
+  .vote-hero-section h1 {
+    margin-bottom: 10px;
+    font-size: clamp(30px, 9vw, 40px);
+  }
+
+  .final-vote-page .section-desc {
+    line-height: 1.65;
+  }
+
+  .vote-rule-strip {
+    margin: 18px 0;
+  }
+
+  .vote-rule-strip div {
+    padding: 13px 14px;
+  }
+
+  .final-vote-block {
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .final-vote-page .final-vote-grid {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .final-vote-card .final-vote-select-button {
+    min-height: 122px;
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .final-vote-card .red-carpet-photo,
+  .final-vote-card .red-carpet-photo-placeholder {
+    width: 92px;
+    min-width: 92px;
+    height: auto;
+    min-height: 122px;
+  }
+
+  .final-vote-card .red-carpet-photo-placeholder span {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
+  }
+
+  .final-vote-card .contestant-body {
+    min-width: 0;
+    flex: 1;
+    padding: 12px;
+  }
+
+  .final-vote-card .contestant-meta-row {
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .final-vote-card .contestant-number,
+  .final-vote-card .contestant-status {
+    font-size: 11px;
+  }
+
+  .final-vote-card .red-carpet-contestant-name {
+    margin: 4px 0 2px;
+    font-size: 20px;
+    line-height: 1.18;
+  }
+
+  .final-vote-card .contestant-stage {
+    margin-top: 2px;
+    font-size: 13px !important;
+    text-align: left;
+    letter-spacing: 0.04em;
+  }
+
+  .final-vote-page .final-vote-card .contestant-teaser {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.35;
+  }
+
+  .final-vote-page .final-vote-card .contestant-teaser::before {
+    font-size: 10px;
+  }
+
+  .final-vote-card .vote-card-check {
+    margin-top: 8px;
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  #submitRedCarpetVoteButton,
+  #submitFinalAudienceVoteButton {
+    min-height: 48px;
+  }
+}
+
+@media (min-width: 761px) {
+  .final-vote-sticky-submit {
+    display: none !important;
+  }
+}
