@@ -56,6 +56,7 @@
 
 .final-vote-sticky-info {
   min-width: 0;
+  flex: 1 1 auto;
   display: grid;
   gap: 3px;
 }
@@ -71,9 +72,10 @@
   font-size: 15px;
   font-weight: 950;
   line-height: 1.35;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  word-break: keep-all;
 }
 
 .final-vote-sticky-submit button {
@@ -269,7 +271,7 @@
 
 @media (max-width: 760px) {
   .final-vote-page {
-    padding-bottom: 104px;
+    padding-bottom: 132px;
   }
 
   .vote-hero-section h1 {
@@ -369,6 +371,22 @@
     margin-top: 8px;
     padding: 8px 10px;
     font-size: 13px;
+  }
+
+  .final-vote-sticky-submit {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .final-vote-sticky-info strong {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .final-vote-sticky-submit button {
+    min-width: 110px;
+    padding: 12px 12px;
+    font-size: 14px;
   }
 
   #submitRedCarpetVoteButton,
