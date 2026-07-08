@@ -1,9 +1,6 @@
 // Final vote UX helper
 // Keeps the original Firebase voting logic untouched.
-// This layer only improves mobile visibility for selected contestants and submit buttons.
-
-const MOBILE_QUERY = "(max-width: 760px)";
-const mobileMedia = window.matchMedia(MOBILE_QUERY);
+// This layer improves sticky visibility for selected contestants and submit buttons.
 
 const stickyBar = document.createElement("div");
 stickyBar.className = "final-vote-sticky-submit";
@@ -48,10 +45,9 @@ stickyButton?.addEventListener("click", () => {
 function updateStickyBar() {
   if (!stickyBar || !stickyLabel || !stickySelection || !stickyButton) return;
 
-  const isMobile = mobileMedia.matches;
   const hasEmployeeInput = Boolean((employeeIdInput?.value || "").trim());
 
-  if (!isMobile || !hasEmployeeInput) {
+  if (!hasEmployeeInput) {
     stickyBar.classList.remove("is-visible");
     return;
   }
@@ -112,7 +108,6 @@ function observeVotePage() {
     });
 
   employeeIdInput?.addEventListener("input", updateStickyBar);
-  mobileMedia.addEventListener?.("change", updateStickyBar);
   window.addEventListener("resize", updateStickyBar);
   window.addEventListener("scroll", updateStickyBar, { passive: true });
 
