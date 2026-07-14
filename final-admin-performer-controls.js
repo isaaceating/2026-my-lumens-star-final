@@ -131,8 +131,6 @@ async function showPerformerIntro() {
   const message = $("performerDisplayControlMessage");
   const user = auth?.currentUser;
   const contestantId = $("performerIntroContestantSelect")?.value || performerContestants[0]?.id || "";
-  const contestant = performerContestants.find((item) => item.id === contestantId);
-  const contestantIndex = performerContestants.findIndex((item) => item.id === contestantId);
 
   if (!user) {
     alert("請先使用 Google Admin 帳號登入。");
@@ -145,10 +143,6 @@ async function showPerformerIntro() {
     if (message) message.textContent = "請先選擇要顯示的選手。";
     return;
   }
-
-  const number = contestantIndex >= 0 ? String(contestantIndex + 1).padStart(2, "0") : "--";
-  const confirmed = confirm(`確定要顯示選手出場畫面嗎？\n\nNo. ${number}｜${contestant?.name || "未命名選手"} / A.K.A. ${contestant?.stageName || "—"}`);
-  if (!confirmed) return;
 
   await setDisplayMode({
     mode: "performerIntro",
@@ -167,9 +161,6 @@ async function showPerformerRecap() {
     if (message) message.textContent = "請先登入後再控制大螢幕。";
     return;
   }
-
-  const confirmed = confirm("確定要顯示全選手回顧畫面嗎？\n\n建議於所有歌手演唱結束、正式開放投票前使用。");
-  if (!confirmed) return;
 
   await setDisplayMode({
     mode: "performerRecap",
