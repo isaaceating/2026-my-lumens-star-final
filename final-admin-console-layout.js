@@ -2,6 +2,12 @@ function $(selector, root = document) {
   return root.querySelector(selector);
 }
 
+function setText(element, text) {
+  if (element && element.textContent !== text) {
+    element.textContent = text;
+  }
+}
+
 function buildConsoleNavigation() {
   const nav = $(".admin-anchor-nav");
   if (!nav || nav.dataset.consoleLayoutReady) return;
@@ -34,30 +40,33 @@ function reorderConsoleSections() {
 
 function relabelConsole() {
   const displayDescription = $("#resultDisplayControl .admin-section-header .section-desc");
-  if (displayDescription) {
-    displayDescription.textContent = "集中控制選手登場、投票與公告、流程圖片與影片、頒獎公布及抽獎畫面。";
-  }
+  setText(
+    displayDescription,
+    "集中控制選手登場、投票與公告、流程圖片與影片、頒獎公布及抽獎畫面。",
+  );
 
-  const flowGroup = Array.from(document.querySelectorAll("#resultDisplayControl .result-control-group"))
-    .find((group) => $("h3", group)?.textContent.trim() === "活動流程畫面");
+  const flowGroup = Array.from(
+    document.querySelectorAll("#resultDisplayControl .result-control-group"),
+  ).find((group) => {
+    const title = $("h3", group)?.textContent.trim();
+    return title === "活動流程畫面" || title === "投票與公告";
+  });
   if (flowGroup) {
-    $("h3", flowGroup).textContent = "投票與公告";
+    setText($("h3", flowGroup), "投票與公告");
     flowGroup.classList.add("console-flow-control-group");
   }
 
   const mediaTitle = $("#displayImageControlPanel h3");
-  if (mediaTitle) mediaTitle.textContent = "流程圖片與影片";
+  setText(mediaTitle, "流程圖片與影片");
 
   const mediaDescription = $("#displayImageControlPanel .section-desc");
-  if (mediaDescription) {
-    mediaDescription.textContent = "管理決賽流程中需要滿版顯示的圖片或影片，選取後可一鍵切換到大螢幕。影片支援 MP4 / WebM。";
-  }
+  setText(
+    mediaDescription,
+    "管理決賽流程中需要滿版顯示的圖片或影片，選取後可一鍵切換到大螢幕。影片支援 MP4 / WebM。",
+  );
 
-  const voteTitle = $("#voteControls h2");
-  if (voteTitle) voteTitle.textContent = "投票控制與即時狀態";
-
-  const overviewTitle = $("#finalOverview h2");
-  if (overviewTitle) overviewTitle.textContent = "即時投票總覽";
+  setText($("#voteControls h2"), "投票控制與即時狀態");
+  setText($("#finalOverview h2"), "即時投票總覽");
 
   const performerGroup = $("#performerDisplayControlGroup");
   const resultCard = $("#resultDisplayControl .result-control-card");
@@ -108,6 +117,15 @@ function applyConsoleLayout() {
   addConsoleStyles();
 }
 
+let layoutFrame = 0;
+function scheduleConsoleLayout() {
+  if (layoutFrame) return;
+  layoutFrame = requestAnimationFrame(() => {
+    layoutFrame = 0;
+    applyConsoleLayout();
+  });
+}
+
 applyConsoleLayout();
-const observer = new MutationObserver(applyConsoleLayout);
+const observer = new MutationObserver(scheduleConsoleLayout);
 observer.observe(document.body, { childList: true, subtree: true });
