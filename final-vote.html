@@ -1,162 +1,171 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>決賽現場投票｜2026 捷揚音樂祭</title>
+    <title>決賽現場投票｜2026 捷揚音樂祭</title>
 
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="css/final-vote-ux-fix.css" />
-</head>
-<body>
-  <nav class="site-nav">
-    <a class="nav-logo" href="index.html">2026 My Lumens Star</a>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/final-vote-ux-fix.css" />
+  </head>
+  <body>
+    <nav class="site-nav">
+      <a class="nav-logo" href="index.html">2026 My Lumens Star</a>
 
-    <button
-      type="button"
-      id="mobileMenuButton"
-      class="mobile-menu-button"
-      aria-label="開啟選單"
-    >
-      ☰
-    </button>
+      <button
+        type="button"
+        id="mobileMenuButton"
+        class="mobile-menu-button"
+        aria-label="開啟選單"
+      >
+        ☰
+      </button>
 
-    <div id="navLinks" class="nav-links">
+      <div id="navLinks" class="nav-links">
         <a href="index.html">首頁</a>
         <a href="#redCarpetVoteSection">紅毯巨星</a>
         <a href="#finalAudienceVoteSection">決賽觀眾投票</a>
-    </div>
-  </nav>
-
-  <main class="vote-page final-vote-page">
-    <section class="section vote-hero-section">
-      <p class="section-kicker">Final Voting</p>
-      <h1>決賽現場投票</h1>
-      <p class="section-desc">
-        請輸入工號完成身份確認後，參與紅毯巨星造型獎與決賽觀眾投票。
-      </p>
-
-      <div class="vote-rule-strip">
-        <div>
-          <strong>紅毯巨星造型獎</strong>
-          <span>每位員工限投 1 票</span>
-        </div>
-
-        <div>
-          <strong>決賽觀眾投票</strong>
-          <span>每位員工限投 3 票，計入總分 60%</span>
-        </div>
-
-        <div>
-          <strong>投票身份</strong>
-          <span>請使用有效員工工號投票</span>
-        </div>
       </div>
+    </nav>
 
-      <div class="vote-layout final-vote-layout">
-        <aside class="vote-side-card final-vote-side-card">
-          <h2>員工身份確認</h2>
-          <p>
-            輸入工號後，系統會自動查詢你的投票狀態，不需要按 Enter。
-          </p>
+    <main class="vote-page final-vote-page">
+      <section class="section vote-hero-section">
+        <p class="section-kicker">Final Voting</p>
+        <h1>決賽現場投票</h1>
+        <p class="section-desc">
+          請輸入工號完成身份確認後，參與紅毯巨星造型獎與決賽觀眾投票。
+        </p>
 
-          <label class="vote-employee-label">
-            員工工號
-            <input
-              type="text"
-              id="employeeIdInput"
-              placeholder="請輸入工號"
-              autocomplete="off"
-            />
-          </label>
-
-          <div id="employeeInfoBox" class="employee-info-box hidden">
-            <div>
-              <span>姓名</span>
-              <strong id="employeeNameText">—</strong>
-            </div>
-
-            <div>
-              <span>部門</span>
-              <strong id="employeeDepartmentText">—</strong>
-            </div>
-
-            <div>
-              <span>公司</span>
-              <strong id="employeeCompanyText">—</strong>
-            </div>
+        <div class="vote-rule-strip">
+          <div>
+            <strong>紅毯巨星造型獎</strong>
+            <span>每位員工限投 1 票</span>
           </div>
 
-          <div class="vote-summary-box">
-            <span>紅毯投票</span>
-            <strong id="redCarpetVoteStatusText">讀取中</strong>
+          <div>
+            <strong>決賽觀眾投票</strong>
+            <span>每位員工需投滿 3 票，計入總分 60%</span>
           </div>
 
-          <div class="vote-summary-box">
-            <span>決賽投票</span>
-            <strong id="finalAudienceVoteStatusText">讀取中</strong>
+          <div>
+            <strong>投票方式</strong>
+            <span
+              >請先輸入員工工號進行確認投票身份，再依序先投紅毯巨星造型獎，再投決賽觀眾投票。</span
+            >
           </div>
+        </div>
 
-          <p id="employeeLookupMessage" class="message"></p>
-        </aside>
+        <div class="vote-layout final-vote-layout">
+          <aside class="vote-side-card final-vote-side-card">
+            <h2>員工投票身份確認</h2>
+            <p>輸入工號後，系統會自動查詢你的投票狀態。</p>
 
-        <section class="final-vote-main">
-          <section id="redCarpetVoteSection" class="final-vote-block">
-            <div class="vote-list-title">
-              <p class="section-kicker">Red Carpet Award</p>
-              <h2>紅毯巨星造型獎</h2>
-              <p class="section-desc">
-                選出你心中最有舞台造型、紅毯氣勢與整體風格的參賽者。
-              </p>
+            <label class="vote-employee-label">
+              員工工號
+              <input
+                type="text"
+                id="employeeIdInput"
+                placeholder="請輸入工號"
+                autocomplete="off"
+              />
+            </label>
+
+            <div id="employeeInfoBox" class="employee-info-box hidden">
+              <div>
+                <span>姓名</span>
+                <strong id="employeeNameText">—</strong>
+              </div>
+
+              <div>
+                <span>部門</span>
+                <strong id="employeeDepartmentText">—</strong>
+              </div>
+
+              <div>
+                <span>公司</span>
+                <strong id="employeeCompanyText">—</strong>
+              </div>
             </div>
 
-            <div class="final-selected-row">
-              <span>已選擇</span>
-              <strong id="selectedRedCarpetContestantText">尚未選擇</strong>
+            <div class="vote-summary-box">
+              <span>紅毯投票</span>
+              <strong id="redCarpetVoteStatusText">讀取中</strong>
             </div>
 
-            <button type="button" id="submitRedCarpetVoteButton" disabled>
-              送出紅毯造型獎投票
-            </button>
-
-            <div id="redCarpetContestantsGrid" class="expect-vote-grid final-vote-grid">
-              <p class="message">參賽者資料載入中...</p>
+            <div class="vote-summary-box">
+              <span>決賽投票</span>
+              <strong id="finalAudienceVoteStatusText">讀取中</strong>
             </div>
 
-            <p id="redCarpetVoteMessage" class="message"></p>
+            <p id="employeeLookupMessage" class="message"></p>
+          </aside>
+
+          <section class="final-vote-main">
+            <section id="redCarpetVoteSection" class="final-vote-block">
+              <div class="vote-list-title">
+                <p class="section-kicker">Red Carpet Award</p>
+                <h2>紅毯巨星造型獎</h2>
+                <p class="section-desc">
+                  選出你心中最有舞台造型、紅毯氣勢與整體風格的參賽者。
+                </p>
+              </div>
+
+              <div class="final-selected-row">
+                <span>已選擇</span>
+                <strong id="selectedRedCarpetContestantText">尚未選擇</strong>
+              </div>
+
+              <button type="button" id="submitRedCarpetVoteButton" disabled>
+                送出紅毯造型獎投票
+              </button>
+
+              <div
+                id="redCarpetContestantsGrid"
+                class="expect-vote-grid final-vote-grid"
+              >
+                <p class="message">參賽者資料載入中...</p>
+              </div>
+
+              <p id="redCarpetVoteMessage" class="message"></p>
+            </section>
+
+            <section id="finalAudienceVoteSection" class="final-vote-block">
+              <div class="vote-list-title">
+                <p class="section-kicker">Audience Vote</p>
+                <h2>決賽觀眾投票</h2>
+                <p class="section-desc">
+                  選出你心中整體表現最佳的 3 位參賽者。此票數將計入決賽總分
+                  60%。
+                </p>
+              </div>
+
+              <div class="final-selected-row">
+                <span>已選擇</span>
+                <strong id="selectedFinalAudienceContestantText"
+                  >尚未選擇，最多 3 位</strong
+                >
+              </div>
+
+              <button type="button" id="submitFinalAudienceVoteButton" disabled>
+                送出決賽觀眾投票
+              </button>
+
+              <div
+                id="finalAudienceContestantsGrid"
+                class="expect-vote-grid final-vote-grid"
+              >
+                <p class="message">參賽者資料載入中...</p>
+              </div>
+
+              <p id="finalAudienceVoteMessage" class="message"></p>
+            </section>
           </section>
+        </div>
+      </section>
+    </main>
 
-          <section id="finalAudienceVoteSection" class="final-vote-block">
-            <div class="vote-list-title">
-              <p class="section-kicker">Audience Vote</p>
-              <h2>決賽觀眾投票</h2>
-              <p class="section-desc">
-                選出你心中整體表現最佳的 3 位參賽者。此票數將計入決賽總分 60%。
-              </p>
-            </div>
-
-            <div class="final-selected-row">
-              <span>已選擇</span>
-              <strong id="selectedFinalAudienceContestantText">尚未選擇，最多 3 位</strong>
-            </div>
-
-            <button type="button" id="submitFinalAudienceVoteButton" disabled>
-              送出決賽觀眾投票
-            </button>
-
-            <div id="finalAudienceContestantsGrid" class="expect-vote-grid final-vote-grid">
-              <p class="message">參賽者資料載入中...</p>
-            </div>
-
-            <p id="finalAudienceVoteMessage" class="message"></p>
-          </section>
-        </section>
-      </div>
-    </section>
-  </main>
-
-  <script type="module" src="final-vote.js"></script>
-  <script type="module" src="final-vote-ux-fix.js"></script>
-</body>
+    <script type="module" src="final-vote.js"></script>
+    <script type="module" src="final-vote-ux-fix.js"></script>
+  </body>
 </html>
