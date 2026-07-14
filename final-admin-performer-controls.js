@@ -17,16 +17,15 @@ function ensurePerformerControls() {
   }
 
   const resultControlCard = document.querySelector("#resultDisplayControl .result-control-card");
-  const awardGroup = document.querySelector(".result-award-control-group");
   if (!resultControlCard) return;
 
   const group = document.createElement("div");
   group.id = "performerDisplayControlGroup";
   group.className = "result-control-group performer-display-control-group";
   group.innerHTML = `
-    <h3>選手登場與投票前回顧</h3>
+    <h3>選手演出畫面</h3>
     <p class="section-desc">
-      用於決賽大螢幕：每位歌手上場前顯示單人出場畫面；所有歌手演唱結束後，顯示全選手回顧畫面。
+      每位歌手上場前顯示單人出場畫面；所有歌手演唱結束後，可顯示全選手回顧畫面。
     </p>
     <div class="performer-control-grid">
       <label>
@@ -35,13 +34,14 @@ function ensurePerformerControls() {
           <option value="">選手資料載入中...</option>
         </select>
       </label>
-      <button type="button" id="showPerformerIntroButton" class="secondary-button">顯示選手出場畫面</button>
+      <button type="button" id="previousPerformerButton" class="secondary-button">上一位</button>
+      <button type="button" id="showPerformerIntroButton">顯示選手出場</button>
+      <button type="button" id="nextPerformerButton" class="secondary-button">下一位</button>
       <button type="button" id="showPerformerRecapButton" class="secondary-button">顯示全選手回顧</button>
-      <button type="button" id="reloadPerformerContestantsButton" class="secondary-button">重新載入選手</button>
     </div>
     <p id="performerDisplayControlMessage" class="message"></p>`;
 
-  resultControlCard.insertBefore(group, awardGroup || $("resultDisplayControlMessage"));
+  resultControlCard.prepend(group);
   controlsReady = true;
   bindPerformerControlEvents();
   loadPerformerContestants();
@@ -50,7 +50,9 @@ function ensurePerformerControls() {
 function bindPerformerControlEvents() {
   $("showPerformerIntroButton")?.addEventListener("click", showPerformerIntro);
   $("showPerformerRecapButton")?.addEventListener("click", showPerformerRecap);
-  $("reloadPerformerContestantsButton")?.addEventListener("click", loadPerformerContestants);
+  $("previousPerformerButton")?.addEventListener("click", () => stepPerformer(-1));
+  $("nextPerformerButton")?.addEventListener("click", () => stepPerformer(1));
+  $("performerIntroContestantSelect")?.addEventListener("change", updatePerformerButtonLabel);
 }
 
 async function loadPerformerContestants() {
@@ -82,6 +84,7 @@ async function loadPerformerContestants() {
       }
     }
 
+    updatePerformerButtonLabel();
     if (message) message.textContent = `已載入 ${performerContestants.length} 位選手。`;
   } catch (error) {
     console.error("Load performer contestants failed:", error);
@@ -89,11 +92,47 @@ async function loadPerformerContestants() {
   }
 }
 
+function getSelectedContestantIndex() {
+  const selectedId = $("performerIntroContestantSelect")?.value || "";
+  return performerContestants.findIndex((item) => item.id === selectedId);
+}
+
+function stepPerformer(direction) {
+  const select = $("performerIntroContestantSelect");
+  if (!select || !performerContestants.length) return;
+
+  const currentIndex = getSelectedContestantIndex();
+  const safeCurrentIndex = currentIndex < 0 ? 0 : currentIndex;
+  const nextIndex = Math.min(
+    performerContestants.length - 1,
+    Math.max(0, safeCurrentIndex + direction),
+  );
+  select.value = performerContestants[nextIndex].id;
+  updatePerformerButtonLabel();
+}
+
+function updatePerformerButtonLabel() {
+  const button = $("showPerformerIntroButton");
+  const previousButton = $("previousPerformerButton");
+  const nextButton = $("nextPerformerButton");
+  const selectedIndex = getSelectedContestantIndex();
+  const contestant = performerContestants[selectedIndex];
+
+  if (button) {
+    button.textContent = contestant
+      ? `顯示 No. ${String(selectedIndex + 1).padStart(2, "0")} ${contestant.stageName || contestant.name || "選手"}`
+      : "顯示選手出場";
+  }
+  if (previousButton) previousButton.disabled = selectedIndex <= 0;
+  if (nextButton) nextButton.disabled = selectedIndex < 0 || selectedIndex >= performerContestants.length - 1;
+}
+
 async function showPerformerIntro() {
   const message = $("performerDisplayControlMessage");
   const user = auth?.currentUser;
   const contestantId = $("performerIntroContestantSelect")?.value || performerContestants[0]?.id || "";
   const contestant = performerContestants.find((item) => item.id === contestantId);
+  const contestantIndex = performerContestants.findIndex((item) => item.id === contestantId);
 
   if (!user) {
     alert("請先使用 Google Admin 帳號登入。");
@@ -102,12 +141,13 @@ async function showPerformerIntro() {
   }
 
   if (!contestantId) {
-    alert("請先選擇要顯示的選手。重新載入選手資料後再試一次。");
+    alert("請先選擇要顯示的選手。");
     if (message) message.textContent = "請先選擇要顯示的選手。";
     return;
   }
 
-  const confirmed = confirm(`確定要顯示選手出場畫面嗎？\n\n${contestant?.name || "未命名選手"} / A.K.A. ${contestant?.stageName || "—"}`);
+  const number = contestantIndex >= 0 ? String(contestantIndex + 1).padStart(2, "0") : "--";
+  const confirmed = confirm(`確定要顯示選手出場畫面嗎？\n\nNo. ${number}｜${contestant?.name || "未命名選手"} / A.K.A. ${contestant?.stageName || "—"}`);
   if (!confirmed) return;
 
   await setDisplayMode({
