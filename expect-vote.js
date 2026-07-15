@@ -33,7 +33,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const MAX_EXPECT_VOTES = 3;
-const EXPECT_VOTE_AUTO_CLOSE_TIME = new Date("2026-07-13T00:00:00+08:00");
+const EXPECT_VOTE_AUTO_CLOSE_TIME = null; // Admin-controlled; no permanent date lock.
 
 let currentAuthUser = null;
 let contestantsCache = [];
@@ -687,7 +687,7 @@ await runTransaction(db, async (transaction) => {
 function getVoteStatus() {
   const now = new Date();
 
-  if (now >= EXPECT_VOTE_AUTO_CLOSE_TIME) {
+  if (EXPECT_VOTE_AUTO_CLOSE_TIME && now >= EXPECT_VOTE_AUTO_CLOSE_TIME) {
     return {
       canVote: false,
       message: "最期待歌手票選已結束，感謝大家參與。"

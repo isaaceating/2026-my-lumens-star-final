@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, collection, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getFirestore, collection, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlj362N4O6ERqgFziQ4Gg9W7SEyquKb0g",
@@ -14,7 +14,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
 
 let resultControl = {
   mode: "preVotingStandby",
@@ -78,26 +77,17 @@ init();
 
 function init() {
   setupVoteUrl();
-
-  resultsLoginButton?.addEventListener("click", async () => {
-    try {
-      setLoginMessage("Google 登入中...");
-      await signInWithPopup(auth, provider);
-    } catch (error) {
-      setLoginMessage(`登入失敗：${error.message}`);
-    }
-  });
+  showDisplayScreen();
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
-      showLoginScreen("請使用 Admin Google 帳號登入後再投影。");
-      return;
-    }
-
-    const adminResult = await checkAdmin(user.uid);
-
-    if (!adminResult) {
-      showLoginScreen("此帳號沒有 Admin 權限，無法讀取決賽即時資料。");
+      try {
+        setLoginMessage("正在連線決賽即時資料...");
+        await signInAnonymously(auth);
+      } catch (error) {
+        console.error("Final display anonymous auth failed:", error);
+        showLoginScreen(`即時資料連線失敗：${error.message}`);
+      }
       return;
     }
 
@@ -108,16 +98,6 @@ function init() {
       startSnapshots();
     }
   });
-}
-
-async function checkAdmin(uid) {
-  try {
-    const adminSnap = await getDoc(doc(db, "admins", uid));
-    return adminSnap.exists() && adminSnap.data().role === "admin";
-  } catch (error) {
-    setLoginMessage(`管理員驗證失敗：${error.message}`);
-    return false;
-  }
 }
 
 function showLoginScreen(message) {

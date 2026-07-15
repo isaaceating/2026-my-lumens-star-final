@@ -40,7 +40,7 @@ const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 const REGISTRATION_AUTO_CLOSE_TIME = new Date("2026-06-01T00:00:00+08:00");
-const EXPECT_VOTE_AUTO_CLOSE_TIME = new Date("2026-07-13T00:00:00+08:00");
+const EXPECT_VOTE_AUTO_CLOSE_TIME = null; // Admin-controlled; no permanent date lock.
 
 let currentUser = null;
 let isCurrentUserAdmin = false;
@@ -489,7 +489,7 @@ async function getExpectVoteSettingsFromFirestore() {
   const settingsSnap = await getDoc(settingsRef);
 
   const now = new Date();
-  const isPastAutoCloseTime = now >= EXPECT_VOTE_AUTO_CLOSE_TIME;
+  const isPastAutoCloseTime = Boolean(EXPECT_VOTE_AUTO_CLOSE_TIME && now >= EXPECT_VOTE_AUTO_CLOSE_TIME);
 
   if (settingsSnap.exists()) {
     const data = settingsSnap.data();
@@ -588,7 +588,7 @@ async function toggleExpectVoteStatus() {
 
   const now = new Date();
 
-  if (now >= EXPECT_VOTE_AUTO_CLOSE_TIME) {
+  if (EXPECT_VOTE_AUTO_CLOSE_TIME && now >= EXPECT_VOTE_AUTO_CLOSE_TIME) {
     alert("已達 2026/7/13 00:00 自動關閉時間，無法再從後台開啟票選。");
     await loadExpectVoteSettings();
     return;
