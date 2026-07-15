@@ -1,5 +1,6 @@
 name: Apply public display and vote controls
 
+# Trigger revision: 2026-07-15
 on:
   push:
     branches: [main]
@@ -132,7 +133,7 @@ jobs:
               '正在連線決賽即時資料，請稍候。'
           )
 
-          # Expectation vote: keep the original date as historical metadata, but let Admin override it at any time.
+          # Expectation vote: let Admin override the historical closing date at any time.
           for filename in ("admin.js", "expect-vote.js"):
               p = Path(filename)
               text = p.read_text(encoding="utf-8")
