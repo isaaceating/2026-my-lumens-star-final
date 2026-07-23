@@ -44,7 +44,9 @@ async function run(mode) {
   const { top, pool } = await topAndPool();
   if (!top) return alert("No champion data.");
   const chosen = mode === "show" ? [] : mixed(pool).slice(0, Math.min(7, pool.length));
-  await setDoc(doc(db, "settings", "starScoutWinners"), { championContestantId: top.id, championName: top.name || "", championStageName: top.stageName || "", eligibleCount: pool.length, drawCount: mode === "show" ? Math.min(7, pool.length) : chosen.length, winners: chosen, winnerCount: chosen.length, prize: "NT$500", updatedAt: serverTimestamp(), updatedBy: user.email || "", updatedByUid: user.uid }, { merge: true });
+  if (mode !== "show") {
+    await setDoc(doc(db, "settings", "starScoutWinners"), { championContestantId: top.id, championName: top.name || "", championStageName: top.stageName || "", eligibleCount: pool.length, drawCount: chosen.length, winners: chosen, winnerCount: chosen.length, prize: "NT$500", updatedAt: serverTimestamp(), updatedBy: user.email || "", updatedByUid: user.uid }, { merge: true });
+  }
   await setDoc(doc(db, "settings", "finalResultControl"), { mode: mode === "show" ? "starScoutStandby" : "starScoutWinners", awardName: "最強星探獎", contestantId: top.id, countdownStatus: "stopped", updatedAt: serverTimestamp(), updatedBy: user.email || "", updatedByUid: user.uid }, { merge: true });
 }
 function bind() {
