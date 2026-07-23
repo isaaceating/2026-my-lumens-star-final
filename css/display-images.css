@@ -168,6 +168,51 @@
   font-weight: 800;
 }
 
+/* Final console: keep opening/closing media first and separate each control area. */
+#resultDisplayControl .result-control-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#resultDisplayControl .display-image-control-panel {
+  order: -10;
+  margin-top: 0;
+  border-width: 2px;
+  border-color: rgba(255, 209, 102, 0.5);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.22);
+}
+
+#resultDisplayControl .display-image-control-header h3 {
+  font-size: 0;
+}
+
+#resultDisplayControl .display-image-control-header h3::after {
+  content: "開場謝幕畫面與影片";
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+#resultDisplayControl .result-control-settings-grid,
+#resultDisplayControl .result-control-group:not(.display-image-control-panel) {
+  margin: 0;
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(101, 227, 244, 0.24);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+#resultDisplayControl .result-control-group:not(.display-image-control-panel) h3 {
+  margin-top: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#resultDisplayControl .result-award-control-group {
+  border-color: rgba(255, 209, 102, 0.3);
+  background: rgba(255, 209, 102, 0.055);
+}
+
 @media (max-width: 760px) {
   .display-image-uploader,
   .display-image-picker-row,
@@ -178,5 +223,10 @@
   .display-image-preview img,
   .display-image-preview video {
     width: 100%;
+  }
+
+  #resultDisplayControl .result-control-settings-grid,
+  #resultDisplayControl .result-control-group:not(.display-image-control-panel) {
+    padding: 18px;
   }
 }
